@@ -2,12 +2,13 @@
  * @author Prem Kumar Bammidi
  */
 import React, { Component } from 'react';
-import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import GoogleFit, { Scopes } from 'react-native-google-fit'
 import config from './config.js';
 import googleConfig from './googleConfig.js';
+import axios from 'axios';
 
 async function OAuth_Fitbit() {
   const configFitbit = {
@@ -37,7 +38,7 @@ async function OAuth_Fitbit() {
     includeBasicAuth: true
   });
 
-  Alert.alert(authState.accessToken)
+  return authState
 }
 
 async function OAuth_Google() {
@@ -62,14 +63,41 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      fitbit_accesstoken: '',
+      value: '',
+      date: '',
+      isloading: true,
+    }
   }
 
   componentDidMount() {
       //
   }
 
-  onFitbit = () => {
-    OAuth_Fitbit()
+  onFitbit = async () => {
+    const authdata = await OAuth_Fitbit()
+    // Alert.alert(authdata.accessToken)
+    this.setState({
+      fitbit_accesstoken: authdata.accessToken
+    })
+
+    await axios.get('https://api.fitbit.com/1/user/-/activities/steps/date/2020-06-29/1d/1min.json',{
+      headers:{
+        Authorization: 'Bearer ' + this.state.fitbit_accesstoken
+      }
+    }).then((resp) => {
+      // console.log(resp.data["activities-steps"][0]["dateTime"])
+      // console.log("---",resp)
+      this.setState({
+        isloading: false,
+        value: resp.data["activities-steps"][0]["value"],
+        date: resp.data["activities-steps"][0]["dateTime"]
+      })
+    }).catch((error) => {
+      console.log(error)
+      Alert.alert("No data associated with this account")
+    })
   }
 
   onGoogle = async () => {
@@ -158,6 +186,11 @@ export default class App extends Component {
             <TouchableOpacity style={styles.button} onPress={this.onGoogleFit}>
               <Text style={{ fontSize: 30, marginTop: 30, color:'green' }}>Google Fit</Text>
             </TouchableOpacity>
+          </View>
+          <View>
+            <Text>{' '}</Text>
+            <Text>{' '}</Text>
+            <Text>{this.state.date} : {this.state.value}</Text>
           </View>
         </View>
       </ScrollView>

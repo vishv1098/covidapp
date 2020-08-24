@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@react-native-community/google-signin": "^4.0.3",
+    "axios": "^0.20.0",
     "qs": "^6.9.4",
     "react": "16.13.1",
     "react-native": "0.63.2",
-    "react-native-app-auth": "^6.0.0"
+    "react-native-app-auth": "^6.0.0",
+    "react-native-google-fit": "^0.14.0"
   },
   "devDependencies": {
     "@babel/core": "7.11.4",
