@@ -8,6 +8,8 @@ target 'Smart_App' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'Smart_AppTests' do
     inherit! :complete
     # Pods for testing
