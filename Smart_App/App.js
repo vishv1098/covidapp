@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, Button, Dimensions } from 'react-native';
 import { createBottomTabNavigator, createAppContainer} from 'react-navigation';  
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';  
 import Icon from 'react-native-vector-icons/Ionicons';
-import DeviceScreen from './DeviceScreen';
+import DeviceScreen from './screens/DeviceScreen';
 
 class HomeScreen extends React.Component {
   render() {  

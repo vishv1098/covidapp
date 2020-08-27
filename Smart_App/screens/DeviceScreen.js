@@ -6,8 +6,8 @@ import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, ActivityIn
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import GoogleFit, { Scopes } from 'react-native-google-fit'
-import config from './config.js';
-import googleConfig from './googleConfig.js';
+import config from '../configFiles/config';
+import googleConfig from '../configFiles/googleConfig';
 import axios from 'axios';
 
 async function OAuth_Fitbit() {
