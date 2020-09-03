@@ -8,6 +8,7 @@ import { GoogleSignin, statusCodes } from '@react-native-community/google-signin
 import GoogleFit, { Scopes } from 'react-native-google-fit'
 import config from '../configFiles/config';
 import googleConfig from '../configFiles/googleConfig';
+import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 
 async function OAuth_Fitbit() {
@@ -25,18 +26,13 @@ async function OAuth_Fitbit() {
   
   // Log in to get an authentication token
   const authState = await authorize(configFitbit);
-  // console.log(configFitbit)
   console.log(authState)
-  // Refresh token
-  // const refreshedState = await refresh(configFitbit, {
-  //   refreshToken: authState.refreshToken,
-  // });
-  
-  // Revoke token
-  // await revoke(configFitbit, {
-  //   tokenToRevoke: refreshedState.refreshToken,
-  //   includeBasicAuth: true
-  // });
+
+  try {
+    await AsyncStorage.setItem('fitbit_accesstoken', authState.accessToken)
+  } catch (error) {
+    console.log(error)
+  }
 
   return authState
 }
@@ -50,19 +46,15 @@ async function OAuth_Google() {
     'https://www.googleapis.com/auth/fitness.oxygen_saturation.read', 'https://www.googleapis.com/auth/fitness.reproductive_health.read'], // what API you want to access on behalf of the user, default is email and profile
     webClientId: googleConfig.google_webClientId, // client ID of type WEB for your server (needed to verify user ID and offline access)
     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-    // hostedDomain: '', // specifies a hosted domain restriction
-    // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-    // accountName: '', // [Android] specifies an account name on the device that should be used
-    // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
   });
-  
 }
 
 export default class DeviceScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.getData();
     this.state = {
       fitbit_accesstoken: '',
       value: '',
@@ -75,20 +67,38 @@ export default class DeviceScreen extends Component {
       //
   }
 
-  onFitbit = async () => {
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('fitbit_accesstoken')
+      if(value !== null) {
+        // value previously stored
+        this.setState({
+          fitbit_accesstoken: value
+        })
+      }
+    } catch(e) {
+      // error reading value
+      console.log(e)
+    }
+    this.onFitbit();
+  }
+
+  onFitbitlogin = async () => {
     const authdata = await OAuth_Fitbit()
     // Alert.alert(authdata.accessToken)
     this.setState({
       fitbit_accesstoken: authdata.accessToken
     })
+    this.onFitbit();
+  }
 
+  onFitbit = async () => {
+    
     await axios.get('https://api.fitbit.com/1/user/-/activities/steps/date/2020-06-29/1d/1min.json',{
       headers:{
         Authorization: 'Bearer ' + this.state.fitbit_accesstoken
       }
     }).then((resp) => {
-      // console.log(resp.data["activities-steps"][0]["dateTime"])
-      // console.log("---",resp)
       this.setState({
         isloading: false,
         value: resp.data["activities-steps"][0]["value"],
@@ -104,17 +114,9 @@ export default class DeviceScreen extends Component {
         Authorization: 'Bearer ' + this.state.fitbit_accesstoken
       }
     }).then((resp) => {
-      // console.log(resp.data["activities-steps"][0]["dateTime"])
-      // console.log("---",resp)
       console.log(resp.data)
-      // this.setState({
-      //   isloading: false,
-      //   value: resp.data["activities-steps"][0]["value"],
-      //   date: resp.data["activities-steps"][0]["dateTime"]
-      // })
     }).catch((error) => {
       console.log(error)
-      // Alert.alert("No data associated with this account")
     })
 
   }
@@ -174,12 +176,6 @@ export default class DeviceScreen extends Component {
         // Process data from Google Fit Recording API (no google fit app needed)
       });
     }
-    // GoogleFit.disconnect()
-    // if(GoogleFit.checkIsAuthorized()) {
-    //   Alert.alert("Authorized")
-    // } else {
-    //   Alert.alert("Unauthorized")
-    // }
   }
   
   render() {
@@ -192,7 +188,7 @@ export default class DeviceScreen extends Component {
         </View>
         <View style={styles.device}>
           <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
-            <TouchableOpacity style={styles.button} onPress={this.onFitbit}>
+            <TouchableOpacity style={styles.button} onPress={this.onFitbitlogin}>
               <Text style={{ fontSize: 30, marginTop: 100, color:'green' }}>Fit-Bit</Text>
             </TouchableOpacity>
           </View>
