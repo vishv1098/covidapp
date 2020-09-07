@@ -2,7 +2,7 @@
  * @author Prem Kumar Bammidi
  */
 import React, { Component } from 'react';
-import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, Text, Alert, View, ScrollView, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import GoogleFit, { Scopes } from 'react-native-google-fit'
@@ -10,6 +10,7 @@ import config from '../configFiles/config';
 import googleConfig from '../configFiles/googleConfig';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import * as data from '../DeviceData.json';
 
 const configFitbit = {
   clientId: config.client_id,
@@ -77,6 +78,7 @@ export default class DeviceScreen extends Component {
       value: '',
       date: '',
       isloading: true,
+      dataSource: data.device_array,
     }
   }
 
@@ -138,6 +140,8 @@ export default class DeviceScreen extends Component {
       console.log(error)
     })
 
+    console.log(data.device_array)
+
   }
 
   onGoogle = async () => {
@@ -196,38 +200,76 @@ export default class DeviceScreen extends Component {
       });
     }
   }
+
+
+  renderItem = ({ item }) => {
+    return (
+      <View style={{ flex: 1, flexDirection: 'row', marginBottom: 3}}>
+        <Image style={{ width: 60, height: 60, margin: 5}}
+        source={{ uri: item.device_image }}/>
+        <View style={{ flex: 1, justifyContent: 'center', marginLeft: 5}}>
+          <Text style={{ fontSize: 30, color: 'green', marginBottom: 15, marginLeft: 25}}>
+            {item.device_name}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  renderSeparator = () => {
+    return (
+      <View style={{ height: 1, marginLeft: 66, width: '100%', backgroundColor: 'black'}}>
+      </View>
+    )
+  }
   
   render() {
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-            Welcome to Device Integration
-          </Text>
+      this.state.isloading
+      ?
+      <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="#00a8b5" animating/>
+      </View>
+      :
+      <View>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.welcome}>
+              Welcome to Device Integration
+            </Text>
+          </View>
+          <View style={styles.device}>
+            <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
+              <TouchableOpacity style={styles.button} onPress={this.onFitbitlogin}>
+                <Text style={{ fontSize: 30, marginTop: 100, color:'green' }}>Fit-Bit</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
+              <TouchableOpacity style={styles.button} onPress={this.onGoogle}>
+                <Text style={{ fontSize: 30, marginTop: 30, color:'green' }}>Google</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
+              <TouchableOpacity style={styles.button} onPress={this.onGoogleFit}>
+                <Text style={{ fontSize: 30, marginTop: 30, color:'green' }}>Google Fit</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text>{' '}</Text>
+              <Text>{' '}</Text>
+              <Text>{this.state.date} : {this.state.value}</Text>
+            </View>
+          </View>
+        </ScrollView>
+        <View >
+          <FlatList
+            data={this.state.dataSource}
+            renderItem={this.renderItem}
+            keyExtractor={(item, index) => index}
+            ItemSeparatorComponent = {this.renderSeparator}
+          />
         </View>
-        <View style={styles.device}>
-          <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
-            <TouchableOpacity style={styles.button} onPress={this.onFitbitlogin}>
-              <Text style={{ fontSize: 30, marginTop: 100, color:'green' }}>Fit-Bit</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
-            <TouchableOpacity style={styles.button} onPress={this.onGoogle}>
-              <Text style={{ fontSize: 30, marginTop: 30, color:'green' }}>Google</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
-            <TouchableOpacity style={styles.button} onPress={this.onGoogleFit}>
-              <Text style={{ fontSize: 30, marginTop: 30, color:'green' }}>Google Fit</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text>{' '}</Text>
-            <Text>{' '}</Text>
-            <Text>{this.state.date} : {this.state.value}</Text>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     );
   }
 }

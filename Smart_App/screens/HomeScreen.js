@@ -10,8 +10,7 @@ class HomeScreen extends React.Component {
     return (  
       <View style={styles.container}>  
         <Text>Home Screen</Text>
-        <Button title="Go to Notification screen"
-          onPress={() => this.props.navigation.navigate("Notifications")}/> 
+        <Text>This screen is under development</Text>
       </View>  
     );  
   }

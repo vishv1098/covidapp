@@ -51,7 +51,7 @@ const MainTabScreen = () => (
         name="Profile"
         component={ProfileStackScreen}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Device',
           tabBarColor: '#00a8b5',
           tabBarIcon: ({ color }) => (
             <Icon name="ios-person" color={color} size={26} />
@@ -175,7 +175,7 @@ const ProfileStackScreen = ({navigation}) => (
     }}
     headerMode="float"
     animation="fade">
-        <ProfileStack.Screen name="Profile" component={DeviceScreen} options={{
+        <ProfileStack.Screen name="Device" component={DeviceScreen} options={{
         headerLeft: () => (
         <Icon.Button name="ios-menu" size={25} backgroundColor="#00a8b5"
         onPress={() => navigation.toggleDrawer()} />

@@ -5,7 +5,8 @@ class NotificationScreen extends React.Component {
     render() {  
       return (  
         <View style={styles.container}>
-          <Text>Notification Screen</Text>  
+          <Text>Notification Screen</Text>
+          <Text>This screen is under development</Text>
         </View>  
       );  
     }

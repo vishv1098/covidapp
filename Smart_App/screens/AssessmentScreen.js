@@ -5,7 +5,8 @@ class AssessmentScreen extends React.Component {
     render() {  
       return (  
         <View style={styles.container}>  
-          <Text>Assessment Screen</Text>  
+          <Text>Assessment Screen</Text>
+          <Text>This screen is under development</Text>
         </View>  
       );  
     }

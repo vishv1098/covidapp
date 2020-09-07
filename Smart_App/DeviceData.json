@@ -1,0 +1,11 @@
+{
+    "device_array" : [
+        {
+            "device_name": "fitbit",
+            "device_image": "https://lh3.googleusercontent.com/QhMCymTyxJbzRiwMBA-GYooS-nVKm3fHg2CSRyKHvhmC-e5vOibfST73y1MmScvtPw",
+            "is_connected" : "connected"
+        }
+    ]
+}
+
+

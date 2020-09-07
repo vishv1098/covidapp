@@ -38,7 +38,7 @@ export function DrawerContent(props) {
                                 <Caption style={styles.caption}>@developer</Caption>
                             </View>
                         </View>
-                        <View style={styles.row}>
+                        {/* <View style={styles.row}>
                             <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>80</Paragraph>
                                 <Caption style={styles.caption}>Assessment count</Caption>
@@ -47,7 +47,7 @@ export function DrawerContent(props) {
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
                                 <Caption style={styles.caption}>stable</Caption>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem 
@@ -72,7 +72,7 @@ export function DrawerContent(props) {
                             label="Profile"
                             onPress={() => {props.navigation.navigate('Profile')}}
                         />
-                        <DrawerItem 
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="bookmark-outline" 
@@ -104,9 +104,9 @@ export function DrawerContent(props) {
                             )}
                             label="Support"
                             onPress={() => {}}
-                        />
+                        /> */}
                     </Drawer.Section>
-                    <Drawer.Section title="Preferences">
+                    {/* <Drawer.Section title="Preferences">
                         <TouchableRipple onPress={() => {toggleTheme()}}>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
@@ -115,10 +115,10 @@ export function DrawerContent(props) {
                                 </View>
                             </View>
                         </TouchableRipple>
-                    </Drawer.Section>
+                    </Drawer.Section> */}
                 </View>
             </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottomDrawerSection}>
+            {/* <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem 
                     icon={({color, size}) => (
                         <Icon
@@ -130,7 +130,7 @@ export function DrawerContent(props) {
                     label="Sign Out"
                     onPress={() => {}}
                 />
-            </Drawer.Section>
+            </Drawer.Section> */}
         </View>
     );
 }
