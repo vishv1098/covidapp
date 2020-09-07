@@ -11,18 +11,19 @@ import googleConfig from '../configFiles/googleConfig';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 
+const configFitbit = {
+  clientId: config.client_id,
+  clientSecret: config.client_secret,
+  redirectUrl: config.redirect_id,
+  scopes: ['activity', 'sleep', 'profile', 'heartrate', 'location', 'weight', 'nutrition', 'social'],
+  serviceConfiguration: {
+    authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
+    tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
+    revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke'
+  }
+};
+
 async function OAuth_Fitbit() {
-  const configFitbit = {
-    clientId: config.client_id,
-    clientSecret: config.client_secret,
-    redirectUrl: config.redirect_id,
-    scopes: ['activity', 'sleep', 'profile', 'heartrate', 'location', 'weight', 'nutrition', 'social'],
-    serviceConfiguration: {
-      authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
-      tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
-      revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke'
-    }
-  };
   
   // Log in to get an authentication token
   const authState = await authorize(configFitbit);
@@ -30,11 +31,26 @@ async function OAuth_Fitbit() {
 
   try {
     await AsyncStorage.setItem('fitbit_accesstoken', authState.accessToken)
+    await AsyncStorage.setItem('fitbit_refreshtoken', authState.refreshToken)
   } catch (error) {
     console.log(error)
   }
 
   return authState
+}
+
+async function refresh_Fitbit(fitbit_refreshtoken) {
+  const refreshedState = await refresh(configFitbit, {
+    refreshToken: fitbit_refreshtoken,
+  });
+
+  try {
+    await AsyncStorage.setItem('fitbit_accesstoken', refreshedState.accessToken)
+    await AsyncStorage.setItem('fitbit_refreshtoken', refreshedState.refreshToken)
+  } catch (error) {
+    console.log(error)
+  }
+  
 }
 
 async function OAuth_Google() {
@@ -57,6 +73,7 @@ export default class DeviceScreen extends Component {
     this.getData();
     this.state = {
       fitbit_accesstoken: '',
+      fitbit_refreshtoken: '',
       value: '',
       date: '',
       isloading: true,
@@ -69,6 +86,8 @@ export default class DeviceScreen extends Component {
 
   getData = async () => {
     try {
+      const refreshtoken = await AsyncStorage.getItem('fitbit_refreshtoken')
+      await refresh_Fitbit(refreshtoken)
       const value = await AsyncStorage.getItem('fitbit_accesstoken')
       if(value !== null) {
         // value previously stored
