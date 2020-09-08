@@ -95,7 +95,7 @@ const HomeStackScreen = ({navigation}) => (
         // alignSelf: 'center',
         },
         headerTitleContainerStyle: {
-        left: TITLE_OFFSET_CENTER_ALIGN, // THIS RIGHT HERE
+        left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
         },
         gestureEnabled: true,
         gestureDirection: "horizontal",
@@ -128,7 +128,7 @@ const NotificationStackScreen = ({navigation}) => (
         // alignSelf: 'center'
         },
         headerTitleContainerStyle: {
-        left: TITLE_OFFSET_CENTER_ALIGN, // THIS RIGHT HERE
+        left: TITLE_OFFSET_CENTER_ALIGN - 15, // THIS RIGHT HERE
         },
         gestureEnabled: true,
         gestureDirection: "horizontal",
@@ -162,7 +162,7 @@ const ProfileStackScreen = ({navigation}) => (
         // alignSelf: 'center'
         },
         headerTitleContainerStyle: {
-        left: TITLE_OFFSET_CENTER_ALIGN, // THIS RIGHT HERE
+        left: TITLE_OFFSET_CENTER_ALIGN + 13, // THIS RIGHT HERE
         },
         gestureEnabled: true,
         gestureDirection: "horizontal",
@@ -196,7 +196,7 @@ const AssessmentStackScreen = ({navigation}) => (
         // alignSelf: 'center'
         },
         headerTitleContainerStyle: {
-        left: TITLE_OFFSET_CENTER_ALIGN, // THIS RIGHT HERE
+        left: TITLE_OFFSET_CENTER_ALIGN - 15, // THIS RIGHT HERE
         },
         gestureEnabled: true,
         gestureDirection: "horizontal",

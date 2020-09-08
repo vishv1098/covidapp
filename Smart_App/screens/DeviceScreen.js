@@ -261,11 +261,11 @@ export default class DeviceScreen extends Component {
             </View>
           </View>
         </ScrollView>
-        <View >
+        <View>
           <FlatList
             data={this.state.dataSource}
             renderItem={this.renderItem}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent = {this.renderSeparator}
           />
         </View>
