@@ -8,18 +8,59 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import MainTabScreen from './screens/MainTabScreen';
 import { DrawerContent } from './screens/DrawerContent'
 import RootStackScreen from './screens/RootStackScreen'
+import { ActivityIndicator, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Drawer = createDrawerNavigator();
 
 class App extends React.Component {
-  render() {  
-    return (  
+  
+  constructor(props) {
+    super(props);
+    global.isStart = null
+    this.state = {
+      isloading: true,
+      isStarted: null
+    }
+    // console.log(this.state.isStarted)
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        isloading: false,
+      })
+    }, 1000);
+    this.check()
+  }
+
+  check = () => {
+    this.setState({
+      isStarted: isStart
+    })
+  }
+
+  render() {
+    if (this.state.isloading) {
+      return (
+        <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color="#00a8b5" animating/>
+        </View>
+      );
+    }
+    return (
       <NavigationContainer>
-        <RootStackScreen />
-        {/* <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+        <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
-          <Drawer.Screen name="Notifications" component={NotificationStackScreen} />
-        </Drawer.Navigator> */}
+        </Drawer.Navigator>
+        {/* { this.state.isStarted === "Start" ? (
+          <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+            <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+          </Drawer.Navigator>
+        )
+      :       
+        <RootStackScreen />
+      } */}
       </NavigationContainer>
     );  
   }

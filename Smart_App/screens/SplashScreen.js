@@ -31,7 +31,7 @@ class SplashScreen extends React.Component {
         >
           <Text style={styles.title}>Stay Home Stay Healthy!</Text>
           <View style={styles.button}>
-          <TouchableOpacity onPress={()=>this.props.navigation.navigate('ProfileScreen')}>
+          <TouchableOpacity onPress={()=>{console.log(isStart); console.log("Hello"); isStart = "Start"; console.log(isStart)}}>
               <LinearGradient
                   colors={['#08d4c4', '#01ab9d']}
                   style={styles.signIn}
