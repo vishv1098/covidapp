@@ -41,10 +41,11 @@ const HomeScreen = () => {
         <TouchableOpacity
         onPress={() => {
           carouselRef.current.scrollToIndex(index);
-          console.log(backgroundData)
           setbackgroundData(item.value)
         }}>
-          <Text style={styles.carouselImage}>{item.dateTime}</Text>
+          <View style={styles.carouselImage}>
+            <Text style={styles.carouselText}>{item.dateTime}</Text>
+          </View>
         </TouchableOpacity>
       </View>
     )
@@ -58,39 +59,38 @@ const HomeScreen = () => {
     <ScrollView>
       <View style = {styles.carouselContentContainer}>
         <View style={{...StyleSheet.absoluteFill, backgroundColor: '#000'}}>
-          {/* <ImageBackground
-          source = {{uri: background.uri }}
+          <ImageBackground
+          source = {{uri: 'https://blog.ipleaders.in/wp-content/uploads/2020/07/960x0.jpg'}}
           style = {styles.ImageBg}
           blurRadius={10}
           >
-
-          </ImageBackground> */}
-          <View style={styles.searchBoxContainer}>
-            <TextInput
-            placeholder='Select Date'
-            placeholderTextColor='#666'
-            style={styles.SearchBox}
-            />
-            <Icon name='search' size={22} color='#666' style={styles.searchBoxIcon} />
-          </View>
-          <Text style={{color: 'white', fontSize: 24, fontWeight: 'bold',
-          marginLeft: 10, marginVertical: 10}}>Recent data from this week</Text>
-          <View style={styles.carouselContainerView}>
-            <Carousel style={styles.Carousel}
-            data={dataSet}
-            renderItem={renderItem}
-            itemWidth={200}
-            containerWidth={ width-20}
-            separatorWidth={0}
-            ref={carouselRef}
-            inActiveOpacity={0.4}            
-            />
-          </View>
-          <View style={styles.dataInfoContainer}>
-            <View style={{justifyContent: 'center'}}>
-              <Text style={styles.dataName}>{backgroundData}</Text>
+            <View style={styles.searchBoxContainer}>
+              <TextInput
+              placeholder='Select Date'
+              placeholderTextColor='#666'
+              style={styles.SearchBox}
+              />
+              <Icon name='search' size={22} color='#666' style={styles.searchBoxIcon} />
             </View>
-          </View>
+            <Text style={{color: 'white', fontSize: 24, fontWeight: 'bold',
+            marginLeft: 10, marginVertical: 3}}>Recent data from this week</Text>
+            <View style={styles.carouselContainerView}>
+              <Carousel style={styles.Carousel}
+              data={dataSet}
+              renderItem={renderItem}
+              itemWidth={200}
+              containerWidth={ width-20}
+              separatorWidth={0}
+              ref={carouselRef}
+              inActiveOpacity={0.4}            
+              />
+            </View>
+            <View style={styles.dataInfoContainer}>
+              <View style={{justifyContent: 'center'}}>
+                <Text style={styles.dataName}>{backgroundData}</Text>
+              </View>
+            </View>
+          </ImageBackground>
         </View>
       </View>
     </ScrollView>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       elevation: 10,
       borderRadius: 4,
-      marginVertical: 10,
+      marginVertical: 20,
       width: '95%',
       flexDirection: 'row',
       alignSelf: 'center'
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     },
     carouselContainerView: {
       width: '100%',
-      height: 350,
+      height: 100,
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -147,18 +147,19 @@ const styles = StyleSheet.create({
     },
     carouselImage: {
       width: 200,
-      height: 320,
+      height: 100,
       borderRadius: 10,
       alignSelf: 'center',
-      backgroundColor: 'white'
+      backgroundColor: 'orange'
     },
     carouselText: {
-      padding: 14,
+      padding: 35,
       color: 'white',
       position: 'absolute',
-      bottom: 10,
-      left: 2,
-      fontWeight: 'bold'
+      bottom: 6,
+      left: 10,
+      fontWeight: 'bold',
+      fontSize: 20
     },
     carouselIcon: {
       position: 'absolute',
