@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Button, Di
 import Carousel from 'react-native-anchor-carousel'
 import { FontAwesome5, MaterialIcons } from 'react-native-vector-icons'
 import Icon from 'react-native-vector-icons/Feather';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 
 const HomeScreen = () => {
 
@@ -85,9 +86,15 @@ const HomeScreen = () => {
               inActiveOpacity={0.4}            
               />
             </View>
-            <View style={styles.dataInfoContainer}>
+            {/* <View style={styles.dataInfoContainer}>
               <View style={{justifyContent: 'center'}}>
-                <Text style={styles.dataName}>{backgroundData}</Text>
+                
+              </View>
+            </View> */}
+            <View style={styles.card}>
+              <View style={styles.cardContent}>
+                <Text style={styles.dataName}> Step count on the day: {backgroundData}</Text>
+                <Icon2 name='walk-outline' size={40} color='#666' style={styles.searchBoxIcon2} />
               </View>
             </View>
           </ImageBackground>
@@ -173,8 +180,8 @@ const styles = StyleSheet.create({
       width: Dimensions.get('window').width - 14
     },
     dataName: {
-      paddingLeft: 14,
-      color: 'white',
+      paddingLeft: 2,
+      color: 'black',
       fontWeight: 'bold',
       fontSize: 20,
       marginBottom: 6
@@ -185,7 +192,30 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       fontSize: 14,
       opacity: 0.8
-    }
+    },
+    card: {
+      borderRadius: 10,
+      elevation: 6,
+      paddingTop: 5,
+      marginVertical: 25,
+      backgroundColor: '#fff',
+      shadowOffset: {width: 1, height: 1},
+      shadowColor: '#333',
+      shadowOpacity: 2,
+      paddingLeft: 20,
+      fontSize: 16,
+      padding: 12,
+      marginHorizontal: 8
+    },
+    cardContent: {
+      marginHorizontal: 18,
+      marginVertical: 10
+    },
+    searchBoxIcon2: {
+      position: 'absolute',
+      right: 2,
+      top: 1
+    },
 });
 
 export default HomeScreen;

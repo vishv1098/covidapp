@@ -54,7 +54,7 @@ const MainTabScreen = () => (
           tabBarLabel: 'Device',
           tabBarColor: '#00a8b5',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-person" color={color} size={26} />
+            <Icon name="watch-outline" color={color} size={26} />
           ),
         }}
       />
