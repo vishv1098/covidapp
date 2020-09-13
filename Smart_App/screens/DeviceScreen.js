@@ -79,6 +79,7 @@ export default class DeviceScreen extends Component {
       date: '',
       isloading: true,
       dataSource: data.device_array,
+      profileData: ''
     }
   }
 
@@ -130,17 +131,38 @@ export default class DeviceScreen extends Component {
       Alert.alert("No data associated with this account")
     })
 
+    var x_data = ''
+
     await axios.get('https://api.fitbit.com/1/user/-/profile.json',{
       headers:{
         Authorization: 'Bearer ' + this.state.fitbit_accesstoken
       }
     }).then((resp) => {
       console.log(resp.data)
+      x_data = resp.data
     }).catch((error) => {
       console.log(error)
     })
 
+    await this.setState({
+      profileData: x_data
+    })
+
     console.log(data.device_array)
+    console.log(this.state.profileData['user'])
+
+    try {
+      await AsyncStorage.setItem('user_age', this.state.profileData['user']['age'].toString())
+      await AsyncStorage.setItem('user_avatar', this.state.profileData['user']['avatar'])
+      await AsyncStorage.setItem('user_avgDailySteps', this.state.profileData['user']['averageDailySteps'].toString())
+      await AsyncStorage.setItem('user_dob', this.state.profileData['user']['dateOfBirth'])
+      await AsyncStorage.setItem('user_name', this.state.profileData['user']['fullName'])
+      await AsyncStorage.setItem('user_gender', this.state.profileData['user']['gender'])
+      await AsyncStorage.setItem('user_height', this.state.profileData['user']['height'].toString())
+      await AsyncStorage.setItem('user_weight', this.state.profileData['user']['weight'].toString())
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 

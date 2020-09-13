@@ -2,14 +2,27 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Dimensions } from 'react-native'; 
 
 class AssessmentScreen extends React.Component {
-    render() {  
-      return (  
-        <View style={styles.container}>  
-          <Text>Assessment Screen</Text>
-          <Text>This screen is under development</Text>
-        </View>  
-      );  
+
+  constructor(props) {
+    super(props);
+    this.state={
+      //
     }
+  }
+
+  // function getPrediction(data) {
+  //   //
+  // }
+
+  render() {  
+    return (  
+      <View style={styles.container}>  
+        <Text>Assessment Screen</Text>
+        <Text>This screen is under development</Text>
+        <Button title="classify" onPress={()=>getPrediction(data)}></Button>
+      </View>  
+    );  
+  }
 }
 
 const styles = StyleSheet.create({  

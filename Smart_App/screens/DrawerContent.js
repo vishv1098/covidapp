@@ -70,7 +70,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Profile"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => {props.navigation.navigate('ProfileScreen')}}
                         />
                         {/* <DrawerItem 
                             icon={({color, size}) => (

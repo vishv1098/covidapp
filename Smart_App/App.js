@@ -10,6 +10,7 @@ import { DrawerContent } from './screens/DrawerContent'
 import RootStackScreen from './screens/RootStackScreen'
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import ProfileScreen from './screens/ProfileScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -52,6 +53,7 @@ class App extends React.Component {
       <NavigationContainer>
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+          <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
         </Drawer.Navigator>
         {/* { this.state.isStarted === "Start" ? (
           <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
