@@ -1,6 +1,7 @@
 import React from 'react';  
 import { StyleSheet, Text, View, Image, ScrollView, TouchableHighlight, TouchableOpacity, Button, Dimensions } from 'react-native'; 
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class ProfileScreen extends React.Component {
 
@@ -53,7 +54,9 @@ class ProfileScreen extends React.Component {
         <ScrollView>
           <View style={{padding:10, width:'100%', backgroundColor:'white', height: 150}}>
             <TouchableOpacity>
-              <Image source={require('../assets/back.png')} style={{width: 30, height: 30}}/>
+              {/* <Image source={require('../assets/back.png')} style={{width: 30, height: 30}}/> */}
+              <Icon.Button name="ios-home" size={25} backgroundColor="#00a8b5"
+                onPress={() => {this.props.navigation.navigate('Home')}} />
               <View></View>
               <View></View>
             </TouchableOpacity>
