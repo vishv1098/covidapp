@@ -11,23 +11,23 @@ const HomeScreen = () => {
 
   const [dataSet, setDataSet] = useState([
     {
-      "dateTime": "2020-07-12",
+      "dateTime": "Jul 12",
       "value": "0"
     },
     {
-      "dateTime": "2020-07-13",
+      "dateTime": "Jul 13",
       "value": "912"
     },
     {
-      "dateTime": "2020-07-14",
+      "dateTime": "Jul 14",
       "value": "1033"
     },
     {
-      "dateTime": "2020-07-15",
+      "dateTime": "Jul 15",
       "value": "1570"
     },
     {
-      "dateTime": "2020-07-16",
+      "dateTime": "Jul 16",
       "value": "17"
     }
   ])
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
       color: 'white',
       position: 'absolute',
       bottom: 6,
-      left: 10,
+      left: 30,
       fontWeight: 'bold',
       fontSize: 20
     },
