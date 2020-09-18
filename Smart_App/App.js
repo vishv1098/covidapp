@@ -11,8 +11,10 @@ import RootStackScreen from './screens/RootStackScreen'
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ProfileScreen from './screens/ProfileScreen';
+import * as tf from '@tensorflow/tfjs';
 
 const Drawer = createDrawerNavigator();
+const BACKEND_CONFIG = 'cpu';
 
 class App extends React.Component {
   
@@ -26,7 +28,9 @@ class App extends React.Component {
     // console.log(this.state.isStarted)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await tf.setBackend(BACKEND_CONFIG);
+    await tf.ready();
     setTimeout(() => {
       this.setState({
         isloading: false,

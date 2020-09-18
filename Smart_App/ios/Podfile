@@ -12,6 +12,8 @@ target 'Smart_App' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'Smart_AppTests' do
     inherit! :complete
     # Pods for testing
