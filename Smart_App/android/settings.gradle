@@ -1,4 +1,6 @@
 rootProject.name = 'Smart_App'
+include ':@react-native-community_checkbox'
+project(':@react-native-community_checkbox').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/checkbox/android')
 include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'; includeUnimodulesProjects()
