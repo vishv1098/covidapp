@@ -5,6 +5,7 @@ import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { Checkbox } from 'react-native-paper';
 import bgImage from '../assets/bgImage.jpg'
 import log from '../assets/log.png'
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -31,18 +32,21 @@ class AssessmentScreen extends React.Component {
       // isModelReady: false,
       // useModel: {}
       oxy: -1,
-      dbp: 70,
-      sbp: 102,
+      dbp: -1,
+      sbp: -1,
       hr: -1,
       res_r: -1,
       b_tmp: -1,
-      sex: 1,
-      white: 0,
-      black: 1,
+      sex: 0,
+      white: 1,
+      black: 0,
       others: 0,
-      ethini: -1,
-      age: 9.6,
-      toggle: false
+      ethini: 0,
+      age: 1,
+      toggle: false,
+      gender: 'male',
+      race: 'white',
+      ethnicity: 'nothispanic/latino'
     }
   }
 
@@ -55,6 +59,8 @@ class AssessmentScreen extends React.Component {
   }
 
   getPrediction = async () => {
+    var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    console.log(z)
     console.log("model loading button is pressed...");   
     const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
     // const a = tf.tensor([["o2","dbp","sbp","heartrate","Respiratory rate","BodyTemp","Sex","White","black","others","Ethnicity","Age"]]);
@@ -73,6 +79,8 @@ class AssessmentScreen extends React.Component {
   }
 
   getCovidPrediction = async () => {
+    var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    console.log(z)
     console.log("Covid or no-Covid model loading..........")
     const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
@@ -92,6 +100,8 @@ class AssessmentScreen extends React.Component {
   }
 
   getInfluenzaPrediction = async () => {
+    var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    console.log(z)
     console.log("Influenza or no-Influenza model loading..........")
     const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
@@ -111,6 +121,8 @@ class AssessmentScreen extends React.Component {
   }
 
   getCovidInfluPrediction = async () => {
+    var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    console.log(z)
     console.log("Covid or Influenza model loading..........")
     const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
@@ -126,14 +138,172 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are likely to have Influenza";
     }
-    Alert.alert("Infection score : "+ da[0]+ " \n" + msg)
+    Alert.alert("score : "+ da[0]+ " \n" + msg)
   }
 
   onePressed() {
     alert('one')
   }
 
-  render() {  
+  handleOxybox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        oxy: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        oxy: a
+      });
+    }
+  };
+
+  handledbpbox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        dbp: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        dbp: a
+      });
+    }
+  }
+
+  handlesbpbox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        sbp: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        sbp: a
+      });
+    }
+  }
+
+  handlehrbox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        hr: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        hr: a
+      });
+    }
+  }
+
+  handleresbox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        res_r: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        res_r: a
+      });
+    }
+  }
+
+  handletmpbox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        b_tmp: -1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        b_tmp: a
+      });
+    }
+  }
+
+  handleagebox = (inputText) => {
+    console.log(inputText)
+    if (inputText == '') {
+      this.setState({
+        age: 1
+      })
+    } else {
+      var a = parseFloat(inputText)
+      console.log(a)
+      this.setState({
+        age: a
+      });
+    }
+  }
+
+  handlegenbox = (inputText) => {
+    console.log(inputText.value)
+    if (inputText.value === 'male') {
+      this.setState({
+        sex: 0
+      })
+    } else {
+      this.setState({
+        sex: 1
+      });
+    }
+  }
+
+  handleracebox = (inputText) => {
+    console.log(inputText.value)
+    if (inputText.value === 'white') {
+      this.setState({
+        white: 1,
+        black: 0,
+        others: 0
+      })
+    } else if (inputText.value === 'black/african') {
+      this.setState({
+        white: 0,
+        black: 1,
+        others: 0
+      })
+    } else {
+      this.setState({
+        white: 0,
+        black: 0,
+        others: 1
+      });
+    }
+  }
+
+  handleethinibox = (inputText) => {
+    console.log(inputText.value)
+    if (inputText.value === 'nothispanic/latino') {
+      this.setState({
+        ethini: 0
+      })
+    } else if (inputText.value === 'others') {
+      this.setState({
+        ethini: -1
+      })
+    } else {
+      this.setState({
+        ethini: 1
+      });
+    }
+  }
+
+  render() {
     return (
         <ImageBackground
         source = {bgImage}
@@ -152,6 +322,9 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Oxygen Saturation value'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handleOxybox(text)}
               />
             </View>
             <View style={{marginTop: 10}}>
@@ -161,6 +334,9 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Diastolic blood pressure value'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handledbpbox(text)}
               />
             </View>
             <View style={{marginTop: 10}}>
@@ -170,6 +346,9 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Systolic blood pressure value'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handlesbpbox(text)}
               />
             </View>
             <View style={{marginTop: 10}}>
@@ -179,6 +358,9 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Heart rate value per minute'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handlehrbox(text)}
               />
             </View>
             <View style={{marginTop: 10}}>
@@ -188,6 +370,9 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Respiratory rate value'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handleresbox(text)}
               />
             </View>
             <View style={{marginTop: 10}}>
@@ -197,9 +382,12 @@ class AssessmentScreen extends React.Component {
                 placeholder={'Body temperature value in celsius'}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handletmpbox(text)}
               />
             </View>
-            <View style={styles.card}>
+            {/* <View style={styles.card}>
               <View style={styles.cardContent}>
                 <View style={styles.checkboxContainer}>
                   <Checkbox
@@ -210,6 +398,71 @@ class AssessmentScreen extends React.Component {
                   <Text style={styles.label}>Do you like React Native?</Text>
                 </View>
               </View>
+            </View> */}
+            <View style={{marginTop: 10}}>
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the gender :</Text>
+              <DropDownPicker
+                items={[
+                    {label: 'Male', value: 'male'},
+                    {label: 'Female', value: 'female'},
+                ]}
+                defaultValue={this.state.gender}
+                containerStyle={{height: 40, width: 380, paddingLeft: 35}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 35, width: 315}}
+                onChangeItem={item => this.handlegenbox(item)}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the race :</Text>
+              <DropDownPicker
+                items={[
+                    {label: 'White', value: 'white'},
+                    {label: 'Black/African American', value: 'black/african'},
+                    {label: 'Others', value: 'others'},
+                ]}
+                defaultValue={this.state.race}
+                containerStyle={{height: 40, width: 380, paddingLeft: 35}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 35, width: 315}}
+                onChangeItem={item => this.handleracebox(item)}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the Ethnicity :</Text>
+              <DropDownPicker
+                items={[
+                    {label: 'Hispanic/Latino', value: 'hispanic/latino'},
+                    {label: 'Not Hispanic/Latino', value: 'nothispanic/latino'},
+                    {label: 'Others', value: 'others'},
+                ]}
+                defaultValue={this.state.ethnicity}
+                containerStyle={{height: 40, width: 380, paddingLeft: 35}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 35, width: 315}}
+                onChangeItem={item => this.handleethinibox(item)}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter your age :</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={'your age'}
+                placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
+                underlineColorAndroid='transparent'
+                keyboardType={'numeric'}
+                numeric
+                onChangeText={(text) => this.handleagebox(text)}
+              />
             </View>
             <View style={{marginHorizontal: 50, marginVertical: 30, paddingTop: 10, paddingLeft: 10}}>
               <Button title="check for covid or no covid" onPress={ this.getCovidPrediction }></Button>
