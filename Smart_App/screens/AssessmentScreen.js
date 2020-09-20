@@ -96,7 +96,7 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are unlikely to be covid";
     }
-    Alert.alert("covid score : "+ da[0]+ " \n" + msg)
+    Alert.alert("covid score : "+ da[0].toFixed(19)+ " \n" + msg)
   }
 
   getInfluenzaPrediction = async () => {
@@ -117,7 +117,7 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are unlikely to have Influenza";
     }
-    Alert.alert("Influenza score : "+ da[0]+ " \n" + msg)
+    Alert.alert("Influenza score : "+ da[0].toFixed(19)+ " \n" + msg)
   }
 
   getCovidInfluPrediction = async () => {
@@ -138,7 +138,7 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are likely to have Influenza";
     }
-    Alert.alert("score : "+ da[0]+ " \n" + msg)
+    Alert.alert("score : "+ da[0].toFixed(19)+ " \n" + msg)
   }
 
   onePressed() {
