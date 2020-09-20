@@ -247,12 +247,12 @@ export default class DeviceScreen extends Component {
   
   render() {
     return (
-      this.state.isloading
-      ?
-      <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" color="#00a8b5" animating/>
-      </View>
-      :
+      // this.state.isloading
+      // ?
+      // <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      //   <ActivityIndicator size="large" color="#00a8b5" animating/>
+      // </View>
+      // :
       <View>
         <ScrollView>
           <View style={styles.container}>
