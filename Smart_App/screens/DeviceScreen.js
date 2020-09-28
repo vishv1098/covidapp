@@ -164,6 +164,30 @@ export default class DeviceScreen extends Component {
       console.log(error)
     }
 
+    var test_red = ''
+
+    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/2020-06-30/2020-07-01/1min.json',{
+      headers:{
+        Authorization: 'Bearer ' + this.state.fitbit_accesstoken
+      }
+    }).then((resp) => {
+      console.log(resp)
+      test_red = resp
+      console.log(resp.data["activities-heart"][0]["dateTime"])
+      console.log(resp.data["activities-heart"][0]["value"])
+      console.log(JSON.stringify(test_red.data["activities-heart"][0]["value"]))
+      // x_data = resp.data
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    try {
+      await AsyncStorage.setItem('test_red1', test_red.data["activities-heart"][0]["dateTime"])
+      await AsyncStorage.setItem('test_red2', JSON.stringify(test_red.data["activities-heart"][0]["value"]))
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   onGoogle = async () => {

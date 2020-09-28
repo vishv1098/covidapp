@@ -1,6 +1,7 @@
 import React from 'react';  
 import { StyleSheet, Text, View, Button, Dimensions } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const chartConfig = {
   backgroundGradientFrom: "#1E2923",
@@ -16,6 +17,32 @@ const chartConfig = {
 class NotificationScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.getTestData();
+    this.state = {
+      test1: '',
+      test2: ''
+    }
+  }
+
+  componentDidMount() {
+    //
+  }
+
+  getTestData = async () => {
+    try {
+      const testcheck = await AsyncStorage.getItem('test_red1')
+      const testcheck2 = await AsyncStorage.getItem('test_red2')
+      if(testcheck !== null && testcheck2!== null ) {
+        // value previously stored
+        this.setState({
+          test1: testcheck,
+          test2: testcheck2
+        })
+      }
+    } catch(e) {
+      // error reading value
+      console.log(e)
+    }
   }
 
   render() {  
@@ -23,6 +50,8 @@ class NotificationScreen extends React.Component {
       <View style={styles.container}>
         <Text>Notification Screen</Text>
         <Text>This screen is under development</Text>
+        <Text>{ this.state.test1 }</Text>
+        <Text>{ this.state.test2 }</Text>
         <View>
           <Text>Heart rate Chart</Text>
           <LineChart
