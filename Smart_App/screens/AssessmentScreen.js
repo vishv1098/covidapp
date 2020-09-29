@@ -305,18 +305,17 @@ class AssessmentScreen extends React.Component {
 
   render() {
     return (
-        <ImageBackground
-        source = {bgImage}
-        blurRadius={10}
-        style={styles.ImageBg}>
-          {/* <Button title="classify" onPress={ this.getPrediction }></Button> */}
-          <ScrollView>
+        // <ImageBackground
+        // source = {bgImage}
+        // blurRadius={10}
+        // style={styles.ImageBg}>
+          <ScrollView style={{backgroundColor: 'white'}}>
             <View style={styles.logoContainer}>
               <Image  source={log} style={styles.logo}/>
               <Text style={styles.logoText}>Please fill in your details</Text>
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Oxygen Saturation value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Oxygen Saturation value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Oxygen Saturation value'}
@@ -328,7 +327,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 30, paddingBottom: 5}}>Enter the Diastolic blood pressure value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 30, paddingBottom: 5}}>Enter the Diastolic blood pressure value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Diastolic blood pressure value'}
@@ -340,7 +339,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 30, paddingBottom: 5}}>Enter the Systolic blood pressure value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 30, paddingBottom: 5}}>Enter the Systolic blood pressure value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Systolic blood pressure value'}
@@ -352,7 +351,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Heart rate value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Heart rate value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Heart rate value per minute'}
@@ -364,7 +363,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Respiratory rate value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Respiratory rate value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Respiratory rate value'}
@@ -376,7 +375,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Body temperature value :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter the Body temperature value :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'Body temperature value in celsius'}
@@ -400,7 +399,7 @@ class AssessmentScreen extends React.Component {
               </View>
             </View> */}
             <View style={{marginTop: 10}}>
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the gender :</Text>
+            <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the gender :</Text>
               <DropDownPicker
                 items={[
                     {label: 'Male', value: 'male'},
@@ -417,7 +416,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the race :</Text>
+            <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the race :</Text>
               <DropDownPicker
                 items={[
                     {label: 'White', value: 'white'},
@@ -435,7 +434,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the Ethnicity :</Text>
+            <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Select the Ethnicity :</Text>
               <DropDownPicker
                 items={[
                     {label: 'Hispanic/Latino', value: 'hispanic/latino'},
@@ -453,7 +452,7 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Text style={{color: 'white', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter your age :</Text>
+              <Text style={{color: 'black', fontSize: 20, fontWeight: '500', marginTop: 10, opacity: 0.9, paddingLeft: 40, paddingBottom: 5}}>Enter your age :</Text>
               <TextInput
                 style={styles.input}
                 placeholder={'your age'}
@@ -474,7 +473,7 @@ class AssessmentScreen extends React.Component {
               <Button title="check for covid or influenza" onPress={ this.getCovidInfluPrediction }></Button>
             </View>
           </ScrollView>
-        </ImageBackground>
+        // </ImageBackground>
     );  
   }
 }
@@ -500,10 +499,11 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
       alignItems: 'center',
-      marginBottom: 50
+      marginBottom: 50,
+      paddingTop: 25
     },
     logoText: {
-      color: 'white',
+      color: 'black',
       fontSize: 20,
       fontWeight: '500',
       marginTop: 10,
