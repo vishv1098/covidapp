@@ -53,7 +53,7 @@ The user can tap on the button to see the result.
 
 ## Notification screen
 
-**As a developer**, I want separate cards which contains text in the Notification screen **so that** I can intimate about the updates to the users.
+**As a developer**, I want separate cards which contain text in the Notification screen **so that** I can intimate about the updates to the users.
 
 **Acceptance criteria**
 The user will get a notification if the developer sends any message.
@@ -62,7 +62,7 @@ The user will get a notification if the developer sends any message.
 
 ## Profile screen
 
-**As a User** I want separate cards which contains text in the Profile screen **so that** I can see my personal data clearly.
+**As a User** I want separate cards which contain text in the Profile screen **so that** I can see my personal data clearly.
 
 **Acceptance criteria**
 The user will able to see his/her data on the profile screen.
@@ -72,9 +72,7 @@ The user will able to see his/her data on the profile screen.
 
 ## Bottom Tab Navigation
 
-**As a User** I want a navigation bar at the bottom.
-
-**So that** I can move from one screen to another easily.
+**As a User** I want a navigation bar at the bottom **so that** I can move from one screen to another easily.
 
 **Acceptance criteria**
 The user can navigate to the Home screen, Notification screen, Device screen and Assessment screen using the bottom navigation bar.
@@ -83,9 +81,7 @@ The user can navigate to the Home screen, Notification screen, Device screen and
 
 ## Hamburger Menu
 
-**As a User** I want a hamburger menu at the top of every screen.
-
-**So that** I can move from any screen to my profile screen.
+**As a User** I want a hamburger menu at the top of every screen **so that** I can move from any screen to my profile screen.
 
 **Acceptance criteria**
 The user can move to profile screen from any of the Home screen, Notification screen, Device screen and Assessment screen using the Hamburger Menu.
