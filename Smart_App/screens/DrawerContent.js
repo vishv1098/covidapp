@@ -12,10 +12,28 @@ import {
     Switch
 } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function DrawerContent(props) {
 
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+    const [image, setImage] = React.useState('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png');
+    const [name, setName] = React.useState('your name');
+
+    const getDataState = async () => {
+        const avatar_image = await AsyncStorage.getItem('user_avatar')
+        const avatar_name = await AsyncStorage.getItem('user_name')
+        if (avatar_image !== null && avatar_name !== null) {
+            setImage(avatar_image)
+            setName(avatar_name)
+        }
+    }
+
+    React.useEffect(() => {
+        // Your code here
+        getDataState()
+        
+      }, []);
 
     const toggleTheme = () => {
         setIsDarkTheme(!isDarkTheme)
@@ -29,13 +47,13 @@ export function DrawerContent(props) {
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: 'https://i.kinja-img.com/gawker-media/image/upload/t_original/ijsi5fzb1nbkbhxa2gc1.png'
+                                    uri: image
                                 }}
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>Prem Kumar</Title>
-                                <Caption style={styles.caption}>@developer</Caption>
+                                <Title style={styles.title}>{name}</Title>
+                                {/* <Caption style={styles.caption}>@developer</Caption> */}
                             </View>
                         </View>
                         {/* <View style={styles.row}>

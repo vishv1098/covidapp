@@ -4,6 +4,9 @@ import Carousel from 'react-native-anchor-carousel'
 import { FontAwesome5, MaterialIcons } from 'react-native-vector-icons'
 import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 const HomeScreen = () => {
 
@@ -35,6 +38,18 @@ const HomeScreen = () => {
   const carouselRef = useRef(null);
 
   const {width,height} = Dimensions.get('window');
+  const [authenticate, setAuthenticate ] = React.useState(null);
+
+  const test = async () => {
+    const auth_check = await AsyncStorage.getItem('fitbit_accesstoken')
+    if (auth_check !== null) {
+        setAuthenticate(auth_check)
+    }
+  }
+
+  React.useEffect(() => {
+    test();
+  }, []);
 
   const renderItem = ({item, index}) => {
     return (
@@ -52,54 +67,53 @@ const HomeScreen = () => {
     )
   }
 
-  return (  
-    // <View style={styles.container}>  
-    //   <Text>Home Screen</Text>
-    //   <Text>This screen is under development</Text>
-    // </View>
+  return (
     <ScrollView>
-      <View style = {styles.carouselContentContainer}>
-        <View style={{...StyleSheet.absoluteFill, backgroundColor: '#000'}}>
-          <ImageBackground
-          source = {{uri: 'https://blog.ipleaders.in/wp-content/uploads/2020/07/960x0.jpg'}}
-          style = {styles.ImageBg}
-          blurRadius={10}
-          >
-            <View style={styles.searchBoxContainer}>
-              <TextInput
-              placeholder='Select Date'
-              placeholderTextColor='#666'
-              style={styles.SearchBox}
-              />
-              <Icon name='search' size={22} color='#666' style={styles.searchBoxIcon} />
-            </View>
-            <Text style={{color: 'white', fontSize: 24, fontWeight: 'bold',
-            marginLeft: 10, marginVertical: 3}}>Recent data from this week</Text>
-            <View style={styles.carouselContainerView}>
-              <Carousel style={styles.Carousel}
-              data={dataSet}
-              renderItem={renderItem}
-              itemWidth={200}
-              containerWidth={ width-20}
-              separatorWidth={0}
-              ref={carouselRef}
-              inActiveOpacity={0.4}            
-              />
-            </View>
-            {/* <View style={styles.dataInfoContainer}>
-              <View style={{justifyContent: 'center'}}>
-                
+      {authenticate === null ? <View style={styles.container}><Text>Home Screen</Text></View>
+       :
+        <View style = {styles.carouselContentContainer}>
+          <View style={{...StyleSheet.absoluteFill, backgroundColor: '#000'}}>
+            <ImageBackground
+            source = {{uri: 'https://blog.ipleaders.in/wp-content/uploads/2020/07/960x0.jpg'}}
+            style = {styles.ImageBg}
+            blurRadius={10}
+            >
+              <View style={styles.searchBoxContainer}>
+                <TextInput
+                placeholder='Select Date'
+                placeholderTextColor='#666'
+                style={styles.SearchBox}
+                />
+                <Icon name='search' size={22} color='#666' style={styles.searchBoxIcon} />
               </View>
-            </View> */}
-            <View style={styles.card}>
-              <View style={styles.cardContent}>
-                <Text style={styles.dataName}> Step count on the day: {backgroundData}</Text>
-                <Icon2 name='walk-outline' size={40} color='#666' style={styles.searchBoxIcon2} />
+              <Text style={{color: 'white', fontSize: 24, fontWeight: 'bold',
+              marginLeft: 10, marginVertical: 3}}>Recent data from this week</Text>
+              <View style={styles.carouselContainerView}>
+                <Carousel style={styles.Carousel}
+                data={dataSet}
+                renderItem={renderItem}
+                itemWidth={200}
+                containerWidth={ width-20}
+                separatorWidth={0}
+                ref={carouselRef}
+                inActiveOpacity={0.4}            
+                />
               </View>
-            </View>
-          </ImageBackground>
+              {/* <View style={styles.dataInfoContainer}>
+                <View style={{justifyContent: 'center'}}>
+                  
+                </View>
+              </View> */}
+              <View style={styles.card}>
+                <View style={styles.cardContent}>
+                  <Text style={styles.dataName}> Step count on the day: {backgroundData}</Text>
+                  <Icon2 name='walk-outline' size={40} color='#666' style={styles.searchBoxIcon2} />
+                </View>
+              </View>
+            </ImageBackground>
+          </View>
         </View>
-      </View>
+      }
     </ScrollView>
   );
 }
@@ -113,7 +127,7 @@ const styles = StyleSheet.create({
     carouselContentContainer: {
       flex: 1,
       backgroundColor: '#000',
-      height: 720,
+      height: screenHeight,
       paddingHorizontal: 14
     },
     ImageBg: {

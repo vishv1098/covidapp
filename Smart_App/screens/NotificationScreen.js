@@ -50,9 +50,11 @@ class NotificationScreen extends React.Component {
       <View style={styles.container}>
         <Text>Notification Screen</Text>
         <Text>This screen is under development</Text>
-        <Text>{ this.state.test1 }</Text>
-        <Text>{ this.state.test2 }</Text>
-        <View>
+        <View style={{paddingLeft: 25, paddingRight: 25, paddingTop: 50}}>
+          <Text>{ this.state.test1 }</Text>
+          <Text>{ this.state.test2 }</Text>
+        </View>
+        {/* <View>
           <Text>Heart rate Chart</Text>
           <LineChart
             data={{
@@ -109,7 +111,7 @@ class NotificationScreen extends React.Component {
               borderRadius: 16
             }}
           />
-        </View>
+        </View> */}
       </View>  
     );  
   }

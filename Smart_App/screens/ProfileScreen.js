@@ -49,38 +49,59 @@ class ProfileScreen extends React.Component {
   }
 
   render() {
-    return (  
-      <View style={styles.container}>   
-        <ScrollView>
-          <View style={{padding:10, width:'100%', backgroundColor:'white', height: 150}}>
-            <TouchableOpacity>
-              {/* <Image source={require('../assets/back.png')} style={{width: 30, height: 30}}/> */}
-              <Icon.Button name="ios-home" size={25} backgroundColor="#00a8b5"
-                onPress={() => {this.props.navigation.navigate('Home')}} />
-              <View></View>
-              <View></View>
-            </TouchableOpacity>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <Image source={{ uri: this.state.user_avatar }} style={{width: 140, height: 140, borderRadius: 100, marginTop:-70}}></Image>
-            <Text style={{fontSize: 25, fontWeight: 'bold', padding: 10,color: 'white'}}>{this.state.user_name}</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', color: 'grey'}}>{this.state.user_age}, {this.state.user_gender}</Text>
-          </View>
-          <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
-            <Text style={{fontSize: 20}}>Average Daily Steps : {this.state.user_Avgsteps}</Text>
-          </View>
-          <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
-            <Text style={{fontSize: 20}}>Birthday : {this.state.user_dob}</Text>
-          </View>
-          <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
-            <Text style={{fontSize: 20}}>Height : {this.state.user_ht}</Text>
-          </View>
-          <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20, marginBottom: 40}}>
-            <Text style={{fontSize: 20}}>Weight : {this.state.user_wt} kg</Text>
-          </View>
-        </ScrollView>
-      </View>  
-    );  
+    if (this.state.user_name === null) {
+      return (
+        <View style={styles.containerData}>
+          <ScrollView>
+            <View style={{padding:10, width:'100%'}}>
+              <TouchableOpacity>
+                {/* <Image source={require('../assets/back.png')} style={{width: 30, height: 30}}/> */}
+                <Icon.Button name="ios-home" size={25} backgroundColor="#00a8b5"
+                  onPress={() => {this.props.navigation.navigate('Home')}} />
+                <View></View>
+                <View></View>
+              </TouchableOpacity>
+            </View>
+            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, paddingTop: 350, paddingLeft: 25, paddingRight: 25}}>
+              <Text>You can see this screen only after giving access to fitbit device in the device screen</Text>
+            </View>
+          </ScrollView>
+        </View>
+      )
+    } else {
+      return ( 
+        <View style={styles.container}>   
+          <ScrollView>
+            <View style={{padding:10, width:'100%', backgroundColor:'white', height: 150}}>
+              <TouchableOpacity>
+                {/* <Image source={require('../assets/back.png')} style={{width: 30, height: 30}}/> */}
+                <Icon.Button name="ios-home" size={25} backgroundColor="#00a8b5"
+                  onPress={() => {this.props.navigation.navigate('Home')}} />
+                <View></View>
+                <View></View>
+              </TouchableOpacity>
+            </View>
+            <View style={{alignItems: 'center'}}>
+              <Image source={{ uri: this.state.user_avatar }} style={{width: 140, height: 140, borderRadius: 100, marginTop:-70}}></Image>
+              <Text style={{fontSize: 25, fontWeight: 'bold', padding: 10,color: 'white'}}>{this.state.user_name}</Text>
+              <Text style={{fontSize: 15, fontWeight: 'bold', color: 'grey'}}>{this.state.user_age}, {this.state.user_gender}</Text>
+            </View>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
+              <Text style={{fontSize: 20}}>Average Daily Steps : {this.state.user_Avgsteps}</Text>
+            </View>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
+              <Text style={{fontSize: 20}}>Birthday : {this.state.user_dob}</Text>
+            </View>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
+              <Text style={{fontSize: 20}}>Height : {this.state.user_ht}</Text>
+            </View>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20, marginBottom: 40}}>
+              <Text style={{fontSize: 20}}>Weight : {this.state.user_wt} kg</Text>
+            </View>
+          </ScrollView>
+        </View>  
+      );
+    }  
   }
 }
 
@@ -88,7 +109,12 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: 'black'
-    },  
+    },
+    containerData: {  
+      flex: 1,  
+      // justifyContent: 'center',  
+      // alignItems: 'center'  
+    }, 
 });
 
 export default ProfileScreen
