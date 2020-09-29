@@ -20,6 +20,8 @@ Smart app covid detector
 1. Once grant the user the permission to view their data from the fitbit and the google fit on the device screen, then the data will be displayed on the home screen otherwise it will display the text as "Grant permission to read your data in the device screen".
 2. The entire data will be segregated and displayed on the home screen day-wise.
 
+![homescreen](https://user-images.githubusercontent.com/55681132/94579728-c6e24680-0296-11eb-9ce2-61ed876e28bd.png)
+
 ***
 
 ## Device screen
@@ -66,6 +68,8 @@ The user will get a notification if the developer sends any message.
 
 **Acceptance criteria**
 The user will able to see his/her data on the profile screen.
+
+![Profilescreen](https://user-images.githubusercontent.com/55681132/94580075-1c1e5800-0297-11eb-9b0e-c62cfe41f6bf.png)
 
 ***
 
