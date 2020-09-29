@@ -10,11 +10,11 @@ Smart app covid detector
 
 1. **As a user** I want a select date bar on the top of the screen **So that** I can search for the date to view my heart rate, step count and the other vital data on that particular day. 
 
-2.  **As a user** I want a Carousel screen to tap on a day from previous week **So that** I need not spend much time searching for the data of the previous week.
+2.  **As a user** I want a Carousel screen to tap on a day from previous week **So that** I need not spend much time searching for the date of the previous week.
 
-3. **As a user** I want cards below the Carousel screen on the home screen **So that** I can see all the health related data clearly.
+3. **As a user** I want cards which contain text below the Carousel screen on the home screen **So that** I can see all the vital data clearly.
 
-4. **As a user** I want a graph view below all the data cards **So that** I can see my heart rate variation on that day in the graph.
+4. **As a user** I want a graph below all the data cards **So that** I can see my heart rate variation on that particular day in the graph.
 
 **Acceptance criteria**
 1. Once grant the user the permission to view their data from the fitbit and the google fit on the device screen, then the data will be displayed on the home screen otherwise it will display the text as "Grant permission to read your data in the device screen".
@@ -24,17 +24,13 @@ Smart app covid detector
 
 ## Device screen
 
-**As a user** I want the following features :
-1. I want the device name with a symbol.
-2. I want two separate sections on the device screen.
-3. I want a pop up screen at the bottom of the screen.
-4. I want a button beside the device name.
+1. **As a user** I want the device name with a symbol **So that** I can clearly distinguish the device I am using and allow the app (Smart app) to read the data from that device.
 
-**So that**
-1. I can clearly distinguish the device I am using and allow the app (Smart app) to read the data from that device.
-2. I can see all the devices that are connected and the data in sync with the Smart app, also the devices that are connected but the data not in sync with the Smart app in a separate section.
-3. I can see all the devices from which the app (Smart app) can read in the data.
-4. So that I can disconnect the device from the Smart app whenever I want.
+2. **As a user** I want two separate sections on the device screen. **So that** I can see all the devices that are connected and the data in sync with the Smart app, also the devices that are connected but the data not in sync with the Smart app in a separate section.
+
+3. **As a user** I want a pop up screen at the bottom of the screen. **So that** I can see all the devices from which the app (Smart app) can read in the data.
+
+4. **As a user** I want a button beside the device name. **So that** So that I can disconnect the device from the Smart app whenever I want.
 
 **Acceptance criteria**
 1. The user can tap on the "+" symbol which is present at the bottom of the device screen and then tap on the device name which he or she want to connect and then after authentication on the device screen the user will be able to screen the device name within the section connected devices.
