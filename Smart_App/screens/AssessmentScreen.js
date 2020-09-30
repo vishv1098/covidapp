@@ -1,5 +1,5 @@
 import React from 'react';  
-import { StyleSheet, Text, View, Button, Dimensions, TextInput, ScrollView, ImageBackground, Image, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, Button, Dimensions, TextInput, ScrollView, ImageBackground, Image, Alert } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { Checkbox } from 'react-native-paper';
@@ -46,7 +46,10 @@ class AssessmentScreen extends React.Component {
       toggle: false,
       gender: 'male',
       race: 'white',
-      ethnicity: 'nothispanic/latino'
+      ethnicity: 'nothispanic/latino',
+      covid: false,
+      influ: false,
+      safe: false
     }
   }
 
@@ -96,7 +99,8 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are unlikely to be covid";
     }
-    Alert.alert("covid score : "+ da[0].toFixed(10)+ " \n" + msg)
+    // Alert.alert("covid score : "+ da[0].toFixed(10)+ " \n" + msg)
+    return da[0]
   }
 
   getInfluenzaPrediction = async () => {
@@ -117,7 +121,8 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are unlikely to have Influenza";
     }
-    Alert.alert("Influenza score : "+ da[0].toFixed(10)+ " \n" + msg)
+    // Alert.alert("Influenza score : "+ da[0].toFixed(10)+ " \n" + msg)
+    return da[0]
   }
 
   getCovidInfluPrediction = async () => {
@@ -138,7 +143,38 @@ class AssessmentScreen extends React.Component {
     } else {
       msg = "You are likely to have Influenza";
     }
-    Alert.alert("score : "+ da[0].toFixed(10)+ " \n" + msg)
+    // Alert.alert("score : "+ da[0].toFixed(10)+ " \n" + msg)
+    return da[0]
+  }
+
+  getCovidTest = async () => {
+    const covidscore = await this.getCovidPrediction();
+    console.log(covidscore)
+    const influscore = await this.getInfluenzaPrediction();
+    console.log(influscore)
+    var msg= '';
+    if (covidscore < 0.5 && influscore < 0.5 ) {
+      msg = "You are safe"
+      this.setState({
+        safe: true
+      })
+      Alert.alert("score : "+ covidscore.toFixed(5)+","+influscore.toFixed(5)+ " \n" + msg)
+    } else {
+      const covidinfluscore = await this.getCovidInfluPrediction();
+      if (covidinfluscore < 0.5) {
+        msg = "you are likely to have influenza"
+        this.setState({
+          influ: true
+        })
+        Alert.alert("score : "+ covidinfluscore.toFixed(5)+ " \n" + msg)
+      } else {
+        msg = "you are likely to have covid"
+        this.setState({
+          covid: true
+        })
+        Alert.alert("score : "+ covidinfluscore.toFixed(5)+ " \n" + msg)
+      }
+    }
   }
 
   onePressed() {
@@ -304,6 +340,12 @@ class AssessmentScreen extends React.Component {
   }
 
   render() {
+    const {covid} = this.state;
+    const {influ} = this.state;
+    const {safe} = this.state;
+    const covidbg = covid? 'red':'rgba(225, 0, 0, 0.4)'
+    const influbg = influ? 'yellow' : 'rgba(128, 128, 0, 0.4)'
+    const safebg = safe? 'green' : 'rgba(0, 128, 0, 0.4)'
     return (
         // <ImageBackground
         // source = {bgImage}
@@ -464,6 +506,9 @@ class AssessmentScreen extends React.Component {
               />
             </View>
             <View style={{marginHorizontal: 50, marginVertical: 30, paddingTop: 10, paddingLeft: 10}}>
+              <Button title="check for covid or influenza" onPress={ this.getCovidTest }></Button>
+            </View>
+            {/* <View style={{marginHorizontal: 50, marginVertical: 30, paddingTop: 10, paddingLeft: 10}}>
               <Button title="check for covid or no covid" onPress={ this.getCovidPrediction }></Button>
             </View>
             <View style={{marginHorizontal: 50, marginVertical: 30, paddingTop: 10, paddingLeft: 10}}>
@@ -471,6 +516,23 @@ class AssessmentScreen extends React.Component {
             </View>
             <View style={{marginHorizontal: 50, marginVertical: 30, paddingTop: 10, paddingLeft: 10}}>
               <Button title="check for covid or influenza" onPress={ this.getCovidInfluPrediction }></Button>
+            </View> */}
+            <View style={{ flex: 1, flexDirection: 'row', marginBottom: 3, paddingLeft: 33}}>
+              <View>
+                <TouchableOpacity style={{margin: 10, flex: 1, width: 100, height: 50, backgroundColor: covidbg, borderRadius: 25, justifyContent: 'center'}} onPress={this._onPress}>
+                  <Text style={{textAlign:'center', fontSize: 16}}></Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={{margin: 10, flex: 1, width: 100, height: 50, backgroundColor:safebg, borderRadius: 25, justifyContent: 'center'}} onPress={this._onPress}>
+                  <Text style={{textAlign:'center', fontSize: 16}}></Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={{margin: 10, flex: 1, width: 100, height: 50, backgroundColor: influbg, borderRadius: 25, justifyContent: 'center'}} onPress={this._onPress}>
+                  <Text style={{textAlign:'center', fontSize: 16}}></Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </ScrollView>
         // </ImageBackground>
@@ -516,7 +578,7 @@ const styles = StyleSheet.create({
       fontSize: 16,
       paddingLeft: 45,
       backgroundColor: 'rgba(0, 0, 0, 0.35)',
-      color: 'rgba(225, 225, 225, 0.7)',
+      color: 'rgb(255,255,255)',
       marginHorizontal: 25
     },
     card: {

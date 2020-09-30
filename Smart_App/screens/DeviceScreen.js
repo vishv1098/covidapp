@@ -40,6 +40,20 @@ async function OAuth_Fitbit() {
   return authState
 }
 
+async function OAuth_logout_Fitbit() {
+  try {
+    const refreshtoken_l = await AsyncStorage.getItem('fitbit_refreshtoken')
+    await revoke(config, {
+      tokenToRevoke: refreshtoken_l,
+      includeBasicAuth: true
+    });
+    await AsyncStorage.setItem('fitbit_accesstoken', null)
+    await AsyncStorage.setItem('fitbit_refreshtoken', null)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 async function refresh_Fitbit(fitbit_refreshtoken) {
   const refreshedState = await refresh(configFitbit, {
     refreshToken: fitbit_refreshtoken,
@@ -79,7 +93,8 @@ export default class DeviceScreen extends Component {
       date: '',
       isloading: true,
       dataSource: data.device_array,
-      profileData: ''
+      profileData: '',
+      fitbitToggle: false
     }
   }
 
@@ -190,6 +205,25 @@ export default class DeviceScreen extends Component {
 
   }
 
+  onFitbitlogout = async () => {
+    await OAuth_logout_Fitbit()
+    console.log(this.state.fitbit_accesstoken)
+  }
+
+  _onPress = async () => {
+    const newState = !this.state.fitbitToggle;
+    await this.setState({
+      fitbitToggle: newState
+    })
+    await AsyncStorage.setItem('fitbit_logout', this.state.fitbitToggle)
+    if (newState === true) {
+      this.onFitbitlogin()
+    }
+    if (newState === false) {
+      this.onFitbitlogout()
+    }
+  }
+
   onGoogle = async () => {
     console.log("Hi")
     OAuth_Google()
@@ -249,6 +283,9 @@ export default class DeviceScreen extends Component {
 
 
   renderItem = ({ item }) => {
+    const {fitbitToggle} = this.state;
+    console.log(this.state.fitbitToggle)
+    const textValue = fitbitToggle?"disconnect":"connect"
     return (
       <View style={{ flex: 1, flexDirection: 'row', marginBottom: 3}}>
         <Image style={{ width: 60, height: 60, margin: 5}}
@@ -257,6 +294,11 @@ export default class DeviceScreen extends Component {
           <Text style={{ fontSize: 30, color: 'green', marginBottom: 15, marginLeft: 25}}>
             {item.device_name}
           </Text>
+        </View>
+        <View>
+          <TouchableOpacity style={{margin: 10, flex: 1, width: 100, height: 50, backgroundColor:'#00a8b5', borderRadius: 25, justifyContent: 'center'}} onPress={this._onPress}>
+            <Text style={{textAlign:'center', fontSize: 16}}>{textValue}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -284,7 +326,7 @@ export default class DeviceScreen extends Component {
               Welcome to Device Integration
             </Text>
           </View>
-          <View style={styles.device}>
+          {/* <View style={styles.device}>
             <View style={{backgroundColor: "lightblue", textAlign: "center"}}>
               <TouchableOpacity style={styles.button} onPress={this.onFitbitlogin}>
                 <Text style={{ fontSize: 30, marginTop: 100, color:'green' }}>Fit-Bit</Text>
@@ -305,7 +347,7 @@ export default class DeviceScreen extends Component {
               <Text>{' '}</Text>
               <Text>{this.state.date} : {this.state.value}</Text>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
         <View>
           <FlatList

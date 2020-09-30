@@ -69,7 +69,7 @@ const HomeScreen = () => {
 
   return (
     <ScrollView>
-      {authenticate === null ? <View style={styles.container}><Text>Home Screen</Text></View>
+      {authenticate === null ? <View style={styles.container}><Text>You can see this screen only after giving access to fitbit device in the device screen</Text></View>
        :
         <View style = {styles.carouselContentContainer}>
           <View style={{...StyleSheet.absoluteFill, backgroundColor: '#000'}}>
@@ -122,7 +122,10 @@ const styles = StyleSheet.create({
     container: {  
       flex: 1,  
       justifyContent: 'center',  
-      alignItems: 'center'  
+      alignItems: 'center',
+      paddingLeft: 25,
+      paddingRight: 25,
+      paddingTop: 50
     },
     carouselContentContainer: {
       flex: 1,
