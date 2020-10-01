@@ -281,7 +281,7 @@ class AssessmentScreen extends React.Component {
       var a = parseFloat(inputText)
       console.log(a)
       this.setState({
-        age: a
+        age: a/5
       });
     }
   }

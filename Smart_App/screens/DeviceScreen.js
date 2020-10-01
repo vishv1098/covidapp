@@ -181,7 +181,7 @@ export default class DeviceScreen extends Component {
 
     var test_red = ''
 
-    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/2020-06-30/2020-07-01/1min.json',{
+    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/2020-09-29/2020-09-30/1min.json',{
       headers:{
         Authorization: 'Bearer ' + this.state.fitbit_accesstoken
       }
@@ -215,7 +215,7 @@ export default class DeviceScreen extends Component {
     await this.setState({
       fitbitToggle: newState
     })
-    await AsyncStorage.setItem('fitbit_logout', this.state.fitbitToggle)
+    // await AsyncStorage.setItem('fitbit_logout', this.state.fitbitToggle)
     if (newState === true) {
       this.onFitbitlogin()
     }
