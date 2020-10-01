@@ -146,6 +146,11 @@ class App extends Component {
                     textdata: 'Sign-in to your fitness tracker account to get vital signs',
                 })
             }
+            if (this.state.fitbitname !== '') {
+                this.setState({
+                    textdata: 'You have Signed-In as ' + this.state.fitbitname
+                })
+            }
         }
         console.log(this.state.fitbit_accesstoken)
     }
@@ -156,11 +161,11 @@ class App extends Component {
             try {
                 await GoogleSignin.hasPlayServices();
                 const userInfo = await GoogleSignin.signIn();
-                console.log(userInfo.user.name)
+                console.log(userInfo)
                 this.setState({
                     google_accesstoken: userInfo.idToken,
-                    textdata: 'You have Signed-In as ' + userInfo.user.name,
-                    googlename: userInfo.user.name
+                    textdata: 'You have Signed-In as ' + userInfo.user.givenName,
+                    googlename: userInfo.user.givenName
                 })
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -190,6 +195,11 @@ class App extends Component {
                     textdata: 'Sign-in to your fitness tracker account to get vital signs',
                 })
             }
+            if (this.state.fitbitname !== '') {
+                this.setState({
+                    textdata: 'You have Signed-In as ' + this.state.fitbitname
+                })
+            }
         }
         console.log(this.state.google_accesstoken)
     }
@@ -198,7 +208,7 @@ class App extends Component {
         return (
             <View style={styles.container}>
                 <View style={{ marginTop: screenHeight - 780}}>
-                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 50, paddingBottom: 50, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 120, paddingBottom: 60, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
                 </View>
                 <View>
                     <Text style={{ marginTop: screenHeight- 680, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
