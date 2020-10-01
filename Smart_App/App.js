@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import axios from 'axios';
 import config from './configFiles/config'
 import googleConfig from './configFiles/googleConfig'
+
+const screenWidth = Dimensions.get('screen').width;
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 const configFitbit = {
     clientId: config.client_id,
@@ -78,6 +82,7 @@ class App extends Component {
             fitbit_accesstoken: '',
             google_accesstoken: '',
             text: '',
+            textdata: 'Sign-in to your fitness tracker account to get vital signs',
             fitbitdata: 'fitbit',
             googledata: 'Google Fit'
         }
@@ -107,16 +112,31 @@ class App extends Component {
     _onFitbit = async() => {
         if (this.state.fitbitdata === "fitbit") {
             const authdata = await OAuth_Fitbit()
+            var x_data = ''
+            await axios.get('https://api.fitbit.com/1/user/-/profile.json',{
+                headers:{
+                    Authorization: 'Bearer ' + authdata.accessToken
+                }
+            }).then((resp) => {
+                console.log(resp.data)
+                x_data = resp.data
+            }).catch((error) => {
+                console.log(error)
+            })
+
             this.setState({
                 fitbit_accesstoken: authdata.accessToken,
                 text: 'you now connected to fitbit',
-                fitbitdata: 'Sign-out fitbit'
+                fitbitdata: 'Sign-out fitbit',
+                textdata: 'You have Signed-In as ' + x_data['user']['fullName']
             })
+
         } else {
             await OAuth_Fitbit_logout()
             this.setState({
                 text: '',
-                fitbitdata: 'fitbit'
+                fitbitdata: 'fitbit',
+                textdata: 'Sign-in to your fitness tracker account to get vital signs'
             })
         }
         console.log(this.state.fitbit_accesstoken)
@@ -128,9 +148,10 @@ class App extends Component {
             try {
                 await GoogleSignin.hasPlayServices();
                 const userInfo = await GoogleSignin.signIn();
-                console.log(userInfo.idToken)
+                console.log(userInfo.user.name)
                 this.setState({
-                    google_accesstoken: userInfo.idToken
+                    google_accesstoken: userInfo.idToken,
+                    textdata: 'You have Signed-In as ' + userInfo.user.name
                 })
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -152,7 +173,8 @@ class App extends Component {
             this.setState({
                 google_accesstoken: '',
                 text: '',
-                googledata: 'Google Fit'
+                googledata: 'Google Fit',
+                textdata: 'Sign-in to your fitness tracker account to get vital signs'
             })
         }
         console.log(this.state.google_accesstoken)
@@ -161,25 +183,25 @@ class App extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{paddingBottom: 100, paddingTop: 100}}>
-                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 50, paddingBottom: 100, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+                <View style={{ marginTop: screenHeight - 780}}>
+                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 50, paddingBottom: 50, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
                 </View>
                 <View>
-                    <Text style={{paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>Sign-in to your fitness tracker account to get vital signs</Text>
+                    <Text style={{ marginTop: screenHeight- 680, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 380, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
+                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.fitbitdata}</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 380, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onGooglefit}>
+                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onGooglefit}>
                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{paddingTop: 200}}>
+                {/* <View style={{paddingTop: 200}}>
                     <Text>{this.state.text}</Text>
-                </View>
+                </View> */}
             </View>
         )
     }
