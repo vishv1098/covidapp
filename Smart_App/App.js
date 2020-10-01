@@ -84,7 +84,9 @@ class App extends Component {
             text: '',
             textdata: 'Sign-in to your fitness tracker account to get vital signs',
             fitbitdata: 'fitbit',
-            googledata: 'Google Fit'
+            googledata: 'Google Fit',
+            googlename: '',
+            fitbitname: '',
         }
     }
 
@@ -128,7 +130,8 @@ class App extends Component {
                 fitbit_accesstoken: authdata.accessToken,
                 text: 'you now connected to fitbit',
                 fitbitdata: 'Sign-out fitbit',
-                textdata: 'You have Signed-In as ' + x_data['user']['fullName']
+                textdata: 'You have Signed-In as ' + x_data['user']['fullName'],
+                fitbitname: x_data['user']['fullName']
             })
 
         } else {
@@ -136,8 +139,13 @@ class App extends Component {
             this.setState({
                 text: '',
                 fitbitdata: 'fitbit',
-                textdata: 'Sign-in to your fitness tracker account to get vital signs'
+                fitbitname: ''
             })
+            if (this.state.googlename === '') {
+                this.setState({
+                    textdata: 'Sign-in to your fitness tracker account to get vital signs',
+                })
+            }
         }
         console.log(this.state.fitbit_accesstoken)
     }
@@ -151,7 +159,8 @@ class App extends Component {
                 console.log(userInfo.user.name)
                 this.setState({
                     google_accesstoken: userInfo.idToken,
-                    textdata: 'You have Signed-In as ' + userInfo.user.name
+                    textdata: 'You have Signed-In as ' + userInfo.user.name,
+                    googlename: userInfo.user.name
                 })
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -167,15 +176,20 @@ class App extends Component {
             }
             this.setState({
                 text: 'you now connected to Google Fit',
-                googledata: 'Sign-out Google Fit'
+                googledata: 'Sign-out Google Fit',
             })
         } else {
             this.setState({
                 google_accesstoken: '',
                 text: '',
                 googledata: 'Google Fit',
-                textdata: 'Sign-in to your fitness tracker account to get vital signs'
+                googlename: ''
             })
+            if (this.state.fitbitname === '') {
+                this.setState({
+                    textdata: 'Sign-in to your fitness tracker account to get vital signs',
+                })
+            }
         }
         console.log(this.state.google_accesstoken)
     }
