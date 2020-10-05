@@ -87,6 +87,7 @@ class App extends Component {
             googledata: 'Google Fit',
             googlename: '',
             fitbitname: '',
+            flashMessage: false
         }
     }
 
@@ -139,7 +140,8 @@ class App extends Component {
             this.setState({
                 text: '',
                 fitbitdata: 'fitbit',
-                fitbitname: ''
+                fitbitname: '',
+                fitbit_accesstoken: ''
             })
             if (this.state.googlename === '') {
                 this.setState({
@@ -165,7 +167,8 @@ class App extends Component {
                 this.setState({
                     google_accesstoken: userInfo.idToken,
                     textdata: 'You have Signed-In as ' + userInfo.user.givenName,
-                    googlename: userInfo.user.givenName
+                    googlename: userInfo.user.givenName,
+                    googledata: 'Sign-out Google Fit'
                 })
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -179,10 +182,10 @@ class App extends Component {
                 }
                 console.log(error)
             }
-            this.setState({
-                text: 'you now connected to Google Fit',
-                googledata: 'Sign-out Google Fit',
-            })
+            // this.setState({
+            //     text: 'you now connected to Google Fit',
+                
+            // })
         } else {
             this.setState({
                 google_accesstoken: '',
@@ -204,14 +207,28 @@ class App extends Component {
         console.log(this.state.google_accesstoken)
     }
 
+    onFlashPress(){
+        if (this.state.fitbit_accesstoken === '' && this.state.google_accesstoken === '') {
+            this.setState({
+                flashMessage: true
+            },()=>{setTimeout(() => this.closeFlashMessage(), 3000)})
+        }
+    }
+    
+    closeFlashMessage(){
+        this.setState({
+            flashMessage: false
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <View style={{ marginTop: screenHeight - 780}}>
-                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 120, paddingBottom: 60, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+                <View style={{paddingTop: 80}}>
+                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 5, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
                 </View>
                 <View>
-                    <Text style={{ marginTop: screenHeight- 680, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
+                    <Text style={{ paddingTop: 140, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
                 </View>
                 <View>
                     <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
@@ -223,9 +240,18 @@ class App extends Component {
                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={{paddingTop: 200}}>
-                    <Text>{this.state.text}</Text>
-                </View> */}
+                <View style={{ paddingTop: 110}}>
+                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={()=>{this.onFlashPress()}}>
+                        <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Continue</Text>
+                    </TouchableOpacity>
+                </View>
+                {this.state.flashMessage==true?
+                <View style={styles.flashMessage}>
+                    <Text style={{color:'red'}}>You should Sign-in to one device atleast</Text>
+                </View>
+                :
+                null
+                }
             </View>
         )
     }
@@ -236,6 +262,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center'
+    },
+    flashMessage:{
+        position: 'relative',
+        width:'100%', 
+        justifyContent:'center', 
+        alignItems:'center',           
+        height:40, 
+        top: -140
     }
 })
 
