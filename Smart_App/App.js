@@ -87,7 +87,8 @@ class App extends Component {
             googledata: 'Google Fit',
             googlename: '',
             fitbitname: '',
-            flashMessage: false
+            flashMessage: false,
+            formfill: false
         }
     }
 
@@ -131,7 +132,7 @@ class App extends Component {
                 fitbit_accesstoken: authdata.accessToken,
                 text: 'you now connected to fitbit',
                 fitbitdata: 'Sign-out fitbit',
-                textdata: 'You have Signed-In as ' + x_data['user']['fullName'],
+                textdata: 'You have signed-in as ' + x_data['user']['fullName'],
                 fitbitname: x_data['user']['fullName']
             })
 
@@ -150,7 +151,7 @@ class App extends Component {
             }
             if (this.state.fitbitname !== '') {
                 this.setState({
-                    textdata: 'You have Signed-In as ' + this.state.fitbitname
+                    textdata: 'You have signed-in as ' + this.state.fitbitname
                 })
             }
         }
@@ -166,8 +167,8 @@ class App extends Component {
                 console.log(userInfo)
                 this.setState({
                     google_accesstoken: userInfo.idToken,
-                    textdata: 'You have Signed-In as ' + userInfo.user.givenName,
-                    googlename: userInfo.user.givenName,
+                    textdata: 'You have signed-in as ' + userInfo.user.name,
+                    googlename: userInfo.user.name,
                     googledata: 'Sign-out Google Fit'
                 })
             } catch (error) {
@@ -200,11 +201,18 @@ class App extends Component {
             }
             if (this.state.fitbitname !== '') {
                 this.setState({
-                    textdata: 'You have Signed-In as ' + this.state.fitbitname
+                    textdata: 'You have signed-in as ' + this.state.fitbitname
                 })
             }
         }
         console.log(this.state.google_accesstoken)
+    }
+
+    _onFormData = async() => {
+        // this.setState({
+        //     formfill: true,
+        // })
+        Alert.alert("You are filling the data")
     }
 
     onFlashPress(){
@@ -223,36 +231,50 @@ class App extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{paddingTop: 80}}>
-                    <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 5, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={{paddingTop: 80}}>
+                        <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 5, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+                    </View>
+                    <View>
+                        <Text style={{ paddingTop: 140, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
+                    </View>
+                    <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.fitbitdata}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onGooglefit}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Manual Data Entry</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {/* <View style={{ paddingTop: 100}}>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={()=>{this.onFlashPress()}}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Continue</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {this.state.flashMessage==true?
+                    <View style={styles.flashMessage}>
+                        <Text style={{color:'red'}}>You should Sign-in to one device atleast</Text>
+                    </View>
+                    :
+                    null
+                    } */}
+                    {/* {this.state.formfill==true?
+                    <View>
+                        <Text style={{color:'red'}}>You should Sign-in to one device atleast</Text>
+                    </View>
+                    :
+                    null
+                    } */}
                 </View>
-                <View>
-                    <Text style={{ paddingTop: 140, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
-                </View>
-                <View>
-                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
-                        <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.fitbitdata}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onGooglefit}>
-                        <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ paddingTop: 110}}>
-                    <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={()=>{this.onFlashPress()}}>
-                        <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Continue</Text>
-                    </TouchableOpacity>
-                </View>
-                {this.state.flashMessage==true?
-                <View style={styles.flashMessage}>
-                    <Text style={{color:'red'}}>You should Sign-in to one device atleast</Text>
-                </View>
-                :
-                null
-                }
-            </View>
+            </ScrollView>
         )
     }
 
