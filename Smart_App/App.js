@@ -6,9 +6,28 @@ import { GoogleSignin, statusCodes } from '@react-native-community/google-signin
 import axios from 'axios';
 import config from './configFiles/config'
 import googleConfig from './configFiles/googleConfig'
+import AddModal from './AddModal';
+import SemiCircleProgress from './SemiCircle'
+import * as tf from '@tensorflow/tfjs';
+import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
-const screenWidth = Dimensions.get('screen').width;
-const screenHeight = Math.round(Dimensions.get('window').height);
+var screenWidth = Dimensions.get('screen').width;
+var screenHeight = Math.round(Dimensions.get('window').height);
+
+const covid_modelJson = require('./components/COVIDOnly/model.json')
+const covid_modelWeights = require('./components/COVIDOnly/group1-shard1of1.bin')
+
+const influ_modelJson = require('./components/InfluenzaOnly/model.json')
+const influ_modelWeights = require('./components/InfluenzaOnly/group1-shard1of1.bin')
+
+const covid_infl_modelJson = require('./components/COVIDvsInfluenza/model.json')
+const covid_infl_modelWeights = require('./components/COVIDvsInfluenza/group1-shard1of1.bin')
+
+const modelJson = require('./components/model.json');
+const modelWeights = require('./components/group1-shard1of1.bin');
+// const nextImageTensor = images.next().value
+// const nextImageTensor2 = nextImageTensor.reshape([[-1.0, -1.0, 80.0, 142.0, -1.0, -1.0, -1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 53.0, 0.0]])
+const BACKEND_CONFIG = 'cpu';
 
 const configFitbit = {
     clientId: config.client_id,
@@ -88,12 +107,36 @@ class App extends Component {
             googlename: '',
             fitbitname: '',
             flashMessage: false,
-            formfill: false
+            formfill: false,
+            oxy: -1,
+            dbp: -1,
+            sbp: -1,
+            hr: -1,
+            res_r: -1,
+            b_tmp: -1,
+            sex: 0,
+            white: 1,
+            black: 0,
+            others: 0,
+            ethini: 0,
+            age: 1,
+            toggle: false,
+            gender: 'male',
+            race: 'white',
+            ethnicity: 'nothispanic/latino',
+            covid: false,
+            influ: false,
+            safe: false
         }
+        this._onFormData = this._onFormData.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         //
+        await tf.setBackend(BACKEND_CONFIG);
+        await tf.ready();
+        console.log("componentDidMount: tf.ready is set");
+        console.log("the MyModelLoadLocal component is mounted");
     }
 
     getData = async () => {
@@ -212,7 +255,8 @@ class App extends Component {
         // this.setState({
         //     formfill: true,
         // })
-        Alert.alert("You are filling the data")
+        // Alert.alert("You are filling the data")
+        this.refs.addModal.showAddModal();
     }
 
     onFlashPress(){
@@ -226,6 +270,23 @@ class App extends Component {
     closeFlashMessage(){
         this.setState({
             flashMessage: false
+        })
+    }
+
+    setData = (data) => {
+        this.setState({ 
+            oxy: data[0],
+            dbp: data[1],
+            sbp: data[2],
+            hr: data[3],
+            res_r: data[4],
+            b_tmp: data[5],
+            sex: data[6],
+            white: data[7],
+            black: data[8],
+            others: data[9],
+            ethini: data[10],
+            age: data[11]
         })
     }
 
@@ -254,6 +315,9 @@ class App extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Manual Data Entry</Text>
                         </TouchableOpacity>
                     </View>
+                    <AddModal ref={'addModal'} setData={this.setData}>
+
+                    </AddModal>
                     {/* <View style={{ paddingTop: 100}}>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={()=>{this.onFlashPress()}}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Continue</Text>
@@ -273,6 +337,36 @@ class App extends Component {
                     :
                     null
                     } */}
+                    <View>
+                        <Text style={{color:'red'}}>{this.state.oxy}</Text>
+                        <Text style={{color:'red'}}>{this.state.dbp}</Text>
+                        <Text style={{color:'red'}}>{this.state.sbp}</Text>
+                        <Text style={{color:'red'}}>{this.state.hr}</Text>
+                        <Text style={{color:'red'}}>{this.state.res_r}</Text>
+                        <Text style={{color:'red'}}>{this.state.b_tmp}</Text>
+                        <Text style={{color:'red'}}>{this.state.sex}</Text>
+                        <Text style={{color:'red'}}>{this.state.white}</Text>
+                        <Text style={{color:'red'}}>{this.state.black}</Text>
+                        <Text style={{color:'red'}}>{this.state.others}</Text>
+                        <Text style={{color:'red'}}>{this.state.ethini}</Text>
+                        <Text style={{color:'red'}}>{this.state.age}</Text>
+                    </View>
+                    {/* <View>
+                        <SemiCircleProgress
+                            percentage={100}
+                            progressColor={"red"}
+                        >
+                            <Text style={{ fontSize: 32, color: "green" }}>40%</Text>
+                        </SemiCircleProgress>
+                    </View>
+                    <View style={{paddingTop: 20, paddingBottom: 10}}>
+                        <Text>Developed by CMU</Text>
+                    </View> */}
+                    <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>check for covid or influenza</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         )
