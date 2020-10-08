@@ -126,7 +126,12 @@ class App extends Component {
             ethnicity: 'nothispanic/latino',
             covid: false,
             influ: false,
-            safe: false
+            safe: false,
+            covidTest: false,
+            result: false,
+            res_score: 0,
+            res_msg: '',
+            g_color: 'green',
         }
         this._onFormData = this._onFormData.bind(this);
     }
@@ -256,6 +261,7 @@ class App extends Component {
         //     formfill: true,
         // })
         // Alert.alert("You are filling the data")
+        
         this.refs.addModal.showAddModal();
     }
 
@@ -286,7 +292,113 @@ class App extends Component {
             black: data[8],
             others: data[9],
             ethini: data[10],
-            age: data[11]
+            age: data[11],
+            covidTest: true
+        })
+    }
+
+    getCovidPrediction = async () => {
+        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+        console.log(z)
+        const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
+        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+        const res = model.predict(a);
+        const da = await res.data();
+        const y = JSON.stringify(da).toString()
+        var msg= '';
+        if (da[0] > 0.5) {
+            msg = "You are likely to be covid";
+        } else {
+            msg = "You are unlikely to be covid";
+        }
+        return da[0]
+      }
+    
+      getInfluenzaPrediction = async () => {
+        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+        const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
+        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+        const res = model.predict(a);
+        const da = await res.data();
+        const y = JSON.stringify(da).toString()
+        var msg= '';
+        if (da[0] > 0.5) {
+            msg = "You are likely to have Influenza";
+        } else {
+             msg = "You are unlikely to have Influenza";
+        }
+        return da[0]
+      }
+    
+      getCovidInfluPrediction = async () => {
+        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+        const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
+        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+        const res = model.predict(a);
+        const da = await res.data();
+        const y = JSON.stringify(da).toString()
+        var msg= '';
+        if (da[0] > 0.5) {
+            msg = "You are likely to be Covid";
+        } else {
+            msg = "You are likely to have Influenza";
+        }
+        return da[0]
+    }
+
+    getCovidTest = async () => {
+        const covidscore = await this.getCovidPrediction();
+        const influscore = await this.getInfluenzaPrediction();
+        var msg= '';
+        if (covidscore < 0.5 && influscore < 0.5 ) {
+            msg = "You are safe"
+            this.setState({
+                safe: true,
+                result: true,
+                res_msg: msg,
+                res_score: (100 - ((covidscore/0.5)*100)).toFixed(0),
+                g_color: 'green'
+            })
+        } else {
+            const covidinfluscore = await this.getCovidInfluPrediction();
+            if (covidinfluscore < 0.5) {
+                msg = "you are likely to have influenza"
+                this.setState({
+                    influ: true,
+                    result: true,
+                    res_msg: msg,
+                    res_score: (100 - ((covidinfluscore/0.5)*100)).toFixed(0),
+                    g_color: 'yellow'
+                })
+            } else {
+                msg = "you are likely to have covid"
+                this.setState({
+                    covid: true,
+                    result: true,
+                    res_msg: msg,
+                    res_score: ((covidinfluscore)*100).toFixed(0),
+                    g_color: 'red'
+                })
+            }
+        }
+    }
+
+    getReset = async () => {
+        this.setState({
+            oxy: -1,
+            dbp: -1,
+            sbp: -1,
+            hr: -1,
+            res_r: -1,
+            b_tmp: -1,
+            sex: 0,
+            white: 1,
+            black: 0,
+            others: 0,
+            ethini: 0,
+            age: 1,
+            covidTest: false,
+            result: false
         })
     }
 
@@ -310,7 +422,7 @@ class App extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={{paddingTop: 20}}>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Manual Data Entry</Text>
                         </TouchableOpacity>
@@ -337,7 +449,7 @@ class App extends Component {
                     :
                     null
                     } */}
-                    <View>
+                    {/* <View>
                         <Text style={{color:'red'}}>{this.state.oxy}</Text>
                         <Text style={{color:'red'}}>{this.state.dbp}</Text>
                         <Text style={{color:'red'}}>{this.state.sbp}</Text>
@@ -350,7 +462,7 @@ class App extends Component {
                         <Text style={{color:'red'}}>{this.state.others}</Text>
                         <Text style={{color:'red'}}>{this.state.ethini}</Text>
                         <Text style={{color:'red'}}>{this.state.age}</Text>
-                    </View>
+                    </View> */}
                     {/* <View>
                         <SemiCircleProgress
                             percentage={100}
@@ -362,11 +474,45 @@ class App extends Component {
                     <View style={{paddingTop: 20, paddingBottom: 10}}>
                         <Text>Developed by CMU</Text>
                     </View> */}
-                    <View>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
+                    {this.state.result === true?
+                    <View style={{paddingTop: 80}}> 
+                        <SemiCircleProgress
+                            percentage={this.state.res_score}
+                            progressColor={this.state.g_color}
+                        >
+                            <Text style={{ fontSize: 32, color:this.state.g_color }}>{this.state.res_score}%</Text>
+                        </SemiCircleProgress>
+                    </View>
+                    :
+                    null
+                    }
+                    {this.state.result === true?
+                    <View style={{paddingTop: 20}}> 
+                        <Text style={{ fontSize: 32, color:this.state.g_color}}>{this.state.res_msg}</Text>
+                    </View>
+                    :
+                    null
+                    }
+                    {this.state.covidTest === true?
+                    <View style={{paddingTop: 60, paddingBottom: 50}}>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.getCovidTest}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>check for covid or influenza</Text>
                         </TouchableOpacity>
                     </View>
+                    :
+                    <View style={styles.flashMessage}>
+                        <Text style={{color:'red'}}>Fill in your details through manual data entry</Text>
+                    </View>
+                    }
+                    {/* {this.state.covidTest === true?
+                    <View style={{paddingTop: 10, paddingBottom: 20}}>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.getReset}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Reset</Text>
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    null
+                    } */}
                 </View>
             </ScrollView>
         )
@@ -385,7 +531,7 @@ const styles = StyleSheet.create({
         justifyContent:'center', 
         alignItems:'center',           
         height:40, 
-        top: -140
+        top: -120
     }
 })
 

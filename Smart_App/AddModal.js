@@ -36,6 +36,25 @@ class AddModal extends Component {
     }
 
     showAddModal = () => {
+        this.setState({
+            oxy: -1,
+            dbp: -1,
+            sbp: -1,
+            hr: -1,
+            res_r: -1,
+            b_tmp: -1,
+            sex: 0,
+            white: 1,
+            black: 0,
+            others: 0,
+            ethini: 0,
+            age: 1,
+            toggle: false,
+            gender: 'male',
+            race: 'white',
+            ethnicity: 'nothispanic/latino',
+            tunit: 'c'
+        })
         this.refs.myModal.open()
     }
 

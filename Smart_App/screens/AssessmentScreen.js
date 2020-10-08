@@ -54,7 +54,6 @@ class AssessmentScreen extends React.Component {
   }
 
   async componentDidMount() {
-
     await tf.setBackend(BACKEND_CONFIG);
     await tf.ready();
     console.log("componentDidMount: tf.ready is set");
