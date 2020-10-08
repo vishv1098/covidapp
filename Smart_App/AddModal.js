@@ -373,7 +373,7 @@ class AddModal extends Component {
                     />
                     <DropDownPicker
                         items={[
-                            {label: 'Select Ethinicity', value: 'nothispanic/latino'},
+                            {label: 'Select Ethnicity', value: 'nothispanic/latino'},
                             {label: 'Hispanic/Latino', value: 'hispanic/latino'},
                             {label: 'Not Hispanic/Latino', value: 'nothispanic/latino'},
                             {label: 'Others', value: 'others'},

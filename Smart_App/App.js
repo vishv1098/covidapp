@@ -351,32 +351,50 @@ class App extends Component {
         const influscore = await this.getInfluenzaPrediction();
         var msg= '';
         if (covidscore < 0.5 && influscore < 0.5 ) {
-            msg = "You are safe"
+            msg = "You are unlikely to have COVID or Influenza"
             this.setState({
                 safe: true,
                 result: true,
                 res_msg: msg,
-                res_score: (100 - ((covidscore/0.5)*100)).toFixed(0),
+                res_score: parseInt((100 - ((covidscore/0.5)*100)).toFixed(0)),
                 g_color: 'green'
+            })
+        } else if (covidscore < 0.5 && influscore > 0.5 ) {
+            msg = "You are likely to have Influenza"
+            this.setState({
+                influ: true,
+                result: true,
+                res_msg: msg,
+                res_score: parseInt(((influscore)*100).toFixed(0)),
+                g_color: 'orange'
+            })
+        }  else if (covidscore > 0.5 && influscore < 0.5 ) {
+            msg = "You are likely to have COVID"
+            this.setState({
+                covid: true,
+                result: true,
+                res_msg: msg,
+                res_score: parseInt(((covidscore)*100).toFixed(0)),
+                g_color: 'red'
             })
         } else {
             const covidinfluscore = await this.getCovidInfluPrediction();
             if (covidinfluscore < 0.5) {
-                msg = "you are likely to have influenza"
+                msg = "You are likely to have Influenza"
                 this.setState({
                     influ: true,
                     result: true,
                     res_msg: msg,
-                    res_score: (100 - ((covidinfluscore/0.5)*100)).toFixed(0),
-                    g_color: 'yellow'
+                    res_score: parseInt((100 - ((covidinfluscore/0.5)*100)).toFixed(0)),
+                    g_color: 'orange'
                 })
             } else {
-                msg = "you are likely to have covid"
+                msg = "You are likely to have COVID"
                 this.setState({
                     covid: true,
                     result: true,
                     res_msg: msg,
-                    res_score: ((covidinfluscore)*100).toFixed(0),
+                    res_score: parseInt(((1-((1-covidinfluscore)/0.5))*100).toFixed(0)),
                     g_color: 'red'
                 })
             }
@@ -488,7 +506,7 @@ class App extends Component {
                     }
                     {this.state.result === true?
                     <View style={{paddingTop: 20}}> 
-                        <Text style={{ fontSize: 32, color:this.state.g_color}}>{this.state.res_msg}</Text>
+                        <Text style={{ fontSize: 24, color:this.state.g_color}}>{this.state.res_msg}</Text>
                     </View>
                     :
                     null
@@ -496,7 +514,7 @@ class App extends Component {
                     {this.state.covidTest === true?
                     <View style={{paddingTop: 60, paddingBottom: 50}}>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.getCovidTest}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>check for covid or influenza</Text>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Check for COVID or Influenza</Text>
                         </TouchableOpacity>
                     </View>
                     :
