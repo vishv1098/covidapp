@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, Image, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
@@ -102,8 +102,8 @@ export class MainHomeScreen extends Component {
             google_accesstoken: '',
             text: '',
             textdata: 'Sign-in to your fitness tracker account to get vital signs',
-            fitbitdata: 'fitbit',
-            googledata: 'Google Fit',
+            fitbitdata: 'Login with fitbit',
+            googledata: 'Login with Google Fit',
             googlename: '',
             fitbitname: '',
             flashMessage: false,
@@ -132,6 +132,7 @@ export class MainHomeScreen extends Component {
             res_score: 0,
             res_msg: '',
             g_color: 'green',
+            // hea_da: ''
         }
         this._onFormData = this._onFormData.bind(this);
     }
@@ -162,7 +163,7 @@ export class MainHomeScreen extends Component {
     }
 
     _onFitbit = async() => {
-        if (this.state.fitbitdata === "fitbit") {
+        if (this.state.fitbitdata === "Login with fitbit") {
             const authdata = await OAuth_Fitbit()
             var x_data = ''
             await axios.get('https://api.fitbit.com/1/user/-/profile.json',{
@@ -176,19 +177,43 @@ export class MainHomeScreen extends Component {
                 console.log(error)
             })
 
+            // var ht_dat = ''
+            // await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/2020-09-29/2020-09-30/1min.json', {
+            //     headers:{
+            //       Authorization: 'Bearer ' + authdata.accessToken
+            //     }
+            // }).then((resp) => {
+            //     console.log(resp.data)
+            //     try {
+            //         console.log(resp.data["activities-heart-intraday"].dataset)
+            //         var x = ''
+            //         for (var i = 0; i < 8; i++) {
+            //             x = x + resp.data["activities-heart-intraday"].dataset[i].time
+            //             x = x + " : " + resp.data["activities-heart-intraday"].dataset[i].value + "\n"
+            //         }
+            //         ht_dat = x
+            //     } catch (error) {
+            //         console.log("Hi")
+            //         ht_dat = "No data"
+            //     }
+            // }).catch((error) => {
+            //     console.log(error)
+            // })
+
             this.setState({
                 fitbit_accesstoken: authdata.accessToken,
                 text: 'you now connected to fitbit',
                 fitbitdata: 'Sign-out fitbit',
                 textdata: 'You have signed-in as ' + x_data['user']['fullName'],
                 fitbitname: x_data['user']['fullName']
+                // hea_da: ht_dat
             })
 
         } else {
             await OAuth_Fitbit_logout()
             this.setState({
                 text: '',
-                fitbitdata: 'fitbit',
+                fitbitdata: 'Login with fitbit',
                 fitbitname: '',
                 fitbit_accesstoken: ''
             })
@@ -207,7 +232,7 @@ export class MainHomeScreen extends Component {
     }
 
     _onGooglefit = async() => {
-        if (this.state.googledata === "Google Fit") {
+        if (this.state.googledata === "Login with Google Fit") {
             await oAuth_Google()
             try {
                 await GoogleSignin.hasPlayServices();
@@ -255,7 +280,7 @@ export class MainHomeScreen extends Component {
             this.setState({
                 google_accesstoken: '',
                 text: '',
-                googledata: 'Google Fit',
+                googledata: 'Login with Google Fit',
                 googlename: ''
             })
             if (this.state.fitbitname === '') {
@@ -437,7 +462,8 @@ export class MainHomeScreen extends Component {
     }
 
     render() {
-        const value = this.props.navigation.getParam('lst','Getting data of loss of smell and taste no checkbox for test');
+        // const value = this.props.navigation.getParam('lst','Getting data of loss of smell and taste no checkbox for test');
+        // console.log(this.state.hea_da)
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -448,13 +474,24 @@ export class MainHomeScreen extends Component {
                         <Text style={{ paddingTop: 140, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
                     </View>
                     <View>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFitbit}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.fitbitdata}</Text>
+                        <TouchableOpacity style={styles.FitbitLoginStyle} activeOpacity={0.5} onPress={this._onFitbit}>
+                            <Image source={{ uri: "https://lh3.googleusercontent.com/QhMCymTyxJbzRiwMBA-GYooS-nVKm3fHg2CSRyKHvhmC-e5vOibfST73y1MmScvtPw" }} style={styles.ImageIconStyle} />
+                            <View style={styles.SeparatorLine} />
+                            <Text style={styles.TextStyle}>{this.state.fitbitdata}</Text>
                         </TouchableOpacity>
                     </View>
+                    {/* {this.state.fitbit_accesstoken !== '' ?
+                    <View style={{paddingTop: 20}}>
+                        <Text>{this.state.hea_da}</Text>
+                    </View>
+                    :
+                    null
+                    } */}
                     <View>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onGooglefit}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>{this.state.googledata}</Text>
+                        <TouchableOpacity style={styles.GoogleLoginButtonStyle} activeOpacity={0.5} onPress={this._onGooglefit}>
+                            <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} style={styles.ImageIconStyle} />
+                            <View style={styles.SeparatorLine} />
+                            <Text style={styles.TextStyleGoogle}>{this.state.googledata}</Text>
                         </TouchableOpacity>
                     </View>
                     <View>
@@ -572,7 +609,69 @@ const styles = StyleSheet.create({
         alignItems:'center',           
         height:40, 
         top: -120
-    }
+    },
+
+    FitbitLoginStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#00B0B9',
+        height: 80,
+        borderRadius: 25,
+        margin: 10,
+        paddingLeft: 25,
+        paddingRight: 25,
+        width: 360,
+       
+      },
+      GoogleLoginButtonStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'black',
+        height: 80,
+        borderRadius: 25,
+        margin: 10,
+        paddingLeft: 25,
+        paddingRight: 25,
+        width: 360,
+       
+      },
+       
+      ImageIconStyle: {
+        padding: 10,
+        margin: 2,
+        height: 62,
+        width: 62,
+        resizeMode : 'stretch',
+        paddingRight: 10
+      },
+       
+      TextStyle :{
+        textAlign: 'center',
+        color: "white",
+        marginBottom : 4,
+        marginRight :20,
+        fontSize: 28,
+        fontWeight: 'bold',
+        paddingLeft: 20,
+        textAlign: 'center'
+      },
+      TextStyleGoogle :{
+        textAlign: 'center',
+        color: "white",
+        marginBottom : 4,
+        marginRight :20,
+        fontSize: 28,
+        fontWeight: 'bold',
+        paddingLeft: 15,
+        textAlign: 'center'
+      },
+       
+      SeparatorLine :{
+      backgroundColor : '#fff',
+      width: 1,
+      height: 80
+       
+      }
 })
 
 export default MainHomeScreen
