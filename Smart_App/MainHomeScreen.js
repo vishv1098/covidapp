@@ -10,6 +10,7 @@ import AddModal from './AddModal';
 import SemiCircleProgress from './SemiCircle'
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
@@ -97,6 +98,8 @@ export class MainHomeScreen extends Component {
     constructor(props) {
         super(props);
         this.getData();
+        this._testScheduleNotification();
+        // LocalNotification()
         this.state = {
             fitbit_accesstoken: '',
             google_accesstoken: '',
@@ -306,6 +309,14 @@ export class MainHomeScreen extends Component {
         this.refs.addModal.showAddModal();
     }
 
+    _testnotification = async() => {
+        LocalNotification()
+    }
+
+    _testScheduleNotification = async() => {
+        ScheduledLocalNotification()
+    }
+
     onFlashPress(){
         if (this.state.fitbit_accesstoken === '' && this.state.google_accesstoken === '') {
             this.setState({
@@ -499,6 +510,11 @@ export class MainHomeScreen extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Symptoms</Text>
                         </TouchableOpacity>
                     </View>
+                    {/* <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._testnotification}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Test Notifications</Text>
+                        </TouchableOpacity>
+                    </View> */}
                     <View style={{paddingTop: 10}}>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Manual Data Entry</Text>
