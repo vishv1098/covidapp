@@ -32,10 +32,10 @@ export const ScheduledLocalNotification = () => {
     PushNotification.localNotificationSchedule({
         autoCancel: true,
         bigText:
-        'This is local notification demo in React Native app. Only shown, when expanded.',
-        subText: 'Local Notification Demo',
-        title: 'Scheduled Notification Title',
-        message: 'Scheduled Notification Message',
+        'We recommend that you self assess yourself periodically to check your health condition',
+        subText: 'Daily Notification Remainder',
+        title: 'Did you self assess yourself?',
+        message: 'Self assess yourself periodically',
         vibrate: true,
         vibration: 500,
         playSound: true,

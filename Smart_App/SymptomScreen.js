@@ -16,23 +16,25 @@ class SymptomScreen extends Component {
             sf : false,
             sfno : false,
             na : false,
+            prob : 0,
         }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.header}>Symptoms</Text>
-                <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}> </Text>
-                    <Text style={styles.labelsec}>No</Text>
-                    <Text style={styles.labelsec}>Yes</Text>
-                </View>
-                <View style={styles.checkboxContainer} backgroundColor="beige">
+              <Text style={styles.header}>Symptoms</Text>
+              <View style={styles.checkboxContainer}>
+                <Text style={styles.label}> </Text>
+                <Text style={styles.labelsec}>No</Text>
+                <Text style={styles.labelsec}>Yes</Text>
+              </View>
+              <View style={styles.checkboxContainer} backgroundColor="beige">
                     <Text style={styles.label}>Loss of smell and taste</Text>
                     <CheckBox
-                    value= {this.state.lstno||this.state.na?true:false}
-                    onValueChange={() =>this.setState({lstno:!this.state.lstno})}
+                    value= {this.state.lstno?true:false}
+                    onValueChange={() =>this.setState({lstno:!this.state.lstno,
+                      na:(!this.state.lstno&&this.state.pcno&&this.state.sfno&&this.state.lano)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.lst?true:false}
                     />
@@ -41,14 +43,15 @@ class SymptomScreen extends Component {
                     value={this.state.lst}
                     onValueChange={() =>this.setState({lst:!this.state.lst})}
                     style={styles.checkbox}
-                    disabled={this.state.lstno||this.state.na?true:false}
+                    disabled={this.state.lstno?true:false}
                     />
-                </View>
-                <View style={styles.checkboxContainer} backgroundColor="#e1e1e5">
+             </View>
+             <View style={styles.checkboxContainer} backgroundColor="#e1e1e5">
                     <Text style={styles.label}>Loss of appetite</Text>
                     <CheckBox
-                    value= {this.state.lano||this.state.na?true:false}
-                    onValueChange={() =>this.setState({lano:!this.state.lano})}
+                    value= {this.state.lano?true:false}
+                    onValueChange={() =>this.setState({lano:!this.state.lano,
+                      na:(this.state.lstno&&this.state.pcno&&this.state.sfno&&!this.state.lano)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.la?true:false}
                     />
@@ -57,14 +60,15 @@ class SymptomScreen extends Component {
                     value={this.state.la}
                     onValueChange={() =>this.setState({la:!this.state.la})}
                     style={styles.checkbox}
-                    disabled={this.state.lano||this.state.na?true:false}
+                    disabled={this.state.lano?true:false}
                     />
-                </View>
-                <View style={styles.checkboxContainer} backgroundColor="beige">
+             </View>
+             <View style={styles.checkboxContainer} backgroundColor="beige">
                     <Text style={styles.label}>Persistent Cough</Text>
                     <CheckBox
-                    value= {this.state.pcno||this.state.na?true:false}
-                    onValueChange={() =>this.setState({pcno:!this.state.pcno})}
+                    value= {this.state.pcno?true:false}
+                    onValueChange={() =>this.setState({pcno:!this.state.pcno,
+                      na:(this.state.lstno&&!this.state.pcno&&this.state.sfno&&this.state.lano)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.pc?true:false}
                     />
@@ -73,14 +77,15 @@ class SymptomScreen extends Component {
                     value={this.state.pc}
                     onValueChange={() =>this.setState({pc:!this.state.pc})}
                     style={styles.checkbox}
-                    disabled={this.state.pcno||this.state.na?true:false}
+                    disabled={this.state.pcno?true:false}
                     />
-                </View>
-                <View style={styles.checkboxContainer} backgroundColor="#e1e1e5">
+             </View>
+             <View style={styles.checkboxContainer} backgroundColor="#e1e1e5">
                     <Text style={styles.label}>Severe Fatigue</Text>
                     <CheckBox
-                    value= {this.state.sfno||this.state.na?true:false}
-                    onValueChange={() =>this.setState({sfno:!this.state.sfno})}
+                    value= {this.state.sfno?true:false}
+                    onValueChange={() =>this.setState({sfno:!this.state.sfno,
+                    na:(this.state.lstno&&this.state.pcno&&!this.state.sfno&&this.state.lano)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.sf?true:false}
                     />
@@ -89,96 +94,98 @@ class SymptomScreen extends Component {
                     value={this.state.sf}
                     onValueChange={() =>this.setState({sf:!this.state.sf})}
                     style={styles.checkbox}
-                    disabled={this.state.sfno||this.state.na?true:false}
+                    disabled={this.state.sfno?true:false}
                     />
-                </View>
-                <View style={styles.checkboxContainer}
-                alignSelf={'flex-end'}
-                >
-                    <Text style={styles.label}> </Text>
-                    <Text style={styles.labelthird}>No to all</Text>
-                    <CheckBox
-                        value={this.state.na}
-                        onValueChange= {() =>this.setState({na:!this.state.na})}
-                        style={styles.checkbox}
-                    
-                    />
-                </View>
-                <TouchableOpacity style={styles.button} activeOpacity = {.5}
-                    onPress={() => this.props.navigation.navigate('Home', {
-                    lst :   this.state.lst,
-                    lstno : this.state.lstno,
-                    la : this.state.la,
-                    lano : this.state.lano,
-                    pc : this.state.pc,
-                    pcno : this.state.pcno,
-                    sf : this.state.sf,
-                    sfno : this.state.sfno,
-                    na : this.state.na,} 
+             </View>
+               
+                
+              <View style={styles.checkboxContainer}
+              alignSelf={'flex-end'}
+              >
+                <Text style={styles.label}> </Text>
+                <Text style={styles.labelthird}>No to all</Text>
+                <CheckBox
+                  value={this.state.na?true:false}
+                  onValueChange= {() =>this.setState({na:!this.state.na,
+                    lstno:!this.state.na?true:false,
+                    lano:!this.state.na?true:false,
+                    pcno:!this.state.na?true:false,
+                    sfno:!this.state.na?true:false,
+                    lst:false,
+                    la:false,
+                    pc:false,
+                    sf:false,})}
+                  style={styles.checkbox}
+                
+                />
+              </View>
+              <TouchableOpacity style={styles.button} activeOpacity = {.5}
+                  onPress={() => this.props.navigation.navigate('Home', {
+                    prob :(Math.exp(-1.32-(0.01*40)+(0.44*0)+(1.75*(this.state.lst?1:0))
+                    +(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0))))/(1+Math.exp(-1.32-(0.01*40)+(0.44*0)+(1.75*(this.state.lst?1:0))
+                    +(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0)))) } 
                     )}>
                     <Text style={styles.btntext}>Submit</Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-        )
+          );
     }
 }
 
 const styles = StyleSheet.create({
-    header:{
-        fontSize:60,
-        color:'#000000',
-        paddingTop:50,
-        paddingBottom:50,
-        alignSelf:"center",
-    },
-    container: {
-        flex: 1,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems:"center",
-        justifyContent:"center",
-        paddingLeft:50,
-        paddingBottom:30,
-    },
-    checkbox: {
-        alignSelf: "center",
-        paddingRight: 80,
-    },
-    label: {
-        color:'#000000',
-        width:250,
-        borderBottomColor: "#000000",
-        fontSize:25,
-        margin: 8,
-    },
-    labelsec: {
-        paddingRight:40,
-        color:'#000000',
-        fontSize:25,
-        margin: 8,
-    },
-    labelthird: {
-        paddingRight:10,
-        color:'#000000',
-        fontSize:25,
-        margin: 8,
-    },
-    btntext:{
-        color:'white',
-        fontSize:20,
-    },
-    button: {
-        alignSelf:'center',
-        alignItems:'center',
-        padding:20,
-        backgroundColor:'#1167b1',
-        borderRadius:20,
-        marginTop: 30,
-        width:200,
-    },
+  header:{
+    fontSize:40,
+    color:'#000000',
+    paddingTop:50,
+    paddingBottom:50,
+    alignSelf:"center",
+  },
+  container: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    alignSelf:"stretch"
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems:"flex-start",
+    alignSelf:"stretch",
+    justifyContent:"space-between",
+    
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    color:'#000000',
+    width:200,
+    borderBottomColor: "#000000",
+    fontSize:17,
+    margin: 8,
+  },
+  labelsec: {
+    color:'#000000',
+    fontSize:18,
+    margin: 8,
+  },
+  labelthird: {
+    color:'#000000',
+    fontSize:18,
+    margin: 8,
+  },
+  btntext:{
+    color:'white',
+    fontSize:18,
+  },
+  button: {
+    alignSelf:'center',
+    alignItems:'center',
+    padding:20,
+    backgroundColor:'#1167b1',
+    borderRadius:20,
+    marginTop: 30,
+    width:200,
+  },
 });
 
 export default SymptomScreen

@@ -475,6 +475,7 @@ export class MainHomeScreen extends Component {
     render() {
         // const value = this.props.navigation.getParam('lst','Getting data of loss of smell and taste no checkbox for test');
         // console.log(this.state.hea_da)
+        const value = this.props.navigation.getParam('prob','Probability here'); 
         return (
             <ScrollView>
                 <View style={styles.container}>
