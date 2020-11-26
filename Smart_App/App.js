@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import SettingsScreen from './SettingsScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -17,19 +18,29 @@ const Home = () => {
         )
 }
 
-// const Profile = () => {
-//         return (
-//                 <View style={{flex:1, alignItems:'center', justifyContent: 'center' }}>
-//                         <Text>Profile Screen</Text>
-//                 </View>
-//         )
-// }
-
 const Stack = createStackNavigator();
 
 class App extends Component {
+
         constructor(props) {
                 super(props);
+                this.state = {
+                        firstLaunch: null
+                };
+        }
+
+        async componentDidMount() {
+                const value = await AsyncStorage.getItem("alreadyLaunched")
+                console.log(value)
+                if(value === null){
+                        await AsyncStorage.setItem('alreadyLaunched', "true"); // No need to wait for `setItem` to finish, although you might want to handle errors
+                        this.setState({firstLaunch: true});
+                        console.log("Hi")
+                }
+                else {
+                        this.setState({firstLaunch: false});
+                        console.log("Bye")
+                }
         }
 
         render() {
@@ -68,11 +79,6 @@ class App extends Component {
                                                 headerTitleContainerStyle: {
                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
                                                 },
-                                                // headerRight: () => (
-                                                // <View>
-                                                //         <Text style={{fontWeight: 'bold', fontSize: 16, paddingRight: 16, color: '#fff'}} onPress={ () => navigation.navigate('Profile') }>Settings</Text>
-                                                // </View>
-                                                // ),
                                         })}/>
                                 </Stack.Navigator>
                         </NavigationContainer>
