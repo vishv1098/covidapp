@@ -1,86 +1,81 @@
-import React from 'react';
-import { Platform } from 'react-native'
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import MainHomeScreen from './MainHomeScreen';
-import SymptomScreen from './SymptomScreen';
-import PushNotification from "react-native-push-notification";
+import React, { Component } from 'react';
+import { View, Text, Button, Dimensions, Settings } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
+import SettingsScreen from './SettingsScreen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const RootStack = createStackNavigator({
-        Home: {
-                screen: MainHomeScreen,
-                navigationOptions: {
-                        headerShown: false,
-                }
-        },
-        Symptom: {
-                screen: SymptomScreen,
-                navigationOptions: {
-                        headerShown: false
-                }
-        }
-});
+const DEVICE_WIDTH = Dimensions.get('screen').width;
+const LOGOTYPE_WIDTH = 80;
+const TITLE_OFFSET_CENTER_ALIGN = DEVICE_WIDTH / 2 - LOGOTYPE_WIDTH / 2;
 
-const AppContainer = createAppContainer(RootStack);
+const Home = () => {
+        return (
+                <View style={{flex:1, alignItems:'center', justifyContent: 'center' }}>
+                        <Text>Home Screen</Text>
+                </View>
+        )
+}
 
-class App extends React.Component {
+// const Profile = () => {
+//         return (
+//                 <View style={{flex:1, alignItems:'center', justifyContent: 'center' }}>
+//                         <Text>Profile Screen</Text>
+//                 </View>
+//         )
+// }
 
-        constructor(props){
+const Stack = createStackNavigator();
+
+class App extends Component {
+        constructor(props) {
                 super(props);
-                PushNotification.configure({
-                        // (optional) Called when Token is generated (iOS and Android)
-                        onRegister: function (token) {
-                          console.log("TOKEN:", token);
-                        },
-                      
-                        // (required) Called when a remote is received or opened, or local notification is opened
-                        onNotification: function (notification) {
-                          console.log("NOTIFICATION:", notification);
-                      
-                          // process the notification
-                      
-                          // (required) Called when a remote is received or opened, or local notification is opened
-                        //   notification.finish(PushNotificationIOS.FetchResult.NoData);
-                        },
-                      
-                        // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-                        // onAction: function (notification) {
-                        //   console.log("ACTION:", notification.action);
-                        //   console.log("NOTIFICATION:", notification);
-                      
-                        //   // process the action
-                        // },
-                      
-                        // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-                        // onRegistrationError: function(err) {
-                        //   console.error(err.message, err);
-                        // },
-                      
-                        // IOS ONLY (optional): default: all - Permissions to register.
-                        permissions: {
-                          alert: true,
-                          badge: true,
-                          sound: true,
-                        },
-                      
-                        // Should the initial notification be popped automatically
-                        // default: true
-                        popInitialNotification: true,
-                      
-                        /**
-                         * (optional) default: true
-                         * - Specified if permissions (ios) and token (android and ios) will requested or not,
-                         * - if not, you must call PushNotificationsHandler.requestPermissions() later
-                         * - if you are not using remote notification or do not have Firebase installed, use this:
-                         *     requestPermissions: Platform.OS === 'ios'
-                         */
-                        requestPermissions: Platform.OS === 'ios',
-                });
         }
 
         render() {
                 return (
-                        <AppContainer />
+                        <NavigationContainer>
+                                <Stack.Navigator>
+                                        <Stack.Screen name="Home" component={Home} 
+                                        options={({ navigation }) => ({
+                                                title: 'Home',
+                                                headerStyle: {
+                                                backgroundColor: '#00B0B9',
+                                                },
+                                                headerTintColor: '#fff',
+                                                headerTitleStyle: {
+                                                fontWeight: 'bold',
+                                                },
+                                                headerTitleContainerStyle: {
+                                                left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                                                },
+                                                headerRight: () => (
+                                                <TouchableOpacity style={{paddingRight: 16}} onPress={ () => navigation.navigate('Profile') }>
+                                                        <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
+                                                </TouchableOpacity>
+                                                ),
+                                        })}/>
+                                        <Stack.Screen name="Profile" component={SettingsScreen}
+                                        options={({ navigation }) => ({
+                                                title: 'Profile',
+                                                headerStyle: {
+                                                backgroundColor: '#00B0B9',
+                                                },
+                                                headerTintColor: '#fff',
+                                                headerTitleStyle: {
+                                                fontWeight: 'bold',
+                                                },
+                                                headerTitleContainerStyle: {
+                                                left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                                                },
+                                                // headerRight: () => (
+                                                // <View>
+                                                //         <Text style={{fontWeight: 'bold', fontSize: 16, paddingRight: 16, color: '#fff'}} onPress={ () => navigation.navigate('Profile') }>Settings</Text>
+                                                // </View>
+                                                // ),
+                                        })}/>
+                                </Stack.Navigator>
+                        </NavigationContainer>
                 )
         }
 }

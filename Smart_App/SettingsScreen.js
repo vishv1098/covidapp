@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, Image, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator, Settings } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
@@ -7,28 +7,9 @@ import axios from 'axios';
 import config from './configFiles/config'
 import googleConfig from './configFiles/googleConfig'
 import AddModal from './AddModal';
-import SemiCircleProgress from './SemiCircle'
-import * as tf from '@tensorflow/tfjs';
-import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
-import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
-
-const covid_modelJson = require('./components/COVIDOnly/model.json')
-const covid_modelWeights = require('./components/COVIDOnly/group1-shard1of1.bin')
-
-const influ_modelJson = require('./components/InfluenzaOnly/model.json')
-const influ_modelWeights = require('./components/InfluenzaOnly/group1-shard1of1.bin')
-
-const covid_infl_modelJson = require('./components/COVIDvsInfluenza/model.json')
-const covid_infl_modelWeights = require('./components/COVIDvsInfluenza/group1-shard1of1.bin')
-
-const modelJson = require('./components/model.json');
-const modelWeights = require('./components/group1-shard1of1.bin');
-// const nextImageTensor = images.next().value
-// const nextImageTensor2 = nextImageTensor.reshape([[-1.0, -1.0, 80.0, 142.0, -1.0, -1.0, -1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 53.0, 0.0]])
-const BACKEND_CONFIG = 'cpu';
 
 const configFitbit = {
     clientId: config.client_id,
@@ -92,13 +73,12 @@ async function oAuth_Google() {
     });
 }
 
-
-export class MainHomeScreen extends Component {
+export class SettingsScreen extends Component {
 
     constructor(props) {
         super(props);
         this.getData();
-        this._testScheduleNotification();
+        // this._testScheduleNotification();
         // LocalNotification()
         this.state = {
             fitbit_accesstoken: '',
@@ -142,10 +122,10 @@ export class MainHomeScreen extends Component {
 
     async componentDidMount() {
         //
-        await tf.setBackend(BACKEND_CONFIG);
-        await tf.ready();
-        console.log("componentDidMount: tf.ready is set");
-        console.log("the MyModelLoadLocal component is mounted");
+        // await tf.setBackend(BACKEND_CONFIG);
+        // await tf.ready();
+        // console.log("componentDidMount: tf.ready is set");
+        // console.log("the MyModelLoadLocal component is mounted");
     }
 
     getData = async () => {
@@ -309,13 +289,13 @@ export class MainHomeScreen extends Component {
         this.refs.addModal.showAddModal();
     }
 
-    _testnotification = async() => {
-        LocalNotification()
-    }
+    // _testnotification = async() => {
+    //     LocalNotification()
+    // }
 
-    _testScheduleNotification = async() => {
-        ScheduledLocalNotification()
-    }
+    // _testScheduleNotification = async() => {
+    //     ScheduledLocalNotification()
+    // }
 
     onFlashPress(){
         if (this.state.fitbit_accesstoken === '' && this.state.google_accesstoken === '') {
@@ -349,109 +329,109 @@ export class MainHomeScreen extends Component {
         })
     }
 
-    getCovidPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        console.log(z)
-        const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to be covid";
-        } else {
-            msg = "You are unlikely to be covid";
-        }
-        return da[0]
-      }
+    // getCovidPrediction = async () => {
+    //     var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    //     console.log(z)
+    //     const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
+    //     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    //     const res = model.predict(a);
+    //     const da = await res.data();
+    //     const y = JSON.stringify(da).toString()
+    //     var msg= '';
+    //     if (da[0] > 0.5) {
+    //         msg = "You are likely to be covid";
+    //     } else {
+    //         msg = "You are unlikely to be covid";
+    //     }
+    //     return da[0]
+    //   }
     
-      getInfluenzaPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to have Influenza";
-        } else {
-             msg = "You are unlikely to have Influenza";
-        }
-        return da[0]
-      }
+    //   getInfluenzaPrediction = async () => {
+    //     var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    //     const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
+    //     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    //     const res = model.predict(a);
+    //     const da = await res.data();
+    //     const y = JSON.stringify(da).toString()
+    //     var msg= '';
+    //     if (da[0] > 0.5) {
+    //         msg = "You are likely to have Influenza";
+    //     } else {
+    //          msg = "You are unlikely to have Influenza";
+    //     }
+    //     return da[0]
+    //   }
     
-      getCovidInfluPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to be Covid";
-        } else {
-            msg = "You are likely to have Influenza";
-        }
-        return da[0]
-    }
+    //   getCovidInfluPrediction = async () => {
+    //     var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    //     const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
+    //     const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    //     const res = model.predict(a);
+    //     const da = await res.data();
+    //     const y = JSON.stringify(da).toString()
+    //     var msg= '';
+    //     if (da[0] > 0.5) {
+    //         msg = "You are likely to be Covid";
+    //     } else {
+    //         msg = "You are likely to have Influenza";
+    //     }
+    //     return da[0]
+    // }
 
-    getCovidTest = async () => {
-        const covidscore = await this.getCovidPrediction();
-        const influscore = await this.getInfluenzaPrediction();
-        var msg= '';
-        if (covidscore < 0.5 && influscore < 0.5 ) {
-            msg = "You are unlikely to have COVID or Influenza"
-            this.setState({
-                safe: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt((100 - ((covidscore/0.5)*100)).toFixed(0)),
-                g_color: 'green'
-            })
-        } else if (covidscore < 0.5 && influscore > 0.5 ) {
-            msg = "You are likely to have Influenza"
-            this.setState({
-                influ: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt(((influscore)*100).toFixed(0)),
-                g_color: 'orange'
-            })
-        }  else if (covidscore > 0.5 && influscore < 0.5 ) {
-            msg = "You are likely to have COVID"
-            this.setState({
-                covid: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt(((covidscore)*100).toFixed(0)),
-                g_color: 'red'
-            })
-        } else {
-            const covidinfluscore = await this.getCovidInfluPrediction();
-            if (covidinfluscore < 0.5) {
-                msg = "You are likely to have Influenza"
-                this.setState({
-                    influ: true,
-                    result: true,
-                    res_msg: msg,
-                    res_score: parseInt((100 - ((covidinfluscore/0.5)*100)).toFixed(0)),
-                    g_color: 'orange'
-                })
-            } else {
-                msg = "You are likely to have COVID"
-                this.setState({
-                    covid: true,
-                    result: true,
-                    res_msg: msg,
-                    res_score: parseInt(((1-((1-covidinfluscore)/0.5))*100).toFixed(0)),
-                    g_color: 'red'
-                })
-            }
-        }
-    }
+    // getCovidTest = async () => {
+    //     const covidscore = await this.getCovidPrediction();
+    //     const influscore = await this.getInfluenzaPrediction();
+    //     var msg= '';
+    //     if (covidscore < 0.5 && influscore < 0.5 ) {
+    //         msg = "You are unlikely to have COVID or Influenza"
+    //         this.setState({
+    //             safe: true,
+    //             result: true,
+    //             res_msg: msg,
+    //             res_score: parseInt((100 - ((covidscore/0.5)*100)).toFixed(0)),
+    //             g_color: 'green'
+    //         })
+    //     } else if (covidscore < 0.5 && influscore > 0.5 ) {
+    //         msg = "You are likely to have Influenza"
+    //         this.setState({
+    //             influ: true,
+    //             result: true,
+    //             res_msg: msg,
+    //             res_score: parseInt(((influscore)*100).toFixed(0)),
+    //             g_color: 'orange'
+    //         })
+    //     }  else if (covidscore > 0.5 && influscore < 0.5 ) {
+    //         msg = "You are likely to have COVID"
+    //         this.setState({
+    //             covid: true,
+    //             result: true,
+    //             res_msg: msg,
+    //             res_score: parseInt(((covidscore)*100).toFixed(0)),
+    //             g_color: 'red'
+    //         })
+    //     } else {
+    //         const covidinfluscore = await this.getCovidInfluPrediction();
+    //         if (covidinfluscore < 0.5) {
+    //             msg = "You are likely to have Influenza"
+    //             this.setState({
+    //                 influ: true,
+    //                 result: true,
+    //                 res_msg: msg,
+    //                 res_score: parseInt((100 - ((covidinfluscore/0.5)*100)).toFixed(0)),
+    //                 g_color: 'orange'
+    //             })
+    //         } else {
+    //             msg = "You are likely to have COVID"
+    //             this.setState({
+    //                 covid: true,
+    //                 result: true,
+    //                 res_msg: msg,
+    //                 res_score: parseInt(((1-((1-covidinfluscore)/0.5))*100).toFixed(0)),
+    //                 g_color: 'red'
+    //             })
+    //         }
+    //     }
+    // }
 
     getReset = async () => {
         this.setState({
@@ -475,8 +455,8 @@ export class MainHomeScreen extends Component {
     render() {
         // const value = this.props.navigation.getParam('lst','Getting data of loss of smell and taste no checkbox for test');
         // console.log(this.state.hea_da)
-        const value = this.props.navigation.getParam('prob','Probability here');
-        console.log(value)
+        // const value = this.props.navigation.getParam('prob','Probability here');
+        // console.log(value)
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -507,11 +487,11 @@ export class MainHomeScreen extends Component {
                             <Text style={styles.TextStyleGoogle}>{this.state.googledata}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    {/* <View>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={() => this.props.navigation.navigate('Symptom')}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Symptoms</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                     {/* <View>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._testnotification}>
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Test Notifications</Text>
@@ -569,7 +549,7 @@ export class MainHomeScreen extends Component {
                     <View style={{paddingTop: 20, paddingBottom: 10}}>
                         <Text>Developed by CMU</Text>
                     </View> */}
-                    {this.state.result === true?
+                    {/* {this.state.result === true?
                     <View style={{paddingTop: 80}}> 
                         <SemiCircleProgress
                             percentage={this.state.res_score}
@@ -598,7 +578,7 @@ export class MainHomeScreen extends Component {
                     <View style={styles.flashMessage}>
                         <Text style={{color:'red'}}>Fill in your details through manual data entry</Text>
                     </View>
-                    }
+                    } */}
                     {/* {this.state.covidTest === true?
                     <View style={{paddingTop: 10, paddingBottom: 20}}>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.getReset}>
@@ -692,4 +672,5 @@ const styles = StyleSheet.create({
       }
 })
 
-export default MainHomeScreen
+export default SettingsScreen
+
