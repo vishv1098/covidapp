@@ -461,11 +461,11 @@ export class SettingsScreen extends Component {
             <ScrollView>
                 <View style={styles.container}>
                     <View style={{paddingTop: 80}}>
-                        <Text style={{ fontSize: 40, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 5, textAlign: 'center', fontWeight: 'bold' }}>Get Vital Signs</Text>
+                        <Text style={{ fontSize: 39, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 35, textAlign: 'center', fontWeight: 'bold' }}>Connect fitness tracker</Text>
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={{ paddingTop: 140, paddingBottom:4, textAlign: 'center', fontSize: 16, paddingLeft: 25, paddingRight: 25}}>{this.state.textdata}</Text>
-                    </View>
+                    </View> */}
                     <View>
                         <TouchableOpacity style={styles.FitbitLoginStyle} activeOpacity={0.5} onPress={this._onFitbit}>
                             <Image source={{ uri: "https://lh3.googleusercontent.com/QhMCymTyxJbzRiwMBA-GYooS-nVKm3fHg2CSRyKHvhmC-e5vOibfST73y1MmScvtPw" }} style={styles.ImageIconStyle} />
@@ -497,9 +497,12 @@ export class SettingsScreen extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Test Notifications</Text>
                         </TouchableOpacity>
                     </View> */}
-                    <View style={{paddingTop: 10}}>
+                    <View style={{paddingTop: 50}}>
+                        <Text style={{ fontSize: 39, paddingLeft: 25, paddingRight:25, paddingTop: 30, paddingBottom: 35, textAlign: 'center', fontWeight: 'bold' }}>No fitness tracker?</Text>
+                    </View>
+                    <View>
                         <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Manual Data Entry</Text>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Enter vital signs</Text>
                         </TouchableOpacity>
                     </View>
                     <AddModal ref={'addModal'} setData={this.setData}>

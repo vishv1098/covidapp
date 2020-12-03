@@ -24,7 +24,7 @@ export const LocalNotification = () => {
         // playSound: true,
         // soundName: 'default',
         // actions: '["Yes", "No"]'
-        repeatType: "minute"
+        repeatType: "day"
     })
 }
 
@@ -42,6 +42,6 @@ export const ScheduledLocalNotification = () => {
         soundName: 'default',
         // actions: '["Yes", "No"]',
         date: new Date(Date.now() + 15 * 1000), // in 60 secs
-        repeatType: "minute"
+        repeatType: "day"
     })
 }
