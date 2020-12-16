@@ -20,7 +20,33 @@ const OnboardingScreen = () => {
     return (
         <View style={{ flex: 1 }}>
             <ViewPager style={{ flex: 1 }} scrollEnabled={false} initialPage={0} ref={pagerRef}>
-                <View key="1">
+            <View key="1">
+                    <Page
+                        backgroundColor="black"
+                        // iconName=""
+                        title="Welcome"
+                        heightTitle=""
+                        weightTitle=""
+                        ageBox=""
+                        genderBox=""
+                        raceBox=""
+                        countryBox=""
+                    />
+                    <Footer
+                        backgroundColor="black"
+                        rightButtonLabel="Next"
+                        rightButtonPress={ async () => {
+                            // const value = await AsyncStorage.getItem('userWeight')
+                            // const value2 = await AsyncStorage.getItem('userHeight')
+                            // console.log(value)
+                            // if (value !== null && value2 !== null) {
+                            //     handlePageChange(1);
+                            // }
+                            handlePageChange(1);
+                          }}
+                    />
+                </View>
+                <View key="2">
                     <Page
                         backgroundColor="#ffc93c"
                         iconName="body-outline"
@@ -40,12 +66,12 @@ const OnboardingScreen = () => {
                             const value2 = await AsyncStorage.getItem('userHeight')
                             console.log(value)
                             if (value !== null && value2 !== null) {
-                                handlePageChange(1);
+                                handlePageChange(2);
                             }
                           }}
                     />
                 </View>
-                <View key="2">
+                <View key="3">
                     <Page
                         backgroundColor="#556b2f"
                         iconName="medkit-outline"
@@ -65,12 +91,12 @@ const OnboardingScreen = () => {
                             const value2 = await AsyncStorage.getItem('userGender')
                             console.log(value)
                             if (value !== null && value2 !== null) {
-                                handlePageChange(2);
+                                handlePageChange(3);
                             }
                           }}
                     />
                 </View>
-                <View key="3">
+                <View key="4">
                     <Page
                         backgroundColor="#07689f"
                         iconName="analytics-outline"

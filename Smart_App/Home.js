@@ -30,7 +30,7 @@ export class Home extends Component{
 
     constructor(props){
         super(props)
-        this._testScheduleNotification();
+        // this._testScheduleNotification();
         this.state = {
             visibility:false,
         }

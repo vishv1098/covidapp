@@ -619,9 +619,10 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 25,
         margin: 10,
-        paddingLeft: 25,
-        paddingRight: 25,
+        paddingLeft: 10,
+        // paddingRight: 25,
         width: 360,
+        justifyContent: 'flex-start'
        
       },
       GoogleLoginButtonStyle: {
@@ -631,9 +632,10 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 25,
         margin: 10,
-        paddingLeft: 25,
-        paddingRight: 25,
+        paddingLeft: 10,
+        // paddingRight: 25,
         width: 360,
+        justifyContent: 'flex-start'
        
       },
        
@@ -653,7 +655,7 @@ const styles = StyleSheet.create({
         marginRight :20,
         fontSize: 28,
         fontWeight: 'bold',
-        paddingLeft: 20,
+        paddingLeft: 10,
         textAlign: 'center'
       },
       TextStyleGoogle :{
@@ -663,7 +665,7 @@ const styles = StyleSheet.create({
         marginRight :20,
         fontSize: 28,
         fontWeight: 'bold',
-        paddingLeft: 15,
+        paddingLeft: 10,
         textAlign: 'center'
       },
        

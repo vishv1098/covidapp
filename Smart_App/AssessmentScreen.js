@@ -6,6 +6,7 @@ class AssessmentScreen extends Component {
     
     constructor(props) {
         super(props);
+        this.getData();
         this.state = {
             lst : false,
             lstno : false,
@@ -23,12 +24,48 @@ class AssessmentScreen extends Component {
             diarrno:false,
             na : false,
             prob : 0,
+            age: 0,
+            gender: -1
         }
     }
+
+        
+    getData = async () => {
+      try {
+        const DOB = await AsyncStorage.getItem('userDOB')
+        const Gender = await AsyncStorage.getItem('userGender')
+        if(Gender === "male" ) {
+          // value previously stored
+          this.setState({
+            gender: 1,
+            age:DOB
+          })
+          console.log(DOB)  
+        }
+        else{
+          this.setState({
+            gender: 0,
+            age:DOB,
+          })
+        }
+      } catch(e) {
+        // error reading value
+        console.log(e)
+      }
+    }
+
+    getDate =()=> { 
+      var today = new Date() 
+      var dd = String(today.getDate()).padStart(2,'0') 
+      var mm = String(today.getMonth()+1).padStart(2,'0') 
+      var yyyy = today.getFullYear(); 
+      return mm+'/'+dd+'/'+yyyy; 
+    } 
 
     render() {
         return (
             <View style={styles.container}>
+              <Text style={styles.header}>{this.getDate()}</Text>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}> </Text>
                 <Text style={styles.labelsec}>No</Text>
@@ -181,7 +218,7 @@ class AssessmentScreen extends Component {
                   </View>
                   <TouchableOpacity style={styles.button} activeOpacity = {.5}
                       onPress={() => this.props.navigation.navigate('Home', {
-                        prob :(Math.exp(-1.32-(0.01*40)+(0.44*0)+(1.75*(this.state.lst?1:0))
+                        prob :(Math.exp(-1.32-(0.01*this.state.age)+(0.44*this.state.gender)+(1.75*(this.state.lst?1:0))
                         +(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0))))/(1+Math.exp(-1.32-(0.01*40)+(0.44*0)+(1.75*(this.state.lst?1:0))
                         +(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0)))) } 
                         )}>
@@ -197,9 +234,9 @@ export default AssessmentScreen
 const styles = StyleSheet.create({
   header:{
     fontSize:40,
-    color:'#000000',
-    paddingTop:50,
-    paddingBottom:50,
+    color:'#00B0B9',
+    // paddingTop:50,
+    paddingBottom:30,
     alignSelf:"center",
   },
   container: {

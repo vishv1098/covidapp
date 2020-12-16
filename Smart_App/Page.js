@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions, Button } from 'react-native';
+import { View, Text, TextInput, Dimensions, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -71,124 +71,129 @@ const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageB
     var data2 = y.split(' ')
     console.log(data2)
     console.log(y)
-    data = x.split(' ')
-    console.log("A date has been picked: ", data[4]);
-    await AsyncStorage.setItem('userDOB', (data2[5] - data[4]) + " ");
+    var data = x.split(' ')
+    console.log(data)
+    console.log("A date has been picked: ", data[data.length - 1]);
+    await AsyncStorage.setItem('userDOB', (data2[data2.length - 1] - data[data.length - 1]) + " ");
+    setIsDate('your age is ' + (data2[data2.length - 1] - data[data.length - 1]))
+    // console.log(isDate)
     hideDatePicker();
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor
-      }}
-    >
-      <Icon name={iconName} size={172} color="white" style={{position: 'relative'}} />
-      <View style={{ marginTop: 16 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
-          {title}
-        </Text>
-        {weightTitle !== "" ?
-        <TextInput
-          style={{
-              height: 60,
-              borderBottomColor: 'white',
-              marginLeft: 30,
-              marginRight: 30,
-              marginTop: 50,
-              marginBottom: 10,
-              borderBottomWidth: 1,
-              fontSize: 30
-          }}
-          onChangeText = { (text) => handleWtbox(text) }
-          placeholder = {weightTitle}
-          placeholderTextColor="#fff" 
-          keyboardType={'numeric'}
-          numeric
-        />
-        :
-        null
-        }
-        {heightTitle !== "" ?
-        <TextInput
-          style={{
-              height: 60,
-              borderBottomColor: 'white',
-              marginLeft: 30,
-              marginRight: 30,
-              marginTop: 30,
-              marginBottom: 10,
-              borderBottomWidth: 1,
-              fontSize: 30
-          }}
-          onChangeText = { (text) => handleHtbox(text) }
-          placeholder = {heightTitle}
-          placeholderTextColor="#fff" 
-          keyboardType={'numeric'}
-          numeric
-        />
-        :
-        null
-        }
-        {ageBox !== "" ?
-        <View>
-          <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:20, marginTop: 30,}} activeOpacity = {.5} onPress={ showDatePicker }>
-            <Text>Select your date of birth</Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor
+        }}
+      >
+        <Icon name={iconName} size={172} color="white" style={{position: 'relative'}} />
+        <View style={{ marginTop: 16 }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+            {title}
+          </Text>
+          {weightTitle !== "" ?
+          <TextInput
+            style={{
+                height: 60,
+                borderBottomColor: 'white',
+                marginLeft: 30,
+                marginRight: 30,
+                marginTop: 50,
+                marginBottom: 10,
+                borderBottomWidth: 1,
+                fontSize: 30
+            }}
+            onChangeText = { (text) => handleWtbox(text) }
+            placeholder = {weightTitle}
+            placeholderTextColor="#fff" 
+            keyboardType={'numeric'}
+            numeric
           />
-        </View>
-        :
-        null
-        }
-        {genderBox !== "" ?
-        <DropDownPicker
-          items={[
-              {label: 'Select Gender', value: 'x'},
-              {label: 'Male', value: 'male'},
-              {label: 'Female', value: 'female'},
-          ]}
-          defaultValue={'x'}
-          containerStyle={{height: 50, marginTop: 20, width: 360, paddingLeft: 28}}
-          style={{backgroundColor: '#fafafa'}}
-          itemStyle={{
-              justifyContent: 'flex-start'
-          }}
-          dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 28, width: 300}}
-          onChangeItem={item => handlegenbox(item)}
-        />
-        :
-        null
-        }
-        {raceBox !== "" ?
-        <DropDownPicker
+          :
+          null
+          }
+          {heightTitle !== "" ?
+          <TextInput
+            style={{
+                height: 60,
+                borderBottomColor: 'white',
+                marginLeft: 30,
+                marginRight: 30,
+                marginTop: 30,
+                marginBottom: 10,
+                borderBottomWidth: 1,
+                fontSize: 30
+            }}
+            onChangeText = { (text) => handleHtbox(text) }
+            placeholder = {heightTitle}
+            placeholderTextColor="#fff" 
+            keyboardType={'numeric'}
+            numeric
+          />
+          :
+          null
+          }
+          {ageBox !== "" ?
+          <View>
+            <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:5, marginTop: 35,}} activeOpacity = {.5} onPress={ showDatePicker }>
+            <Text style={{ fontSize: 16, marginRight: 135 }}>{isDate}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+          </View>
+          :
+          null
+          }
+          {genderBox !== "" ?
+          <DropDownPicker
             items={[
-                {label: 'Select Race', value: 'x'},
-                {label: 'White', value: 'white'},
-                {label: 'Black/African American', value: 'black/african'},
-                {label: 'Others', value: 'others'},
+                {label: 'Select Gender', value: 'x'},
+                {label: 'Male', value: 'male'},
+                {label: 'Female', value: 'female'},
             ]}
             defaultValue={'x'}
-            containerStyle={{height: 50, marginTop: 20, width: 380, paddingLeft: 38}}
+            containerStyle={{height: 50, marginTop: 30, width: 360, paddingLeft: 28}}
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{
                 justifyContent: 'flex-start'
             }}
-            dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 38, width: 310}}
-            onChangeItem={item => handleracebox(item)}
-        />
-        :
-        null
-        }
+            dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 28, width: 300}}
+            onChangeItem={item => handlegenbox(item)}
+          />
+          :
+          null
+          }
+          {raceBox !== "" ?
+          <DropDownPicker
+              items={[
+                  {label: 'Select Race', value: 'x'},
+                  {label: 'White', value: 'white'},
+                  {label: 'Black/African American', value: 'black/african'},
+                  {label: 'Others', value: 'others'},
+              ]}
+              defaultValue={'x'}
+              containerStyle={{height: 50, marginTop: 20, width: 380, paddingLeft: 38}}
+              style={{backgroundColor: '#fafafa'}}
+              itemStyle={{
+                  justifyContent: 'flex-start'
+              }}
+              dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 38, width: 310}}
+              onChangeItem={item => handleracebox(item)}
+          />
+          :
+          null
+          }
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
