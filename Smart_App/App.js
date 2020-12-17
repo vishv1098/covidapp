@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Dimensions, Settings, StyleSheet } from 'react-native';
+import { Text, Dimensions, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import SettingsScreen from './SettingsScreen';
+import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
-import OnboardingScreen from './OnboardingScreen'
-import { StatusBar } from 'expo-status-bar';
 import PushNotification from "react-native-push-notification";
-import Home from './Home'
-import Assessment from './AssessmentScreen'
+import Home from './currentScreen/Home'
+import Assessment from './currentScreen/AssessmentScreen'
+import SettingsScreen from './currentScreen/SettingsScreen';
+import OnboardingScreen from './currentScreen/OnboardingScreen'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
 const TITLE_OFFSET_CENTER_ALIGN = DEVICE_WIDTH / 2 - LOGOTYPE_WIDTH / 2;
-
 
 const Stack = createStackNavigator();
 
@@ -23,58 +22,23 @@ class App extends Component {
         constructor(props) {
                 super(props);
                 PushNotification.configure({
-                        // (optional) Called when Token is generated (iOS and Android)
                         onRegister: function (token) {
                           console.log("TOKEN:", token);
                         },
-                      
-                        // (required) Called when a remote is received or opened, or local notification is opened
                         onNotification: function (notification) {
                           console.log("NOTIFICATION:", notification);
-                      
-                          // process the notification
-                      
-                          // (required) Called when a remote is received or opened, or local notification is opened
-                        //   notification.finish(PushNotificationIOS.FetchResult.NoData);
                         },
-                      
-                        // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-                        // onAction: function (notification) {
-                        //   console.log("ACTION:", notification.action);
-                        //   console.log("NOTIFICATION:", notification);
-                      
-                        //   // process the action
-                        // },
-                      
-                        // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-                        // onRegistrationError: function(err) {
-                        //   console.error(err.message, err);
-                        // },
-                      
-                        // IOS ONLY (optional): default: all - Permissions to register.
                         permissions: {
                           alert: true,
                           badge: true,
                           sound: true,
                         },
-                      
-                        // Should the initial notification be popped automatically
-                        // default: true
                         popInitialNotification: true,
-                      
-                        /**
-                         * (optional) default: true
-                         * - Specified if permissions (ios) and token (android and ios) will requested or not,
-                         * - if not, you must call PushNotificationsHandler.requestPermissions() later
-                         * - if you are not using remote notification or do not have Firebase installed, use this:
-                         *     requestPermissions: Platform.OS === 'ios'
-                         */
                         requestPermissions: Platform.OS === 'ios',
                 });
                 this.state = {
                         isFirstLaunch: null
-                }
-                
+                }    
         }
 
         async componentDidMount() {

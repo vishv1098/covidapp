@@ -23,7 +23,6 @@ const OnboardingScreen = () => {
             <View key="1">
                     <Page
                         backgroundColor="black"
-                        // iconName=""
                         title="Welcome"
                         heightTitle=""
                         weightTitle=""
@@ -36,12 +35,6 @@ const OnboardingScreen = () => {
                         backgroundColor="black"
                         rightButtonLabel="Next"
                         rightButtonPress={ async () => {
-                            // const value = await AsyncStorage.getItem('userWeight')
-                            // const value2 = await AsyncStorage.getItem('userHeight')
-                            // console.log(value)
-                            // if (value !== null && value2 !== null) {
-                            //     handlePageChange(1);
-                            // }
                             handlePageChange(1);
                           }}
                     />
@@ -116,7 +109,6 @@ const OnboardingScreen = () => {
                             if (value !== null) {
                                 navigation.navigate('Home');
                             }
-                            // navigation.navigate('Home');
                           }}
                     />
                 </View>
@@ -130,8 +122,6 @@ export default OnboardingScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center'
     },
     slider: {
         flex: 0.61,

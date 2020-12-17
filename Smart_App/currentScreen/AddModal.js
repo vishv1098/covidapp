@@ -224,10 +224,8 @@ class AddModal extends Component {
                 position='center'
                 backdrop={true}
                 swipeArea={20}
-                // swipeToClose={false}
                 coverScreen={true}
                 onClosed={() => {
-                    // alert("Modal closed")
                 }}
             >
                 <ScrollView>

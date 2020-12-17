@@ -5,12 +5,12 @@ import 'react-native-gesture-handler';
 import React from 'react';  
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import MainTabScreen from './screens/MainTabScreen';
-import { DrawerContent } from './screens/DrawerContent'
-import RootStackScreen from './screens/RootStackScreen'
+import MainTabScreen from './MainTabScreen';
+import { DrawerContent } from './DrawerContent'
+import RootStackScreen from './RootStackScreen'
 import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import ProfileScreen from './screens/ProfileScreen';
+import ProfileScreen from './ProfileScreen';
 import * as tf from '@tensorflow/tfjs';
 
 const Drawer = createDrawerNavigator();

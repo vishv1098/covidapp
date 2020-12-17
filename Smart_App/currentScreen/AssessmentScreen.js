@@ -35,7 +35,6 @@ class AssessmentScreen extends Component {
         const DOB = await AsyncStorage.getItem('userDOB')
         const Gender = await AsyncStorage.getItem('userGender')
         if(Gender === "male" ) {
-          // value previously stored
           this.setState({
             gender: 1,
             age:DOB
@@ -49,7 +48,6 @@ class AssessmentScreen extends Component {
           })
         }
       } catch(e) {
-        // error reading value
         console.log(e)
       }
     }
@@ -235,7 +233,6 @@ const styles = StyleSheet.create({
   header:{
     fontSize:40,
     color:'#00B0B9',
-    // paddingTop:50,
     paddingBottom:30,
     alignSelf:"center",
   },

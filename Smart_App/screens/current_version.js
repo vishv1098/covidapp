@@ -2,8 +2,8 @@ import React from 'react';
 import { Platform } from 'react-native'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import MainHomeScreen from './MainHomeScreen';
-import SymptomScreen from './SymptomScreen';
+import MainHomeScreen from '../MainHomeScreen';
+import SymptomScreen from '../SymptomScreen';
 import PushNotification from "react-native-push-notification";
 
 const RootStack = createStackNavigator({

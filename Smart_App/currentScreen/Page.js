@@ -8,46 +8,33 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageBox, genderBox, raceBox, countryBox }) => {
   
-  // const [weight, setWeight] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('Select your date of birth');
 
   const handleWtbox = async (inputText) => {
     if (inputText === '') {
-      // setWeight('')
     } else {
-      // var a = parseFloat(inputText)
-      // setWeight(a)
       await AsyncStorage.setItem('userWeight', inputText);
     }
   }
 
   const handleHtbox = async (inputText) => {
     if (inputText === '') {
-      // setWeight('')
     } else {
-      // var a = parseFloat(inputText)
-      // setWeight(a)
       await AsyncStorage.setItem('userHeight', inputText);
     }
   }
 
   const handleracebox = async (inputText) => {
     if (inputText.value === 'x') {
-      // setWeight('')
     } else {
-      // var a = parseFloat(inputText)
-      // setWeight(a)
       await AsyncStorage.setItem('userRace', inputText.value);
     }
   }
 
   const handlegenbox = async (inputText) => {
     if (inputText.value === 'x') {
-      // setWeight('')
     } else {
-      // var a = parseFloat(inputText)
-      // setWeight(a)
       await AsyncStorage.setItem('userGender', inputText.value);
     }
   }
@@ -76,7 +63,6 @@ const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageB
     console.log("A date has been picked: ", data[data.length - 1]);
     await AsyncStorage.setItem('userDOB', (data2[data2.length - 1] - data[data.length - 1]) + " ");
     setIsDate('your age is ' + (data2[data2.length - 1] - data[data.length - 1]))
-    // console.log(isDate)
     hideDatePicker();
   };
 
