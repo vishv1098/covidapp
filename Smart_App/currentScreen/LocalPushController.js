@@ -22,6 +22,7 @@ export const ScheduledLocalNotification = () => {
         playSound: true,
         soundName: 'default',
         date: new Date(Date.now() + 15 * 1000), // in 60 secs
-        repeatType: "day"
+        repeatType: "day",
+        repeatTime: "32400000"
     })
 }

@@ -6,7 +6,7 @@ class AssessmentScreen extends Component {
     
     constructor(props) {
         super(props);
-        this.getData();
+        // this.getData();
         this.state = {
             lst : false,
             lstno : false,
@@ -53,17 +53,15 @@ class AssessmentScreen extends Component {
     }
 
     getDate =()=> { 
-      var today = new Date() 
-      var dd = String(today.getDate()).padStart(2,'0') 
-      var mm = String(today.getMonth()+1).padStart(2,'0') 
-      var yyyy = today.getFullYear(); 
-      return mm+'/'+dd+'/'+yyyy; 
+      var today = new Date()
+      var x = today.toDateString().split(' ')
+      return x[1]+' '+x[2]+', '+x[3]; 
     } 
 
     render() {
         return (
             <View style={styles.container}>
-              <Text style={styles.header}>{this.getDate()}</Text>
+              <Text style={styles.Dateheader}>{this.getDate()}</Text>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}> </Text>
                 <Text style={styles.labelsec}>No</Text>
@@ -233,6 +231,12 @@ const styles = StyleSheet.create({
   header:{
     fontSize:40,
     color:'#00B0B9',
+    paddingBottom:30,
+    alignSelf:"center",
+  },
+  Dateheader:{
+    fontSize:30,
+    color:'black',
     paddingBottom:30,
     alignSelf:"center",
   },

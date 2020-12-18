@@ -68,7 +68,7 @@ class AddModal extends Component {
             this.setState({
                 oxy: a
             });
-            console.log(this.state.oxy)
+            // console.log(this.state.oxy)
         }
     };
 

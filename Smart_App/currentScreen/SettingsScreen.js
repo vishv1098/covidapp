@@ -123,11 +123,25 @@ export class SettingsScreen extends Component {
           const value = await AsyncStorage.getItem('fitbit_accesstoken')
           if(value !== null) {
             this.setState({
-              fitbit_accesstoken: value
+              fitbit_accesstoken: value,
+              fitbitdata: 'Sign-out fitbit'
             })
           }
         } catch(e) {
           console.log(e)
+        }
+        try {
+            const value = await AsyncStorage.getItem('googlefit_accesstoken')
+            console.log(value)
+            if(value !== null) {
+                console.log("hi")
+              this.setState({
+                google_accesstoken: value,
+                googledata: 'Sign-out Google Fit'
+              })
+            }
+        } catch(e) {
+            console.log(e)
         }
     }
 
@@ -156,6 +170,8 @@ export class SettingsScreen extends Component {
 
         } else {
             await OAuth_Fitbit_logout()
+            await AsyncStorage.setItem('fitbit_accesstoken', '')
+            await AsyncStorage.setItem('fitbit_refreshtoken', '')
             this.setState({
                 text: '',
                 fitbitdata: 'Login with fitbit',
@@ -200,6 +216,7 @@ export class SettingsScreen extends Component {
                     googlename: userInfo.user.name,
                     googledata: 'Sign-out Google Fit'
                 })
+                await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken)
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -209,6 +226,7 @@ export class SettingsScreen extends Component {
                 console.log(error)
             }
         } else {
+            await AsyncStorage.setItem('googlefit_accesstoken', '')
             this.setState({
                 google_accesstoken: '',
                 text: '',
@@ -263,13 +281,18 @@ export class SettingsScreen extends Component {
             age: data[11],
             covidTest: true
         })
-        await AsyncStorage.setItem('oxygen_saturation', this.state.oxy)
-        await AsyncStorage.setItem('diastolic_bloodpressure', this.state.dbp)
-        await AsyncStorage.setItem('systolic_bloodpressure', this.state.sbp)
-        await AsyncStorage.setItem('heart_rate', this.state.hr)
-        await AsyncStorage.setItem('respiratory_rate', this.state.res_r)
-        await AsyncStorage.setItem('temperature', this.state.b_tmp)
-        
+        // console.log(this.state.oxy)
+        console.log(this.state.oxy,"hi")
+        await this.storage();
+    }
+
+    storage = async () => {
+        await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
+        await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
+        await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
+        await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
+        await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
+        await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
     }
 
     getReset = async () => {
@@ -292,6 +315,7 @@ export class SettingsScreen extends Component {
     }
 
     render() {
+        console.log(this.state.google_accesstoken)
         return (
             <ScrollView>
                 <View style={styles.container}>

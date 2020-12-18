@@ -26,7 +26,8 @@ export class Home extends Component{
 
     constructor(props){
         super(props)
-        // this._testScheduleNotification();
+        this._testScheduleNotification();
+        this.getData();
         this.state = {
             visibility:false,
             covid: false,
@@ -36,6 +37,18 @@ export class Home extends Component{
             res_score: 0,
             res_msg: '',
             g_color: 'green',
+            oxy: -1,
+            dbp: -1,
+            sbp: -1,
+            hr: -1,
+            res_r: -1,
+            b_tmp: -1,
+            sex: 0,
+            white: 1,
+            black: 0,
+            others: 0,
+            ethini: 0,
+            age: 1,
         }
         
     }
@@ -48,6 +61,16 @@ export class Home extends Component{
         console.log("the MyModelLoadLocal component is mounted");
     }
 
+    getData = async () => {
+        const oxygen = await AsyncStorage.getItem('oxygen_saturation');
+        console.log("Hi bye 1")
+        console.log(oxygen)
+        console.log("Hi bye 2")
+        this.setState({
+            oxy: parseInt(oxygen)
+        })
+    }
+
     _testnotification = async() => {
         LocalNotification()
     }
@@ -58,7 +81,7 @@ export class Home extends Component{
 
     getCovidPrediction = async () => {
         var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        console.log(z)
+        // console.log(z)
         const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
         const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
         const res = model.predict(a);
@@ -161,12 +184,14 @@ export class Home extends Component{
     }
 
     checkValidation = async () => {
+        await this.getData();
         if (this.state.datapresent === false) {
             this.setState({
                 visibility:true,
             })
         } else {
-            await this.getCovidTest();
+            // await this.getCovidTest();
+            console.log(this.state.oxy)
         }
     }
 
