@@ -6,7 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageBox, genderBox, raceBox, countryBox }) => {
+const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weightTitle, ageBox, genderBox, raceBox, countryBox }) => {
   
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('Select your date of birth');
@@ -78,6 +78,13 @@ const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageB
       >
         <Icon name={iconName} size={172} color="white" style={{position: 'relative'}} />
         <View style={{ marginTop: 16 }}>
+          {headerTitle !== "" ?
+          <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+            {headerTitle}
+          </Text>
+          :
+          null
+          }
           <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
             {title}
           </Text>
@@ -146,12 +153,12 @@ const Page = ({ backgroundColor, iconName, title, heightTitle, weightTitle, ageB
                 {label: 'Female', value: 'female'},
             ]}
             defaultValue={'x'}
-            containerStyle={{height: 50, marginTop: 30, width: 360, paddingLeft: 28}}
+            containerStyle={{height: 50, marginTop: 30, width: 330, alignSelf: 'center'}}
             style={{backgroundColor: '#fafafa'}}
             itemStyle={{
                 justifyContent: 'flex-start'
             }}
-            dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 28, width: 300}}
+            dropDownStyle={{backgroundColor: '#fafafa', width: 330}}
             onChangeItem={item => handlegenbox(item)}
           />
           :

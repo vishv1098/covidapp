@@ -7,6 +7,7 @@ import Modal from 'react-native-modalbox'
 import Button from 'react-native-button'
 import { ScrollView } from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
+import AsyncStorage from '@react-native-community/async-storage';
 
 var screen = Dimensions.get('window')
 
@@ -412,8 +413,9 @@ class AddModal extends Component {
                             borderRadius: 6,
                             backgroundColor: 'mediumseagreen'
                         }}
-                        onPress={() => {
+                        onPress={ async () => {
                             var x = []
+                            console.log(this.state.oxy,"------")
                             x.push(this.state.oxy)
                             x.push(this.state.dbp)
                             x.push(this.state.sbp)
@@ -426,6 +428,18 @@ class AddModal extends Component {
                             x.push(this.state.others)
                             x.push(this.state.ethini)
                             x.push(this.state.age)
+                            await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
+                            await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
+                            await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
+                            await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
+                            await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
+                            await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
+                            await AsyncStorage.setItem('sex',""+this.state.sex)
+                            await AsyncStorage.setItem('white-valid',""+this.state.white)
+                            await AsyncStorage.setItem('black-valid',""+this.state.black)
+                            await AsyncStorage.setItem('others-valid', ""+this.state.others)
+                            await AsyncStorage.setItem('ethini-valid', ""+this.state.ethini)
+                            await AsyncStorage.setItem('age-group', ""+this.state.age)
                             this.props.setData(x);
                             this.refs.myModal.close();
                         }}

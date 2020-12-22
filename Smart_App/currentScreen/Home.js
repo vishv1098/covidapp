@@ -35,7 +35,7 @@ export class Home extends Component{
             safe: false,
             result: false,
             res_score: 0,
-            res_msg: '',
+            res_msg: 'Please click on the button to check result',
             g_color: 'green',
             oxy: -1,
             dbp: -1,
@@ -62,12 +62,35 @@ export class Home extends Component{
     }
 
     getData = async () => {
-        const oxygen = await AsyncStorage.getItem('oxygen_saturation');
-        console.log("Hi bye 1")
-        console.log(oxygen)
-        console.log("Hi bye 2")
+        var oxygen = await AsyncStorage.getItem('oxygen_saturation')
+        var bloodp = await AsyncStorage.getItem('diastolic_bloodpressure')
+        var bloodsp = await AsyncStorage.getItem('systolic_bloodpressure')
+        var hr = await AsyncStorage.getItem('heart_rate')
+        var rp = await AsyncStorage.getItem('respiratory_rate')
+        var temp = await AsyncStorage.getItem('temperature')
+        var s = await AsyncStorage.getItem('sex')
+        var white = await AsyncStorage.getItem('white-valid')
+        var black = await AsyncStorage.getItem('black-valid')
+        var other = await AsyncStorage.getItem('others-valid')
+        var ethini = await AsyncStorage.getItem('ethini-valid')
+        var age = await AsyncStorage.getItem('age-group')
+        // const oxygen = await AsyncStorage.getItem('oxygen_saturation');
+        // console.log("Hi bye 1")
+        // console.log(z)
+        // console.log("Hi bye 2")
         this.setState({
-            oxy: parseInt(oxygen)
+            oxy: parseInt(oxygen),
+            dbp: parseInt(bloodp),
+            sbp: parseInt(bloodsp),
+            hr: parseInt(hr),
+            res_r: parseInt(rp),
+            b_tmp: parseFloat(temp),
+            sex: parseInt(s),
+            white: parseInt(white),
+            black: parseInt(black),
+            others: parseInt(other),
+            ethini: parseInt(ethini),
+            age: parseFloat(age),
         })
     }
 
@@ -81,7 +104,7 @@ export class Home extends Component{
 
     getCovidPrediction = async () => {
         var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        // console.log(z)
+        console.log(z)
         const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
         const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
         const res = model.predict(a);
@@ -190,9 +213,12 @@ export class Home extends Component{
                 visibility:true,
             })
         } else {
-            // await this.getCovidTest();
-            console.log(this.state.oxy)
+            await this.getCovidTest();
+            // console.log(this.state.oxy)
+            // var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+            // console.log(z)
         }
+        
     }
 
     render() {
@@ -208,15 +234,15 @@ export class Home extends Component{
                 </Dialog.Container>
                 <View style={styles.subcontainer} alignSelf='center'> 
                     <SemiCircleProgress
-                        percentage={prob*100}
+                        percentage={this.state.res_score}
 
-                        progressColor={'green'}
+                        progressColor={this.state.g_color}
                     >
-                        <Text style={{ fontSize: 32, color:'orange' }}> {prob?Math.round(prob*100):0}%</Text>
+                        <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
                     </SemiCircleProgress>
                  </View>
                 <View style={styles.subcontainer} alignSelf='center'>
-                    <Text style={{ fontSize: 24, color:'red'}}>"You have Covid"</Text>
+                    <Text style={{ fontSize: 24, alignContent: 'space-around', color:this.state.g_color}}>{this.state.res_msg}</Text>
                 </View>   
                 <View style={styles.subcontainerButton}>                                     
                     <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment')}>

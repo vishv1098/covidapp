@@ -10,6 +10,7 @@ import Home from './currentScreen/Home'
 import Assessment from './currentScreen/AssessmentScreen'
 import SettingsScreen from './currentScreen/SettingsScreen';
 import OnboardingScreen from './currentScreen/OnboardingScreen'
+import ProfileScreen from './currentScreen/ProfileScreen';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -84,10 +85,15 @@ class App extends Component {
                                                                 <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
                                                         </TouchableOpacity>
                                                         ),
+                                                        headerLeft: () => (
+                                                        <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
+                                                                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
+                                                        </TouchableOpacity>
+                                                        ),
                                                 })}/>
                                                 <Stack.Screen name="Profile" component={SettingsScreen}
                                                 options={({ navigation }) => ({
-                                                        title: 'Profile',
+                                                        title: 'Settings',
                                                         headerStyle: {
                                                         backgroundColor: '#00B0B9',
                                                         },
@@ -111,6 +117,20 @@ class App extends Component {
                                                         },
                                                         headerTitleContainerStyle: {
                                                         left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
+                                                        },
+                                                })}/>
+                                                <Stack.Screen name="ProfileEdit" component={ProfileScreen}
+                                                options={({ navigation }) => ({
+                                                        title: 'Profile',
+                                                        headerStyle: {
+                                                        backgroundColor: '#00B0B9',
+                                                        },
+                                                        headerTintColor: '#fff',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        },
+                                                        headerTitleContainerStyle: {
+                                                        left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
                                                         },
                                                 })}/>
                                         </Stack.Navigator>

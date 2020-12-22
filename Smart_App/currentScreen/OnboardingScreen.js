@@ -23,7 +23,8 @@ const OnboardingScreen = () => {
             <View key="1">
                     <Page
                         backgroundColor="black"
-                        title="Welcome"
+                        title="This application is meant to give you a representation of what your health condition might be and is not a professional diagnosis. We only aim to suggest medical help if necessary."
+                        headerTitle="Covid Guardian Angel"
                         heightTitle=""
                         weightTitle=""
                         ageBox=""
@@ -44,6 +45,7 @@ const OnboardingScreen = () => {
                         backgroundColor="#ffc93c"
                         iconName="body-outline"
                         title="BMI is a good gauge of your risk for diseases"
+                        headerTitle=""
                         heightTitle="Enter your height in cm"
                         weightTitle="Enter your weight in Kgs"
                         ageBox=""
@@ -69,6 +71,7 @@ const OnboardingScreen = () => {
                         backgroundColor="#556b2f"
                         iconName="medkit-outline"
                         title="With age, the disease burden increases"
+                        headerTitle=""
                         heightTitle=""
                         weightTitle=""
                         ageBox="Select Age"
@@ -94,6 +97,7 @@ const OnboardingScreen = () => {
                         backgroundColor="#07689f"
                         iconName="analytics-outline"
                         title="Biological diversity produces different diseases and susceptibility to diseases"
+                        headerTitle=""
                         heightTitle=""
                         weightTitle=""
                         ageBox=""

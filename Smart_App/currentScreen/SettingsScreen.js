@@ -281,19 +281,24 @@ export class SettingsScreen extends Component {
             age: data[11],
             covidTest: true
         })
-        // console.log(this.state.oxy)
-        console.log(this.state.oxy,"hi")
-        await this.storage();
     }
 
-    storage = async () => {
-        await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
-        await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
-        await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
-        await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
-        await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
-        await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
-    }
+    // check = async () => {
+        // console.log(this.state.oxy,"hi ---------------------------")
+        // var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+        // console.log(z)
+    //     var z = await AsyncStorage.getItem('oxygen_saturation')
+    //     console.log(parseInt(z),"check------------")
+    // }
+
+    // storage = async () => {
+    //     await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
+    //     await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
+    //     await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
+    //     await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
+    //     await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
+    //     await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
+    // }
 
     getReset = async () => {
         this.setState({
@@ -344,6 +349,11 @@ export class SettingsScreen extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Enter vital signs</Text>
                         </TouchableOpacity>
                     </View>
+                    {/* <View>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.check}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>check</Text>
+                        </TouchableOpacity>
+                    </View> */}
                     <AddModal ref={'addModal'} setData={this.setData}>
                     </AddModal>
                 </View>
