@@ -168,10 +168,15 @@ class App extends Component {
                 //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
                 //                                                 </TouchableOpacity>
                 //                                                 ),
+                                                                // headerLeft: () => (
+                                                                // <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
+                                                                //         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
+                                                                // </TouchableOpacity>
+                                                                // ),
                 //                                         })}/>
                 //                                         <Stack.Screen name="Profile" component={SettingsScreen}
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Profile',
+                //                                                 title: 'Settings',
                 //                                                 headerStyle: {
                 //                                                 backgroundColor: '#00B0B9',
                 //                                                 },
@@ -194,9 +199,23 @@ class App extends Component {
                 //                                                 fontWeight: 'bold',
                 //                                                 },
                 //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 25, // THIS RIGHT HERE
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
                 //                                                 },
                 //                                         })}/>
+                                                        // <Stack.Screen name="ProfileEdit" component={ProfileScreen}
+                                                        // options={({ navigation }) => ({
+                                                        //         title: 'Profile',
+                                                        //         headerStyle: {
+                                                        //         backgroundColor: '#00B0B9',
+                                                        //         },
+                                                        //         headerTintColor: '#fff',
+                                                        //         headerTitleStyle: {
+                                                        //         fontWeight: 'bold',
+                                                        //         },
+                                                        //         headerTitleContainerStyle: {
+                                                        //         left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                                                        //         },
+                                                        // })}/>
                 //                                 </Stack.Navigator>
                 //                         </NavigationContainer>
                 //                 </>
@@ -226,10 +245,15 @@ class App extends Component {
                 //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
                 //                                                 </TouchableOpacity>
                 //                                                 ),
+                                                                // headerLeft: () => (
+                                                                // <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
+                                                                //         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
+                                                                // </TouchableOpacity>
+                                                                // ),
                 //                                         })}/>
                 //                                         <Stack.Screen name="Profile" component={SettingsScreen}
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Profile',
+                //                                                 title: 'Settings',
                 //                                                 headerStyle: {
                 //                                                 backgroundColor: '#00B0B9',
                 //                                                 },
@@ -252,9 +276,23 @@ class App extends Component {
                 //                                                 fontWeight: 'bold',
                 //                                                 },
                 //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 25, // THIS RIGHT HERE
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
                 //                                                 },
                 //                                         })}/>
+                                                        // <Stack.Screen name="ProfileEdit" component={ProfileScreen}
+                                                        // options={({ navigation }) => ({
+                                                        //         title: 'Profile',
+                                                        //         headerStyle: {
+                                                        //         backgroundColor: '#00B0B9',
+                                                        //         },
+                                                        //         headerTintColor: '#fff',
+                                                        //         headerTitleStyle: {
+                                                        //         fontWeight: 'bold',
+                                                        //         },
+                                                        //         headerTitleContainerStyle: {
+                                                        //         left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                                                        //         },
+                                                        // })}/>
                 //                                 </Stack.Navigator>
                 //                         </NavigationContainer>
                 //                 </>

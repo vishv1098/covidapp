@@ -1,4 +1,3 @@
-import { Platform } from 'react-native'
 import PushNotification from 'react-native-push-notification'
 
 export const LocalNotification = () => {

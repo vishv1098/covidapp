@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weightTitle, ageBox, genderBox, raceBox, countryBox }) => {
+const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weightTitle, ageBox, genderBox, raceBox }) => {
   
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('Select your date of birth');
@@ -39,9 +39,6 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
     }
   }
 
-  var screenWidth = Dimensions.get('screen').width;
-  var screenHeight = Math.round(Dimensions.get('window').height);
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -51,16 +48,11 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
   };
  
   const handleConfirm = async (date) => {
-    console.log("A date has been picked: ", date);
     var x = date.toLocaleString()
     var y = new Date()
     var y = y.toLocaleString()
     var data2 = y.split(' ')
-    console.log(data2)
-    console.log(y)
     var data = x.split(' ')
-    console.log(data)
-    console.log("A date has been picked: ", data[data.length - 1]);
     await AsyncStorage.setItem('userDOB', (data2[data2.length - 1] - data[data.length - 1]) + " ");
     setIsDate('your age is ' + (data2[data2.length - 1] - data[data.length - 1]))
     hideDatePicker();

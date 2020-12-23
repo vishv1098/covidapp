@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
-import { Platform, StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import Dialog from "react-native-dialog";
 import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
-import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-
-var screenWidth = Dimensions.get('screen').width;
-var screenHeight = Math.round(Dimensions.get('window').height);
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -22,7 +18,7 @@ const covid_infl_modelWeights = require('../components/COVIDvsInfluenza/group1-s
 
 const BACKEND_CONFIG = 'cpu';
 
-export class Home extends Component{
+class Home extends Component {
 
     constructor(props){
         super(props)
@@ -54,7 +50,6 @@ export class Home extends Component{
     }
 
     async componentDidMount() {
-        //
         await tf.setBackend(BACKEND_CONFIG);
         await tf.ready();
         console.log("componentDidMount: tf.ready is set");
@@ -74,10 +69,6 @@ export class Home extends Component{
         var other = await AsyncStorage.getItem('others-valid')
         var ethini = await AsyncStorage.getItem('ethini-valid')
         var age = await AsyncStorage.getItem('age-group')
-        // const oxygen = await AsyncStorage.getItem('oxygen_saturation');
-        // console.log("Hi bye 1")
-        // console.log(z)
-        // console.log("Hi bye 2")
         this.setState({
             oxy: parseInt(oxygen),
             dbp: parseInt(bloodp),
@@ -104,7 +95,6 @@ export class Home extends Component{
 
     getCovidPrediction = async () => {
         var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        console.log(z)
         const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
         const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
         const res = model.predict(a);
@@ -214,9 +204,6 @@ export class Home extends Component{
             })
         } else {
             await this.getCovidTest();
-            // console.log(this.state.oxy)
-            // var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-            // console.log(z)
         }
         
     }
@@ -256,8 +243,6 @@ export class Home extends Component{
         );
     }
 }
-
-export default Home
 
 const styles = StyleSheet.create({
     container: {
@@ -302,3 +287,4 @@ const styles = StyleSheet.create({
     },
 });
 
+export default Home

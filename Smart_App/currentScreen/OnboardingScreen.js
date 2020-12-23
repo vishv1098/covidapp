@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, StyleSheet } from 'react-native'
 import ViewPager from '@react-native-community/viewpager';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,15 +7,11 @@ import Page from './Page'
 import Footer from './Footer'
 
 const OnboardingScreen = () => {
-
     const pagerRef = useRef(null);
-
     const navigation = useNavigation();
-
     const handlePageChange = pageNumber => {
         pagerRef.current.setPage(pageNumber);
     };
-
     return (
         <View style={{ flex: 1 }}>
             <ViewPager style={{ flex: 1 }} scrollEnabled={false} initialPage={0} ref={pagerRef}>

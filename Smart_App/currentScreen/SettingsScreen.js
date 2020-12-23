@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image, Alert, View, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator, Settings } from 'react-native';
+import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
@@ -7,9 +7,6 @@ import axios from 'axios';
 import config from '../configFiles/config'
 import googleConfig from '../configFiles/googleConfig'
 import AddModal from './AddModal';
-
-var screenWidth = Dimensions.get('screen').width;
-var screenHeight = Math.round(Dimensions.get('window').height);
 
 const configFitbit = {
     clientId: config.client_id,
@@ -24,17 +21,13 @@ const configFitbit = {
 };
 
 async function OAuth_Fitbit() {
-
     const authState = await authorize(configFitbit);
-    console.log(authState)
-
     try {
       await AsyncStorage.setItem('fitbit_accesstoken', authState.accessToken)
       await AsyncStorage.setItem('fitbit_refreshtoken', authState.refreshToken)
     } catch (error) {
       console.log(error)
     }
-  
     return authState
 }
 
@@ -42,7 +35,6 @@ async function refresh_Fitbit(fitbit_refreshtoken) {
     const refreshedState = await refresh(configFitbit, {
       refreshToken: fitbit_refreshtoken,
     });
-  
     try {
       await AsyncStorage.setItem('fitbit_accesstoken', refreshedState.accessToken)
       await AsyncStorage.setItem('fitbit_refreshtoken', refreshedState.refreshToken)
@@ -71,11 +63,11 @@ async function oAuth_Google() {
     });
 }
 
-export class SettingsScreen extends Component {
+class SettingsScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.getData();
+        // this.getData();
         this.state = {
             fitbit_accesstoken: '',
             google_accesstoken: '',
@@ -86,7 +78,6 @@ export class SettingsScreen extends Component {
             googlename: '',
             fitbitname: '',
             flashMessage: false,
-            formfill: false,
             oxy: -1,
             dbp: -1,
             sbp: -1,
@@ -108,15 +99,17 @@ export class SettingsScreen extends Component {
             safe: false,
             covidTest: false,
             result: false,
-            res_score: 0,
-            res_msg: '',
-            g_color: 'green',
-            // hea_da: ''
         }
         this._onFormData = this._onFormData.bind(this);
     }
 
-    getData = async () => {
+    async componentDidMount() {
+        // console.log("Hi")
+        await this.getData();
+        await this.getFitbitData();
+    }
+
+    getFitbitData = async () => {
         try {
           const refreshtoken = await AsyncStorage.getItem('fitbit_refreshtoken')
           await refresh_Fitbit(refreshtoken)
@@ -130,11 +123,13 @@ export class SettingsScreen extends Component {
         } catch(e) {
           console.log(e)
         }
+    }
+
+    getData = async () => {
         try {
             const value = await AsyncStorage.getItem('googlefit_accesstoken')
             console.log(value)
             if(value !== null) {
-                console.log("hi")
               this.setState({
                 google_accesstoken: value,
                 googledata: 'Sign-out Google Fit'
@@ -143,6 +138,7 @@ export class SettingsScreen extends Component {
         } catch(e) {
             console.log(e)
         }
+
     }
 
     _onFitbit = async() => {
@@ -154,12 +150,10 @@ export class SettingsScreen extends Component {
                     Authorization: 'Bearer ' + authdata.accessToken
                 }
             }).then((resp) => {
-                console.log(resp.data)
                 x_data = resp.data
             }).catch((error) => {
                 console.log(error)
             })
-
             this.setState({
                 fitbit_accesstoken: authdata.accessToken,
                 text: 'you now connected to fitbit',
@@ -189,7 +183,6 @@ export class SettingsScreen extends Component {
                 })
             }
         }
-        console.log(this.state.fitbit_accesstoken)
     }
 
     _onGooglefit = async() => {
@@ -202,28 +195,44 @@ export class SettingsScreen extends Component {
                 await GoogleSignin.signIn()
                     .then((data) => {
                         userInfo = data
-                        const currentUser = GoogleSignin.getTokens().then((res)=>{
+                        const currentUser = GoogleSignin.getTokens().then(async(res)=>{
+                            // console.log(res)
+                            console.log(JSON.parse(res))
+                            try {
+                                await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
+                                alert('Data successfully saved')
+                            } catch (e) {
+                                alert('Failed to save the data to the storage')
+                            }
                             g_accessToken = res.accessToken
-                            console.log(res.accessToken ); //<-------Get accessToken
+                            // console.log(g_accessToken)
+                            this.setState({
+                                google_accesstoken: g_accessToken
+                            })
+
                         });
                     })
                     .catch((error) => {
                       console.log("....." + JSON.stringify(error))
                     });
+                // console.log(g_accessToken)
                 this.setState({
-                    google_accesstoken: g_accessToken,
+                    // google_accesstoken: g_accessToken,
                     textdata: 'You have signed-in as ' + userInfo.user.name,
                     googlename: userInfo.user.name,
                     googledata: 'Sign-out Google Fit'
                 })
-                await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken)
+                await this.storeData()
+                // console.log("Store")
+                // console.log(this.state.google_accesstoken)
+                // await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken)
+                // console.log("Stored")
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 } else if (error.code === statusCodes.IN_PROGRESS) {
                 } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
                 } else {
                 }
-                console.log(error)
             }
         } else {
             await AsyncStorage.setItem('googlefit_accesstoken', '')
@@ -244,25 +253,29 @@ export class SettingsScreen extends Component {
                 })
             }
         }
-        console.log(this.state.google_accesstoken)
+    }
+
+    storeData = async() => {
+        // console.log("Store")
+        // console.log(this.state.google_accesstoken)
+        var x_access = this.state.google_accesstoken.toString()
+        // console.log(typeof(x_access))
+        // console.log(x_access)
+        // try {
+        //     await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken.toString())
+        //     alert('Data successfully saved')
+        // } catch (e) {
+        //     alert('Failed to save the data to the storage')
+        // }
+        // console.log("Stored")
+        // console.log("Check")
+        var check = await AsyncStorage.getItem("googlefit_accesstoken")
+        // console.log(typeof(check))
+        console.log(check, "hi")  
     }
 
     _onFormData = async() => {
         this.refs.addModal.showAddModal();
-    }
-
-    onFlashPress(){
-        if (this.state.fitbit_accesstoken === '' && this.state.google_accesstoken === '') {
-            this.setState({
-                flashMessage: true
-            },()=>{setTimeout(() => this.closeFlashMessage(), 3000)})
-        }
-    }
-    
-    closeFlashMessage(){
-        this.setState({
-            flashMessage: false
-        })
     }
 
     setData = async (data) => {
@@ -282,23 +295,6 @@ export class SettingsScreen extends Component {
             covidTest: true
         })
     }
-
-    // check = async () => {
-        // console.log(this.state.oxy,"hi ---------------------------")
-        // var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        // console.log(z)
-    //     var z = await AsyncStorage.getItem('oxygen_saturation')
-    //     console.log(parseInt(z),"check------------")
-    // }
-
-    // storage = async () => {
-    //     await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
-    //     await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
-    //     await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
-    //     await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
-    //     await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
-    //     await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
-    // }
 
     getReset = async () => {
         this.setState({
@@ -349,22 +345,15 @@ export class SettingsScreen extends Component {
                             <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Enter vital signs</Text>
                         </TouchableOpacity>
                     </View>
-                    {/* <View>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center'}} onPress={this.check}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>check</Text>
-                        </TouchableOpacity>
-                    </View> */}
                     <AddModal ref={'addModal'} setData={this.setData}>
                     </AddModal>
                 </View>
             </ScrollView>
         )
     }
-
 }
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         alignItems: 'center'
@@ -387,7 +376,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         width: 360,
         justifyContent: 'flex-start'
-       
       },
       GoogleLoginButtonStyle: {
         flexDirection: 'row',
@@ -399,9 +387,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         width: 360,
         justifyContent: 'flex-start'
-       
       },
-       
       ImageIconStyle: {
         padding: 10,
         margin: 2,
@@ -410,7 +396,6 @@ const styles = StyleSheet.create({
         resizeMode : 'stretch',
         paddingRight: 10
       },
-       
       TextStyle :{
         textAlign: 'center',
         color: "white",
@@ -431,12 +416,10 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         textAlign: 'center'
       },
-       
       SeparatorLine :{
-      backgroundColor : '#fff',
-      width: 1,
-      height: 80
-       
+        backgroundColor : '#fff',
+        width: 1,
+        height: 80
       }
 })
 

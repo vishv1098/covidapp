@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {
-    AppRegistry, StyleSheet, Text, View, Image, Alert, Animated,
-    Platform, TouchableHighlight, Dimensions, TextInput
-} from 'react-native'
+import { Text, View, Platform, Dimensions, TextInput } from 'react-native'
 import Modal from 'react-native-modalbox'
 import Button from 'react-native-button'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -69,7 +66,6 @@ class AddModal extends Component {
             this.setState({
                 oxy: a
             });
-            // console.log(this.state.oxy)
         }
     };
 
@@ -450,7 +446,6 @@ class AddModal extends Component {
             </Modal>
         );
     }
-
 }
 
 export default AddModal
