@@ -1,6 +1,7 @@
 import React from 'react';  
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'; 
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'; 
 import AsyncStorage from '@react-native-community/async-storage';
+import AddProfile from './AddProfile';
 
 class ProfileScreen extends React.Component {
 
@@ -11,12 +12,18 @@ class ProfileScreen extends React.Component {
       user_age: '',
       user_avatar: 'https://i.kinja-img.com/gawker-media/image/upload/t_original/ijsi5fzb1nbkbhxa2gc1.png',
       female_avatar: 'https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/11_avatar-512.png',
+      male_avatar: 'https://i.kinja-img.com/gawker-media/image/upload/t_original/ijsi5fzb1nbkbhxa2gc1.png',
       // user_dob: '',
       user_race: '',
       user_gender: '',
       user_ht: '',
       user_wt: ''
     }
+    this._onFormData = this._onFormData.bind(this);
+  }
+
+  async componentDidMount() {
+    // console.log("HGi")
   }
 
   datafetch = async() => {
@@ -51,6 +58,34 @@ class ProfileScreen extends React.Component {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  _onFormData = async() => {
+      this.refs.addModal.showAddModal();
+  }
+
+  setData = async (data) => {
+    // console.log("Hi")
+    var htdata = data[1]
+    var realFeet = ((htdata*0.393700) / 12);
+    var feet = Math.floor(realFeet);
+    var inches = Math.round((realFeet - feet) * 12);
+    if (data[2] === "female") {
+      this.setState({
+        user_avatar: this.state.female_avatar,
+        user_gender: data[2]
+      })
+    } else {
+      this.setState({
+        user_avatar: this.state.male_avatar,
+        user_gender: data[2]
+      })
+    }
+    this.setState({ 
+      user_wt: data[0],
+      user_ht: feet + " ft, " + inches + ' in',
+      user_race: data[3]
+    })
   }
 
   render() {
@@ -105,6 +140,14 @@ class ProfileScreen extends React.Component {
             <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20, marginBottom: 40}}>
               <Text style={{fontSize: 20}}>Race : {this.state.user_race}</Text>
             </View>
+            <View>
+                <Text style={{color: 'white', marginTop: 50, textAlign: 'center', alignContent:'space-around', alignItems: 'center'}}>These values will go in to the model to predict the results. You can even edit your details</Text>
+                <TouchableOpacity style={{ padding: 8, marginTop: 20, marginBottom: 80, marginLeft: 70, marginRight: 70, height: 60, backgroundColor:'mediumseagreen', borderRadius: 25, justifyContent: 'center'}} onPress={this._onFormData}>
+                    <Text style={{textAlign:'center', fontSize: 22, color: 'white', fontWeight: 'bold'}}>edit</Text>
+                </TouchableOpacity>
+            </View>
+            <AddProfile ref={'addModal'} setData={this.setData}>
+            </AddProfile>
           </ScrollView>
         </View>  
       );
