@@ -6,6 +6,7 @@ import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -45,18 +46,49 @@ class Home extends Component {
             others: 0,
             ethini: 0,
             age: 1,
+            google_token: null,
+            fitbit_token: null,
+            heart_rate_token: '',
+            distance_token: '',
+            calories_token: '',
+            step_count_token: '',
+            activity_token: '',
+            startDate: "1607538600000",
+            endDate: Date.now(),
         }
         
     }
 
     async componentDidMount() {
+        // const {prob} = this.props.route.params?this.props.route.params:0
+        // console.log(prob)
+        console.log("Hi")
         await tf.setBackend(BACKEND_CONFIG);
         await tf.ready();
         console.log("componentDidMount: tf.ready is set");
         console.log("the MyModelLoadLocal component is mounted");
+        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+        if (google_token_fetch !== null) {
+            this.setState({
+                google_token: google_token_fetch,
+            })
+        }
     }
 
+    // async componentDidUpdate() {
+    //     console.log("Hello")
+    // }
+
+    // async componentDidCatch() {
+    //     console.log("Bye")
+    // }
+
+    // async componentWillUnmount() {
+    //     console.log("Test")
+    // }
+
     getData = async () => {
+        console.log("Hi")
         var oxygen = await AsyncStorage.getItem('oxygen_saturation')
         var bloodp = await AsyncStorage.getItem('diastolic_bloodpressure')
         var bloodsp = await AsyncStorage.getItem('systolic_bloodpressure')
@@ -95,6 +127,7 @@ class Home extends Component {
 
     getCovidPrediction = async () => {
         var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+        console.log(z)
         const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
         const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
         const res = model.predict(a);
@@ -196,13 +229,97 @@ class Home extends Component {
         }
     }
 
+    dataSources = async() => {
+        await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
+            headers: {
+                'Authorization': 'Bearer ya29.a0AfH6SMCyDwD92f0BcBC3mMwUGwGpg8MHmO-bB2iIJEhkI7fx0wd4nATTpg0zTMPKdg4eWb73_SrwM1_J2gzIz7NJmss86ikhJe2s_Afisy101Us_dfytafxHWuTCTubMKoejYvSLnQufgsimMsLNE3C_7Lfun7M68Z4kpYKFtkQ'
+            }
+        }).then((resp) => {
+            // console.log(resp.data)
+            var array = resp.data["dataSource"]
+            // console.log(array)
+            var heart_rate_token = ''
+            var step_count_token = ''
+            var distance_token = ''
+            var calories_token = ''
+            var activity_token = ''
+            for( var q = 0; q < array.length; q++ ) {
+                try {
+                    if (array[q]["device"]["uid"] === "e3fc9470") {
+                        // console.log(array[q]["dataStreamId"])
+                        if (array[q]["dataStreamId"].includes("heart_rate")) {
+                          heart_rate_token = array[q]["dataStreamId"]
+                        }
+                        if (array[q]["dataStreamId"].includes("distance")) {
+                          distance_token = array[q]["dataStreamId"]
+                        }
+                        if (array[q]["dataStreamId"].includes("step_count")) {
+                          step_count_token = array[q]["dataStreamId"]
+                        }
+                        if (array[q]["dataStreamId"].includes("calories")) {
+                          calories_token = array[q]["dataStreamId"]
+                        }
+                        if (array[q]["dataStreamId"].includes("activity")) {
+                          activity_token = array[q]["dataStreamId"]
+                        }
+                      }
+                    // console.log(heart_rate_token)
+                    // console.log(step_count_token)
+                    // console.log(distance_token)
+                    // console.log(calories_token)
+                    // console.log(activity_token)
+                    this.setState({
+                        heart_rate_token: heart_rate_token,
+                        step_count_token: step_count_token,
+                        distance_token: distance_token,
+                        calories_token: calories_token,
+                        activity_token: activity_token
+                    })
+                    
+                } catch (error) {
+                    // console.log(error)
+                }
+            }
+            if ((heart_rate_token === '') && (step_count_token === '') && (distance_token === '') && (calories_token === '') && (activity_token === '')) {
+                alert('There is no device connected to your Google fit account. Please enter your vital signs manually from settings')
+            }
+        })
+
+
+    }
+
+    heartRateData = async() => {
+        // console.log(this.state.startDate+"T00:00:00+0000")
+        var myDate = new Date(this.state.startDate+"T00:00:00+0000");
+        // console.log(myDate)
+        var result1 = myDate.getTime();
+        var result2 = this.state.endDate
+        // console.log('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000')
+        await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
+            headers: {
+                'Authorization': 'Bearer ya29.a0AfH6SMCyDwD92f0BcBC3mMwUGwGpg8MHmO-bB2iIJEhkI7fx0wd4nATTpg0zTMPKdg4eWb73_SrwM1_J2gzIz7NJmss86ikhJe2s_Afisy101Us_dfytafxHWuTCTubMKoejYvSLnQufgsimMsLNE3C_7Lfun7M68Z4kpYKFtkQ'
+            }
+        }).then(async (resp) => {
+            var array = resp.data["point"]
+            var x = array[array.length - 1]
+            var res = x.value[0].fpVal
+            console.log(typeof(res))
+            await AsyncStorage.setItem("HeartRate",res+'')
+        })
+
+    }
+
     checkValidation = async () => {
+        // console.log("HI")
+        // console.log(this.state.google_token)
         await this.getData();
-        if (this.state.datapresent === false) {
+        if (this.state.google_token === null) {
             this.setState({
                 visibility:true,
             })
         } else {
+            await this.dataSources();
+            await this.heartRateData();
             await this.getCovidTest();
         }
         
@@ -210,12 +327,14 @@ class Home extends Component {
 
     render() {
         const {prob} = this.props.route.params?this.props.route.params:0
+        // console.log(prob)
+        // console.log("Hi")
         return(
             <View style={styles.container}>
                 <Dialog.Container visible={this.state.visibility}> 
                     <Dialog.Title>Missing Data</Dialog.Title>
                     <Dialog.Description>
-                        Oops! There seems to be some vital data missing.
+                        Oops! There seems to be some vital data missing. Please fill in your Vital details.
                     </Dialog.Description>
                     <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
                 </Dialog.Container>

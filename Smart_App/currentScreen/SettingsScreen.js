@@ -105,8 +105,17 @@ class SettingsScreen extends Component {
 
     async componentDidMount() {
         // console.log("Hi")
+        // await this.getVitalData();
         await this.getData();
         await this.getFitbitData();
+    }
+
+    getVitalData = async() => {
+        var hr = await AsyncStorage.getItem('HeartRate')
+        this.setState({
+            oxy: parseInt(hr),
+            hrplaceholder: "Oxygen Saturation value   : " + hr
+        })
     }
 
     getFitbitData = async () => {
@@ -196,8 +205,8 @@ class SettingsScreen extends Component {
                     .then((data) => {
                         userInfo = data
                         const currentUser = GoogleSignin.getTokens().then(async(res)=>{
-                            // console.log(res)
-                            console.log(JSON.parse(res))
+                            console.log(res)
+                            // console.log(JSON.parse(res))
                             try {
                                 await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
                                 alert('Data successfully saved')

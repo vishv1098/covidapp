@@ -29,8 +29,32 @@ class AddModal extends Component {
             gender: 'male',
             race: 'white',
             ethnicity: 'nothispanic/latino',
-            tunit: 'c'
+            tunit: 'c',
+            hrplaceholder: 'Enter the Heart rate value per minute',
+            hrplaceholdercolor: 'gray',
+            hreditable:true,
+            hrRate: -1,
+            hrback: false,
         }
+    }
+
+    async componentDidMount() {
+        await this.getVitalData();
+    }
+
+    getVitalData = async() => {
+        var hr = await AsyncStorage.getItem('HeartRate')
+        if (hr !== null) {
+            this.setState({
+                hrRate: parseInt(hr),
+                hrplaceholder: "Heart rate value   : " + hr,
+                hrplaceholdercolor: 'black',
+                hreditable: false,
+                hrback: true
+            })
+        }
+        console.log(this.state.hr)
+        
     }
 
     showAddModal = () => {
@@ -96,15 +120,21 @@ class AddModal extends Component {
     }
 
     handlehrbox = (inputText) => {
-        if (inputText == '') {
+        if (this.state.hrback === true) {
             this.setState({
-                hr: -1
+                hr: this.state.hrRate
             })
         } else {
-            var a = parseFloat(inputText)
-            this.setState({
-                hr: a
-            });
+            if (inputText == '') {
+                this.setState({
+                    hr: -1
+                })
+            } else {
+                var a = parseFloat(inputText)
+                this.setState({
+                    hr: a
+                });
+            }
         }
     }
 
@@ -283,9 +313,11 @@ class AddModal extends Component {
                             borderBottomWidth: 1,
                         }}
                         onChangeText = { (text) => this.handlehrbox(text)}
-                        placeholder = "Enter the Heart rate value per minute"
+                        placeholder = {this.state.hrplaceholder}
                         keyboardType={'numeric'}
                         numeric
+                        editable={this.state.hreditable}
+                        placeholderTextColor={this.state.hrplaceholdercolor}
                     />
                     <TextInput
                         style={{
@@ -411,6 +443,11 @@ class AddModal extends Component {
                         }}
                         onPress={ async () => {
                             var x = []
+                            if (this.state.hrback === true) {
+                                this.setState({
+                                    hr: this.state.hrRate
+                                })
+                            }
                             console.log(this.state.oxy,"------")
                             x.push(this.state.oxy)
                             x.push(this.state.dbp)

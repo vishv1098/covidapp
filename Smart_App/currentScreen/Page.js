@@ -122,21 +122,6 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
           :
           null
           }
-          {ageBox !== "" ?
-          <View>
-            <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:5, marginTop: 35,}} activeOpacity = {.5} onPress={ showDatePicker }>
-            <Text style={{ fontSize: 16, marginRight: 135 }}>{isDate}</Text>
-            </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-          </View>
-          :
-          null
-          }
           {genderBox !== "" ?
           <DropDownPicker
             items={[
@@ -153,6 +138,21 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
             dropDownStyle={{backgroundColor: '#fafafa', width: 330}}
             onChangeItem={item => handlegenbox(item)}
           />
+          :
+          null
+          }
+          {ageBox !== "" ?
+          <View>
+            <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:5, marginTop: 35,}} activeOpacity = {.5} onPress={ showDatePicker }>
+            <Text style={{ fontSize: 16, marginRight: 135 }}>{isDate}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+          </View>
           :
           null
           }
