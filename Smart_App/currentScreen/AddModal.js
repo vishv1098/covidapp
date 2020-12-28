@@ -282,36 +282,6 @@ class AddModal extends Component {
                             marginBottom: 10,
                             borderBottomWidth: 1,
                         }}
-                        onChangeText = { (text) => this.handledbpbox(text)}
-                        placeholder = "Enter the Diastolic blood pressure value"
-                        keyboardType={'numeric'}
-                        numeric
-                    />
-                    <TextInput
-                        style={{
-                            height: 40,
-                            borderBottomColor: 'gray',
-                            marginLeft: 30,
-                            marginRight: 30,
-                            marginTop: 20,
-                            marginBottom: 10,
-                            borderBottomWidth: 1,
-                        }}
-                        onChangeText = { (text) => this.handlesbpbox(text)}
-                        placeholder = "Enter the Systolic blood pressure value"
-                        keyboardType={'numeric'}
-                        numeric
-                    />
-                    <TextInput
-                        style={{
-                            height: 40,
-                            borderBottomColor: 'gray',
-                            marginLeft: 30,
-                            marginRight: 30,
-                            marginTop: 20,
-                            marginBottom: 10,
-                            borderBottomWidth: 1,
-                        }}
                         onChangeText = { (text) => this.handlehrbox(text)}
                         placeholder = {this.state.hrplaceholder}
                         keyboardType={'numeric'}
@@ -367,7 +337,7 @@ class AddModal extends Component {
                             onChangeItem={item => this.handleUnitbox(item)}
                         />
                     </View>
-                    <DropDownPicker
+                    {/* <DropDownPicker
                         items={[
                             {label: 'Select Gender', value: 'male'},
                             {label: 'Male', value: 'male'},
@@ -381,8 +351,8 @@ class AddModal extends Component {
                         }}
                         dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 35, width: 285}}
                         onChangeItem={item => this.handlegenbox(item)}
-                    />
-                    <DropDownPicker
+                    /> */}
+                    {/* <DropDownPicker
                         items={[
                             {label: 'Select Race', value: 'white'},
                             {label: 'White', value: 'white'},
@@ -397,7 +367,7 @@ class AddModal extends Component {
                         }}
                         dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 35, width: 285}}
                         onChangeItem={item => this.handleracebox(item)}
-                    />
+                    /> */}
                     <DropDownPicker
                         items={[
                             {label: 'Select Ethnicity', value: 'nothispanic/latino'},
@@ -424,11 +394,41 @@ class AddModal extends Component {
                             marginBottom: 10,
                             borderBottomWidth: 1,
                         }}
+                        onChangeText = { (text) => this.handledbpbox(text)}
+                        placeholder = "Enter the Diastolic blood pressure value"
+                        keyboardType={'numeric'}
+                        numeric
+                    />
+                    <TextInput
+                        style={{
+                            height: 40,
+                            borderBottomColor: 'gray',
+                            marginLeft: 30,
+                            marginRight: 30,
+                            marginTop: 20,
+                            marginBottom: 10,
+                            borderBottomWidth: 1,
+                        }}
+                        onChangeText = { (text) => this.handlesbpbox(text)}
+                        placeholder = "Enter the Systolic blood pressure value"
+                        keyboardType={'numeric'}
+                        numeric
+                    />
+                    {/* <TextInput
+                        style={{
+                            height: 40,
+                            borderBottomColor: 'gray',
+                            marginLeft: 30,
+                            marginRight: 30,
+                            marginTop: 20,
+                            marginBottom: 10,
+                            borderBottomWidth: 1,
+                        }}
                         onChangeText = { (text) => this.handleagebox(text)}
                         placeholder = "Enter your age"
                         keyboardType={'numeric'}
                         numeric
-                    />
+                    /> */}
                     <Button
                         style={{fontSize: 18, color: 'white'}}
                         containerStyle={{

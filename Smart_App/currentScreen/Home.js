@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, BlurView } from 'react-native';
 import Dialog from "react-native-dialog";
 import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
@@ -7,6 +7,7 @@ import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -27,6 +28,7 @@ class Home extends Component {
         this.getData();
         this.state = {
             visibility:false,
+            infoVisibility:false,
             covid: false,
             influ: false,
             safe: false,
@@ -88,7 +90,7 @@ class Home extends Component {
     // }
 
     getData = async () => {
-        console.log("Hi")
+        // console.log("Hi")
         var oxygen = await AsyncStorage.getItem('oxygen_saturation')
         var bloodp = await AsyncStorage.getItem('diastolic_bloodpressure')
         var bloodsp = await AsyncStorage.getItem('systolic_bloodpressure')
@@ -101,6 +103,12 @@ class Home extends Component {
         var other = await AsyncStorage.getItem('others-valid')
         var ethini = await AsyncStorage.getItem('ethini-valid')
         var age = await AsyncStorage.getItem('age-group')
+        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+        if(google_token_fetch !== null) {
+            this.setState({
+                google_token: google_token_fetch
+            })
+        }
         this.setState({
             oxy: parseInt(oxygen),
             dbp: parseInt(bloodp),
@@ -313,6 +321,12 @@ class Home extends Component {
         // console.log("HI")
         // console.log(this.state.google_token)
         await this.getData();
+        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+        if(google_token_fetch !== null) {
+            this.setState({
+                google_token: google_token_fetch
+            })
+        }
         if (this.state.google_token === null) {
             this.setState({
                 visibility:true,
@@ -325,55 +339,140 @@ class Home extends Component {
         
     }
 
+    onSymptomAssess = () => { 
+        const {prob} = this.props.route.params?this.props.route.params:0 
+        if(isNaN(prob) === false){ 
+            if(prob*100>=50) { 
+                this.setState({ 
+                    res_msg:"You're likely to have Covid", 
+                    g_color:'red' 
+                }) 
+            } else { 
+                this.setState({ 
+                    res_msg:"You're likely to have influenza", 
+                    g_color:'orange' }) 
+            } 
+            this.setState({ 
+                res_score:Math.round(prob*100) 
+            }) 
+        } 
+    } 
+
     render() {
         const {prob} = this.props.route.params?this.props.route.params:0
-        // console.log(prob)
-        // console.log("Hi")
         return(
-            <View style={styles.container}>
-                <Dialog.Container visible={this.state.visibility}> 
-                    <Dialog.Title>Missing Data</Dialog.Title>
-                    <Dialog.Description>
-                        Oops! There seems to be some vital data missing. Please fill in your Vital details.
-                    </Dialog.Description>
-                    <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
-                </Dialog.Container>
-                <View style={styles.subcontainer} alignSelf='center'> 
-                    <SemiCircleProgress
-                        percentage={this.state.res_score}
+            <ScrollView style={{backgroundColor: '#F5FCFF'}}>
+                <View style={styles.container}>
+                    <View style={styles.infoButtonContainer}>                                     
+                        <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
+                                {/* <Text style={styles.infobtntext} >i</Text> */}
+                                <Icon name='information-circle-outline' size={20} style={{position: 'relative'}} />
+                        </TouchableOpacity>
+                    </View> 
+                    <Text style={styles.header}>Covid-19 Assessment</Text>
+                    <Dialog.Container visible={this.state.visibility}> 
+                        <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
+                            <Dialog.Description>
+                                Oops! There seems to be some vital data missing. Please fill in your Vital details.
+                            </Dialog.Description>
+                        <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
+                    </Dialog.Container>
+                    <Dialog.Container visible={this.state.infoVisibility}> 
+                        <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
+                            <Dialog.Description>
+                            This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
+                            </Dialog.Description>
+                            <Dialog.Description>
+                            The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
+                            </Dialog.Description>
+                            <Dialog.Description>
+                            Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
+                            </Dialog.Description>
+                        <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
+                    </Dialog.Container> 
+                    <View style={styles.subcontainer} alignSelf='center'> 
+                        <SemiCircleProgress
+                            percentage={this.state.res_score}
 
-                        progressColor={this.state.g_color}
-                    >
-                        <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
-                    </SemiCircleProgress>
-                 </View>
-                <View style={styles.subcontainer} alignSelf='center'>
-                    <Text style={{ fontSize: 24, alignContent: 'space-around', color:this.state.g_color}}>{this.state.res_msg}</Text>
-                </View>   
-                <View style={styles.subcontainerButton}>                                     
-                    <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment')}>
-                                <Text style={styles.btntext}>Self Assessment</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
-                            <Text style={styles.btntext}>Check for Covid</Text>
-                    </TouchableOpacity>
+                            progressColor={this.state.g_color}
+                        >
+                            <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
+                        </SemiCircleProgress>
+                    </View>
+                    <View style={styles.subcontainer}>
+                        <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
+                    </View>   
+                    <View style={styles.subcontainerButton}>                                     
+                        <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
+                                    <Text style={styles.btntext}>Symptoms</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
+                                <Text style={styles.btntext}>Vitals</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    // container: {
+    //     flex: 1,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     backgroundColor: '#F5FCFF',
+    // },
+    // subcontainer:{
+    //     // flexDirection: "row",
+    //     alignSelf:"stretch",
+    //     paddingBottom:70
+    // },
+    // subcontainerButton:{
+    //     flexDirection: "row",
+    //     alignSelf:"stretch",
+    //     justifyContent:"space-around",
+    //     paddingBottom:70
+    // },
+    // btntext:{
+    //     color:'white',
+    //     fontSize:14,
+    //     textAlign:'center'
+    // },
+    // leftbutton: {
+    //     alignSelf:'center',
+    //     alignItems:'center',
+    //     padding:20,
+    //     backgroundColor:'#00B0B9',
+    //     borderRadius:20,
+    //     marginTop: 30,
+    //     width:150,
+    // },
+    // button: {
+    //     alignSelf:'center',
+    //     alignItems:'center',
+    //     padding:20,
+    //     backgroundColor:'#00B0B9',
+    //     borderRadius:20,
+    //     marginTop: 30,
+    //     width:150,
+    // },
+    header:{
+        fontSize:35,
+        color:'#00B0B9',
+        paddingBottom:50,
+        paddingTop: 50,
+        alignSelf:"center",
+      },
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
     subcontainer:{
-        flexDirection: "row",
+        paddingTop:20,
         alignSelf:"stretch",
-        justifyContent:"space-between",
         paddingBottom:70
     },
     subcontainerButton:{
@@ -382,9 +481,23 @@ const styles = StyleSheet.create({
         justifyContent:"space-around",
         paddingBottom:70
     },
+    infoButtonContainer:{
+        flexDirection: "row",
+        alignSelf:"stretch",
+        justifyContent:"flex-end",
+        paddingRight:20,
+        paddingBottom:10
+    },
     btntext:{
         color:'white',
-        fontSize:18,
+        fontSize:22,
+        textAlign:'center'
+    },
+    infobtntext:{
+        color:'black',
+        fontFamily:'monospace',
+        fontSize:22,
+        textAlign:'center'
     },
     leftbutton: {
         alignSelf:'center',
@@ -393,7 +506,16 @@ const styles = StyleSheet.create({
         backgroundColor:'#00B0B9',
         borderRadius:20,
         marginTop: 30,
-        width:180,
+        width:150, 
+    },
+    infoButton: {
+        padding:20,
+        backgroundColor:'#F5FCFF',
+        borderRadius:200,
+        marginTop: 30,
+        width:60,
+        height:50,
+        justifyContent:'center',
     },
     button: {
         alignSelf:'center',
@@ -402,7 +524,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#00B0B9',
         borderRadius:20,
         marginTop: 30,
-        width:200,
+        width:150,
     },
 });
 

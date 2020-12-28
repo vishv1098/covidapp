@@ -29,6 +29,11 @@ class AssessmentScreen extends Component {
         }
     }
 
+    componentWillUnmount(){
+      const {assess} = this.props.route.params;
+      assess()
+    }
+
         
     getData = async () => {
       try {
@@ -72,7 +77,7 @@ class AssessmentScreen extends Component {
                     <CheckBox
                     value= {this.state.lstno?true:false}
                     onValueChange={() =>this.setState({lstno:!this.state.lstno,
-                      na:(!this.state.lstno&&this.state.pcno&&this.state.sfno&&this.state.lano)?true:false})}
+                      na:(!this.state.lstno&&this.state.pcno&&this.state.sfno&&this.state.lano&&this.state.sbno&&this.state.feverno&&this.state.diarrno)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.lst?true:false}
                     />
@@ -89,7 +94,7 @@ class AssessmentScreen extends Component {
                     <CheckBox
                     value= {this.state.lano?true:false}
                     onValueChange={() =>this.setState({lano:!this.state.lano,
-                      na:(this.state.lstno&&this.state.pcno&&this.state.sfno&&!this.state.lano)?true:false})}
+                      na:(this.state.lstno&&this.state.pcno&&this.state.sfno&&!this.state.lano&&this.state.sbno&&this.state.feverno&&this.state.diarrno)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.la?true:false}
                     />
@@ -106,7 +111,7 @@ class AssessmentScreen extends Component {
                     <CheckBox
                     value= {this.state.pcno?true:false}
                     onValueChange={() =>this.setState({pcno:!this.state.pcno,
-                      na:(this.state.lstno&&!this.state.pcno&&this.state.sfno&&this.state.lano)?true:false})}
+                      na:(this.state.lstno&&!this.state.pcno&&this.state.sfno&&this.state.lano&&this.state.sbno&&this.state.feverno&&this.state.diarrno)?true:false})}
                     style={styles.checkbox}
                     disabled={this.state.pc?true:false}
                     />
@@ -123,8 +128,8 @@ class AssessmentScreen extends Component {
                     <CheckBox
                     value= {this.state.sfno?true:false}
                     onValueChange={() =>this.setState({sfno:!this.state.sfno,
-                    na:(this.state.lstno&&this.state.pcno&&!this.state.sfno&&this.state.lano)?true:false})}
-                    style={styles.checkbox}
+                      na:(this.state.lstno&&this.state.pcno&&!this.state.sfno&&this.state.lano&&this.state.sbno&&this.state.feverno&&this.state.diarrno)?true:false})}
+                      style={styles.checkbox}
                     disabled={this.state.sf?true:false}
                     />
                     <CheckBox

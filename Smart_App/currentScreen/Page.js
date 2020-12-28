@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -60,124 +60,122 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor
-        }}
-      >
-        <Icon name={iconName} size={172} color="white" style={{position: 'relative'}} />
-        <View style={{ marginTop: 16 }}>
-          {headerTitle !== "" ?
-          <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
-            {headerTitle}
-          </Text>
-          :
-          null
-          }
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
-            {title}
-          </Text>
-          {weightTitle !== "" ?
-          <TextInput
-            style={{
-                height: 60,
-                borderBottomColor: 'white',
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 50,
-                marginBottom: 10,
-                borderBottomWidth: 1,
-                fontSize: 30
-            }}
-            onChangeText = { (text) => handleWtbox(text) }
-            placeholder = {weightTitle}
-            placeholderTextColor="#fff" 
-            keyboardType={'numeric'}
-            numeric
-          />
-          :
-          null
-          }
-          {heightTitle !== "" ?
-          <TextInput
-            style={{
-                height: 60,
-                borderBottomColor: 'white',
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 10,
-                borderBottomWidth: 1,
-                fontSize: 30
-            }}
-            onChangeText = { (text) => handleHtbox(text) }
-            placeholder = {heightTitle}
-            placeholderTextColor="#fff" 
-            keyboardType={'numeric'}
-            numeric
-          />
-          :
-          null
-          }
-          {genderBox !== "" ?
-          <DropDownPicker
-            items={[
-                {label: 'Select Gender', value: 'x'},
-                {label: 'Male', value: 'male'},
-                {label: 'Female', value: 'female'},
-            ]}
-            defaultValue={'x'}
-            containerStyle={{height: 50, marginTop: 30, width: 330, alignSelf: 'center'}}
-            style={{backgroundColor: '#fafafa'}}
-            itemStyle={{
-                justifyContent: 'flex-start'
-            }}
-            dropDownStyle={{backgroundColor: '#fafafa', width: 330}}
-            onChangeItem={item => handlegenbox(item)}
-          />
-          :
-          null
-          }
-          {ageBox !== "" ?
-          <View>
-            <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:5, marginTop: 35,}} activeOpacity = {.5} onPress={ showDatePicker }>
-            <Text style={{ fontSize: 16, marginRight: 135 }}>{isDate}</Text>
-            </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
+      <ScrollView style={{backgroundColor}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Icon name={iconName} size={172} color="white" style={{position: 'relative', marginTop: 80}} />
+          <View style={{ marginTop: 16 }}>
+            {headerTitle !== "" ?
+            <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+              {headerTitle}
+            </Text>
+            :
+            null
+            }
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+              {title}
+            </Text>
+            {weightTitle !== "" ?
+            <TextInput
+              style={{
+                  height: 60,
+                  width:330,
+                  borderBottomColor: 'white',
+                  alignSelf: 'center',
+                  marginBottom: 10,
+                  borderBottomWidth: 1,
+                  fontSize: 30
+              }}
+              onChangeText = { (text) => handleWtbox(text) }
+              placeholder = {weightTitle}
+              placeholderTextColor="#fff" 
+              keyboardType={'numeric'}
+              numeric
             />
-          </View>
-          :
-          null
-          }
-          {raceBox !== "" ?
-          <DropDownPicker
+            :
+            null
+            }
+            {heightTitle !== "" ?
+            <TextInput
+              style={{
+                  height: 60,
+                  width:330,
+                  borderBottomColor: 'white',
+                  alignSelf: 'center',
+                  marginBottom: 10,
+                  borderBottomWidth: 1,
+                  fontSize: 30
+              }}
+              onChangeText = { (text) => handleHtbox(text) }
+              placeholder = {heightTitle}
+              placeholderTextColor="#fff" 
+              keyboardType={'numeric'}
+              numeric
+            />
+            :
+            null
+            }
+            {genderBox !== "" ?
+            <DropDownPicker
               items={[
-                  {label: 'Select Race', value: 'x'},
-                  {label: 'White', value: 'white'},
-                  {label: 'Black/African American', value: 'black/african'},
-                  {label: 'Others', value: 'others'},
+                  {label: 'Select Gender', value: 'x'},
+                  {label: 'Male', value: 'male'},
+                  {label: 'Female', value: 'female'},
               ]}
               defaultValue={'x'}
-              containerStyle={{height: 50, marginTop: 20, width: 380, paddingLeft: 38}}
+              containerStyle={{height: 50, marginTop: 30, width: 330, alignSelf: 'center'}}
               style={{backgroundColor: '#fafafa'}}
               itemStyle={{
                   justifyContent: 'flex-start'
               }}
-              dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 38, width: 310}}
-              onChangeItem={item => handleracebox(item)}
-          />
-          :
-          null
-          }
+              dropDownStyle={{backgroundColor: '#fafafa', width: 330}}
+              onChangeItem={item => handlegenbox(item)}
+            />
+            :
+            null
+            }
+            {ageBox !== "" ?
+            <View>
+              <TouchableOpacity style={{ alignSelf: 'center', padding:20, marginBottom: 10, backgroundColor:'#fff', width:330, alignItems:'center', borderRadius:5, marginTop: 35,}} activeOpacity = {.5} onPress={ showDatePicker }>
+              <Text style={{ fontSize: 14, alignSelf: 'flex-start' }}>{isDate}</Text>
+              </TouchableOpacity>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+            </View>
+            :
+            null
+            }
+            {raceBox !== "" ?
+            <DropDownPicker
+                items={[
+                    {label: 'Select Race', value: 'x'},
+                    {label: 'White', value: 'white'},
+                    {label: 'Black/African American', value: 'black/african'},
+                    {label: 'Others', value: 'others'},
+                ]}
+                defaultValue={'x'}
+                containerStyle={{height: 50, marginTop: 20, width: 330, alignSelf: 'center', marginBottom: 200}}
+                style={{backgroundColor: '#fafafa'}}
+                itemStyle={{
+                    justifyContent: 'flex-start'
+                }}
+                dropDownStyle={{backgroundColor: '#fafafa', width: 330}}
+                onChangeItem={item => handleracebox(item)}
+            />
+            :
+            null
+            }
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

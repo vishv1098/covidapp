@@ -18,7 +18,7 @@ const OnboardingScreen = () => {
             <View key="1">
                     <Page
                         backgroundColor="black"
-                        title="This application is meant to give you a representation of what your health condition might be and is not a professional diagnosis. We only aim to suggest medical help if necessary."
+                        title="This application uses machine learning models to predict the likelihood of having COVID-19 or an influenza infection based on self-reported symptoms and vital signs of an individual. The data collected or automatically extracted from wearable devices is only used for on-device predictions and is not stored or collected for other use. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose."
                         headerTitle="Covid Guardian Angel"
                         heightTitle=""
                         weightTitle=""
