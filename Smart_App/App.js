@@ -11,6 +11,7 @@ import Assessment from './currentScreen/AssessmentScreen'
 import SettingsScreen from './currentScreen/SettingsScreen';
 import OnboardingScreen from './currentScreen/OnboardingScreen'
 import ProfileScreen from './currentScreen/ProfileScreen';
+import TermsAndConditions from './currentScreen/TermsAndConditions';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -66,6 +67,10 @@ class App extends Component {
                 //                                 options={({ navigation }) => ({
                 //                                 headerShown: false  
                 //                                 })}/>
+                //                                 <Stack.Screen name="Terms" component={TermsAndConditions}
+                //                                         options={({ navigation }) => ({
+                //                                         headerShown: false  
+                //                                         })}/>
                 //                                 <Stack.Screen name="Home" component={Home} 
                 //                                 options={({ navigation }) => ({
                 //                                         title: 'Home',
@@ -147,6 +152,10 @@ class App extends Component {
                                         <NavigationContainer>
                                                 <Stack.Navigator>
                                                         <Stack.Screen name="Onboarding" component={OnboardingScreen}
+                                                        options={({ navigation }) => ({
+                                                        headerShown: false  
+                                                        })}/>
+                                                        <Stack.Screen name="Terms" component={TermsAndConditions}
                                                         options={({ navigation }) => ({
                                                         headerShown: false  
                                                         })}/>

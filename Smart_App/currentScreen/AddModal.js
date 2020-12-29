@@ -35,6 +35,10 @@ class AddModal extends Component {
             hreditable:true,
             hrRate: -1,
             hrback: false,
+            raback: "-1",
+            genback: '-1',
+            dobback: false,
+            dobdata: -1
         }
     }
 
@@ -44,6 +48,9 @@ class AddModal extends Component {
 
     getVitalData = async() => {
         var hr = await AsyncStorage.getItem('HeartRate')
+        var ra = await AsyncStorage.getItem('userRace')
+        var gen = await AsyncStorage.getItem('userGender')
+        var dob = await AsyncStorage.getItem('userDOB')
         if (hr !== null) {
             this.setState({
                 hrRate: parseInt(hr),
@@ -53,7 +60,57 @@ class AddModal extends Component {
                 hrback: true
             })
         }
+        if (ra !== null) {
+            if (ra === 'white') {
+                this.setState({
+                    raback: 'white',
+                    white: 1,
+                    black: 0,
+                    others: 0
+                })
+            } else if (ra === 'black/african') {
+                this.setState({
+                    raback: 'black/african',
+                    white: 0,
+                    black: 1,
+                    others: 0
+                })
+            } else {
+                this.setState({
+                    raback: 'others',
+                    white: 0,
+                    black: 0,
+                    others: 1
+                });
+            }
+        }
+        if (gen !== null) {
+            if (gen === 'male') {
+                this.setState({
+                    genback: 'male',
+                    sex: 0
+                })
+            } else {
+                this.setState({
+                    genback: 'female',
+                    sex: 1
+                });
+            }
+        }
+        if (dob !== null) {
+            this.setState({
+                dobback: true,
+                dobdata: dob/5,
+                age: dob/5
+            });
+        }
         console.log(this.state.hr)
+        console.log(this.state.sex,"check")
+        console.log(this.state.white,"check")
+        console.log(this.state.black,"check")
+        console.log(this.state.others,"check")
+        console.log(this.state.ethini,"check")
+        console.log(this.state.age,"check")
         
     }
 
@@ -448,7 +505,48 @@ class AddModal extends Component {
                                     hr: this.state.hrRate
                                 })
                             }
+                            if (this.state.raback === 'white') {
+                                this.setState({
+                                    white: 1,
+                                    black: 0,
+                                    others: 0
+                                })
+                            }
+                            if (this.state.raback === 'black/african') {
+                                this.setState({
+                                    white: 0,
+                                    black: 1,
+                                    others: 0
+                                })
+                            }
+                            if (this.state.raback === 'others') {
+                                this.setState({
+                                    white: 0,
+                                    black: 0,
+                                    others: 1
+                                })
+                            }
+                            if (this.state.genback === 'male') {
+                                this.setState({
+                                    sex: 0
+                                })
+                            } else {
+                                this.setState({
+                                    sex: 1
+                                })
+                            }
+                            if (this.state.dobback === true) {
+                                this.setState({
+                                    age: this.state.dobdata
+                                })
+                            }
                             console.log(this.state.oxy,"------")
+                            console.log(this.state.sex,"------")
+                            console.log(this.state.white,"------")
+                            console.log(this.state.black,"------")
+                            console.log(this.state.others,"------")
+                            console.log(this.state.ethini,"------")
+                            console.log(this.state.age,"------")
                             x.push(this.state.oxy)
                             x.push(this.state.dbp)
                             x.push(this.state.sbp)

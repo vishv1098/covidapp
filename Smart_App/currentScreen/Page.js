@@ -6,7 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weightTitle, ageBox, genderBox, raceBox }) => {
+const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weightTitle, ageBox, genderBox, raceBox, iconsize }) => {
   
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('Select your date of birth');
@@ -67,7 +67,7 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
             alignItems: 'center',
           }}
         >
-          <Icon name={iconName} size={172} color="white" style={{position: 'relative', marginTop: 80}} />
+          <Icon name={iconName} size={parseInt(iconsize)} color="white" style={{position: 'relative', marginTop: 80}} />
           <View style={{ marginTop: 16 }}>
             {headerTitle !== "" ?
             <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
@@ -76,7 +76,7 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
             :
             null
             }
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
               {title}
             </Text>
             {weightTitle !== "" ?

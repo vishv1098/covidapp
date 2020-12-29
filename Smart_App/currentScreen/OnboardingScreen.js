@@ -26,6 +26,7 @@ const OnboardingScreen = () => {
                         genderBox=""
                         raceBox=""
                         countryBox=""
+                        iconsize="10"
                     />
                     <Footer
                         backgroundColor="black"
@@ -47,6 +48,7 @@ const OnboardingScreen = () => {
                         genderBox=""
                         raceBox=""
                         countryBox=""
+                        iconsize="172"
                     />
                     <Footer
                         backgroundColor="#ffc93c"
@@ -73,6 +75,7 @@ const OnboardingScreen = () => {
                         genderBox="Select Gender"
                         raceBox=""
                         countryBox=""
+                        iconsize="172"
                     />
                     <Footer
                         backgroundColor="#556b2f"
@@ -99,6 +102,7 @@ const OnboardingScreen = () => {
                         genderBox=""
                         raceBox="Select Race"
                         countryBox=""
+                        iconsize="172"
                     />
                     <Footer
                         backgroundColor="#07689f"
@@ -106,7 +110,7 @@ const OnboardingScreen = () => {
                         rightButtonPress={ async () => {
                             const value = await AsyncStorage.getItem('userRace')
                             if (value !== null) {
-                                navigation.navigate('Home');
+                                navigation.navigate('Terms');
                             }
                           }}
                     />
