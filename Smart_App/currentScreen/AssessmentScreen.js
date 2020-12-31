@@ -6,7 +6,6 @@ class AssessmentScreen extends Component {
     
     constructor(props) {
         super(props);
-        // this.getData();
         this.state = {
             lst : false,
             lstno : false,

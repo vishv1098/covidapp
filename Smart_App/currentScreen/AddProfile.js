@@ -228,31 +228,10 @@ class AddProfile extends Component {
                         }}
                         onPress={ async () => {
                             var x = []
-                            // console.log(this.state.oxy,"------")
                             x.push(this.state.user_wt)
                             x.push(this.state.user_ht)
                             x.push(this.state.user_gender)
                             x.push(this.state.user_race)
-                            // x.push(this.state.res_r)
-                            // x.push(this.state.b_tmp)
-                            // x.push(this.state.sex)
-                            // x.push(this.state.white)
-                            // x.push(this.state.black)
-                            // x.push(this.state.others)
-                            // x.push(this.state.ethini)
-                            // x.push(this.state.age)
-                            // await AsyncStorage.setItem('oxygen_saturation', ""+this.state.oxy)
-                            // await AsyncStorage.setItem('diastolic_bloodpressure', ""+this.state.dbp)
-                            // await AsyncStorage.setItem('systolic_bloodpressure', ""+this.state.sbp)
-                            // await AsyncStorage.setItem('heart_rate', ""+this.state.hr)
-                            // await AsyncStorage.setItem('respiratory_rate', ""+this.state.res_r)
-                            // await AsyncStorage.setItem('temperature', ""+this.state.b_tmp)
-                            // await AsyncStorage.setItem('sex',""+this.state.sex)
-                            // await AsyncStorage.setItem('white-valid',""+this.state.white)
-                            // await AsyncStorage.setItem('black-valid',""+this.state.black)
-                            // await AsyncStorage.setItem('others-valid', ""+this.state.others)
-                            // await AsyncStorage.setItem('ethini-valid', ""+this.state.ethini)
-                            // await AsyncStorage.setItem('age-group', ""+this.state.age)
                             this.props.setData(x);
                             this.refs.myModal.close();
                         }}

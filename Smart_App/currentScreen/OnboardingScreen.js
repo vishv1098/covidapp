@@ -56,9 +56,10 @@ const OnboardingScreen = () => {
                         rightButtonPress={ async () => {
                             const value = await AsyncStorage.getItem('userWeight')
                             const value2 = await AsyncStorage.getItem('userHeight')
-                            console.log(value)
                             if (value !== null && value2 !== null) {
                                 handlePageChange(2);
+                            } else {
+                                alert("Please fill all the fields")
                             }
                           }}
                     />
@@ -83,9 +84,10 @@ const OnboardingScreen = () => {
                         rightButtonPress={ async () => {
                             const value = await AsyncStorage.getItem('userDOB')
                             const value2 = await AsyncStorage.getItem('userGender')
-                            console.log(value)
                             if (value !== null && value2 !== null) {
                                 handlePageChange(3);
+                            } else {
+                                alert("Please fill all the fields")
                             }
                           }}
                     />
@@ -111,6 +113,8 @@ const OnboardingScreen = () => {
                             const value = await AsyncStorage.getItem('userRace')
                             if (value !== null) {
                                 navigation.navigate('Terms');
+                            } else {
+                                alert("Please fill all the fields")
                             }
                           }}
                     />

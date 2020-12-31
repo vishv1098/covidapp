@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ScrollView, BlurView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Dialog from "react-native-dialog";
 import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
@@ -34,7 +34,7 @@ class Home extends Component {
             safe: false,
             result: false,
             res_score: 0,
-            res_msg: 'Please click on the button to check result',
+            res_msg: 'Please choose an assessment type',
             g_color: 'green',
             oxy: -1,
             dbp: -1,
@@ -62,13 +62,8 @@ class Home extends Component {
     }
 
     async componentDidMount() {
-        // const {prob} = this.props.route.params?this.props.route.params:0
-        // console.log(prob)
-        console.log("Hi")
         await tf.setBackend(BACKEND_CONFIG);
         await tf.ready();
-        console.log("componentDidMount: tf.ready is set");
-        console.log("the MyModelLoadLocal component is mounted");
         var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
         if (google_token_fetch !== null) {
             this.setState({
@@ -77,20 +72,7 @@ class Home extends Component {
         }
     }
 
-    // async componentDidUpdate() {
-    //     console.log("Hello")
-    // }
-
-    // async componentDidCatch() {
-    //     console.log("Bye")
-    // }
-
-    // async componentWillUnmount() {
-    //     console.log("Test")
-    // }
-
     getData = async () => {
-        // console.log("Hi")
         var oxygen = await AsyncStorage.getItem('oxygen_saturation')
         var bloodp = await AsyncStorage.getItem('diastolic_bloodpressure')
         var bloodsp = await AsyncStorage.getItem('systolic_bloodpressure')
@@ -196,7 +178,7 @@ class Home extends Component {
                 g_color: 'green'
             })
         } else if (covidscore < 0.5 && influscore > 0.5 ) {
-            msg = "You are likely to have Influenza"
+            msg = "Your probability to have Influenza"
             this.setState({
                 influ: true,
                 result: true,
@@ -205,7 +187,7 @@ class Home extends Component {
                 g_color: 'orange'
             })
         }  else if (covidscore > 0.5 && influscore < 0.5 ) {
-            msg = "You are likely to have COVID"
+            msg = "Your probability to have COVID"
             this.setState({
                 covid: true,
                 result: true,
@@ -216,7 +198,7 @@ class Home extends Component {
         } else {
             const covidinfluscore = await this.getCovidInfluPrediction();
             if (covidinfluscore < 0.5) {
-                msg = "You are likely to have Influenza"
+                msg = "Your probability to have Influenza"
                 this.setState({
                     influ: true,
                     result: true,
@@ -225,7 +207,7 @@ class Home extends Component {
                     g_color: 'orange'
                 })
             } else {
-                msg = "You are likely to have COVID"
+                msg = "Your probability to have COVID"
                 this.setState({
                     covid: true,
                     result: true,
@@ -243,9 +225,7 @@ class Home extends Component {
                 'Authorization': 'Bearer ' + this.state.google_token
             }
         }).then((resp) => {
-            // console.log(resp.data)
             var array = resp.data["dataSource"]
-            // console.log(array)
             var heart_rate_token = ''
             var step_count_token = ''
             var distance_token = ''
@@ -254,7 +234,6 @@ class Home extends Component {
             for( var q = 0; q < array.length; q++ ) {
                 try {
                     if (array[q]["device"]["uid"] === "e3fc9470") {
-                        // console.log(array[q]["dataStreamId"])
                         if (array[q]["dataStreamId"].includes("heart_rate")) {
                           heart_rate_token = array[q]["dataStreamId"]
                         }
@@ -270,12 +249,7 @@ class Home extends Component {
                         if (array[q]["dataStreamId"].includes("activity")) {
                           activity_token = array[q]["dataStreamId"]
                         }
-                      }
-                    // console.log(heart_rate_token)
-                    // console.log(step_count_token)
-                    // console.log(distance_token)
-                    // console.log(calories_token)
-                    // console.log(activity_token)
+                    }
                     this.setState({
                         heart_rate_token: heart_rate_token,
                         step_count_token: step_count_token,
@@ -285,7 +259,7 @@ class Home extends Component {
                     })
                     
                 } catch (error) {
-                    // console.log(error)
+                    console.log(error)
                 }
             }
             if ((heart_rate_token === '') && (step_count_token === '') && (distance_token === '') && (calories_token === '') && (activity_token === '')) {
@@ -297,12 +271,9 @@ class Home extends Component {
     }
 
     heartRateData = async() => {
-        // console.log(this.state.startDate+"T00:00:00+0000")
         var myDate = new Date(this.state.startDate+"T00:00:00+0000");
-        // console.log(myDate)
         var result1 = myDate.getTime();
         var result2 = this.state.endDate
-        // console.log('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000')
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
             headers: {
                 'Authorization': 'Bearer ' + this.state.google_token
@@ -311,15 +282,12 @@ class Home extends Component {
             var array = resp.data["point"]
             var x = array[array.length - 1]
             var res = x.value[0].fpVal
-            console.log(typeof(res))
             await AsyncStorage.setItem("HeartRate",res+'')
         })
 
     }
 
     checkValidation = async () => {
-        // console.log("HI")
-        // console.log(this.state.google_token)
         await this.getData();
         var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
         if(google_token_fetch !== null) {
@@ -359,13 +327,11 @@ class Home extends Component {
     } 
 
     render() {
-        const {prob} = this.props.route.params?this.props.route.params:0
         return(
             <ScrollView style={{backgroundColor: '#F5FCFF'}}>
                 <View style={styles.container}>
                     <View style={styles.infoButtonContainer}>                                     
                         <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-                                {/* <Text style={styles.infobtntext} >i</Text> */}
                                 <Icon name='information-circle-outline' size={20} style={{position: 'relative'}} />
                         </TouchableOpacity>
                     </View> 
@@ -401,6 +367,9 @@ class Home extends Component {
                     </View>
                     <View style={styles.subcontainer}>
                         <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
+                    </View>
+                    <View style={{paddingTop:60, paddingBottom:5}}>
+                        <Text style={{ fontSize: 13, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
                     </View>   
                     <View style={styles.subcontainerButton}>                                     
                         <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
@@ -417,46 +386,6 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     backgroundColor: '#F5FCFF',
-    // },
-    // subcontainer:{
-    //     // flexDirection: "row",
-    //     alignSelf:"stretch",
-    //     paddingBottom:70
-    // },
-    // subcontainerButton:{
-    //     flexDirection: "row",
-    //     alignSelf:"stretch",
-    //     justifyContent:"space-around",
-    //     paddingBottom:70
-    // },
-    // btntext:{
-    //     color:'white',
-    //     fontSize:14,
-    //     textAlign:'center'
-    // },
-    // leftbutton: {
-    //     alignSelf:'center',
-    //     alignItems:'center',
-    //     padding:20,
-    //     backgroundColor:'#00B0B9',
-    //     borderRadius:20,
-    //     marginTop: 30,
-    //     width:150,
-    // },
-    // button: {
-    //     alignSelf:'center',
-    //     alignItems:'center',
-    //     padding:20,
-    //     backgroundColor:'#00B0B9',
-    //     borderRadius:20,
-    //     marginTop: 30,
-    //     width:150,
-    // },
     header:{
         fontSize:35,
         color:'#00B0B9',
@@ -473,7 +402,7 @@ const styles = StyleSheet.create({
     subcontainer:{
         paddingTop:20,
         alignSelf:"stretch",
-        paddingBottom:70
+        paddingBottom:5
     },
     subcontainerButton:{
         flexDirection: "row",

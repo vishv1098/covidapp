@@ -67,7 +67,6 @@ class SettingsScreen extends Component {
 
     constructor(props) {
         super(props);
-        // this.getData();
         this.state = {
             fitbit_accesstoken: '',
             google_accesstoken: '',
@@ -104,8 +103,6 @@ class SettingsScreen extends Component {
     }
 
     async componentDidMount() {
-        // console.log("Hi")
-        // await this.getVitalData();
         await this.getData();
         await this.getFitbitData();
     }
@@ -205,8 +202,6 @@ class SettingsScreen extends Component {
                     .then((data) => {
                         userInfo = data
                         const currentUser = GoogleSignin.getTokens().then(async(res)=>{
-                            console.log(res)
-                            // console.log(JSON.parse(res))
                             try {
                                 await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
                                 alert('Data successfully saved')
@@ -214,7 +209,6 @@ class SettingsScreen extends Component {
                                 alert('Failed to save the data to the storage')
                             }
                             g_accessToken = res.accessToken
-                            // console.log(g_accessToken)
                             this.setState({
                                 google_accesstoken: g_accessToken
                             })
@@ -224,18 +218,12 @@ class SettingsScreen extends Component {
                     .catch((error) => {
                       console.log("....." + JSON.stringify(error))
                     });
-                // console.log(g_accessToken)
                 this.setState({
-                    // google_accesstoken: g_accessToken,
                     textdata: 'You have signed-in as ' + userInfo.user.name,
                     googlename: userInfo.user.name,
                     googledata: 'Sign-out Google Fit'
                 })
                 await this.storeData()
-                // console.log("Store")
-                // console.log(this.state.google_accesstoken)
-                // await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken)
-                // console.log("Stored")
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -265,22 +253,8 @@ class SettingsScreen extends Component {
     }
 
     storeData = async() => {
-        // console.log("Store")
-        // console.log(this.state.google_accesstoken)
         var x_access = this.state.google_accesstoken.toString()
-        // console.log(typeof(x_access))
-        // console.log(x_access)
-        // try {
-        //     await AsyncStorage.setItem('googlefit_accesstoken', this.state.google_accesstoken.toString())
-        //     alert('Data successfully saved')
-        // } catch (e) {
-        //     alert('Failed to save the data to the storage')
-        // }
-        // console.log("Stored")
-        // console.log("Check")
         var check = await AsyncStorage.getItem("googlefit_accesstoken")
-        // console.log(typeof(check))
-        console.log(check, "hi")  
     }
 
     _onFormData = async() => {
@@ -325,7 +299,6 @@ class SettingsScreen extends Component {
     }
 
     render() {
-        console.log(this.state.google_accesstoken)
         return (
             <ScrollView>
                 <View style={styles.container}>

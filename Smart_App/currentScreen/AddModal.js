@@ -103,15 +103,7 @@ class AddModal extends Component {
                 dobdata: dob/5,
                 age: dob/5
             });
-        }
-        console.log(this.state.hr)
-        console.log(this.state.sex,"check")
-        console.log(this.state.white,"check")
-        console.log(this.state.black,"check")
-        console.log(this.state.others,"check")
-        console.log(this.state.ethini,"check")
-        console.log(this.state.age,"check")
-        
+        }        
     }
 
     showAddModal = () => {
@@ -540,13 +532,13 @@ class AddModal extends Component {
                                     age: this.state.dobdata
                                 })
                             }
-                            console.log(this.state.oxy,"------")
-                            console.log(this.state.sex,"------")
-                            console.log(this.state.white,"------")
-                            console.log(this.state.black,"------")
-                            console.log(this.state.others,"------")
-                            console.log(this.state.ethini,"------")
-                            console.log(this.state.age,"------")
+                            // console.log(this.state.oxy,"------")
+                            // console.log(this.state.sex,"------")
+                            // console.log(this.state.white,"------")
+                            // console.log(this.state.black,"------")
+                            // console.log(this.state.others,"------")
+                            // console.log(this.state.ethini,"------")
+                            // console.log(this.state.age,"------")
                             x.push(this.state.oxy)
                             x.push(this.state.dbp)
                             x.push(this.state.sbp)
