@@ -70,13 +70,13 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
           <Icon name={iconName} size={parseInt(iconsize)} color="white" style={{position: 'relative', marginTop: 80}} />
           <View style={{ marginTop: 16 }}>
             {headerTitle !== "" ?
-            <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+            <Text style={{ fontSize: 35, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100, alignContent:'space-around', alignItems:'center', alignSelf:'center' }}>
               {headerTitle}
             </Text>
             :
             null
             }
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100, alignContent: 'space-around', alignItems: 'center', alignSelf:'center' }}>
               {title}
             </Text>
             {weightTitle !== "" ?

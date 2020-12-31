@@ -57,6 +57,7 @@ class Home extends Component {
             activity_token: '',
             startDate: "1607538600000",
             endDate: Date.now(),
+            assessmentResultMessage: ''
         }
         
     }
@@ -175,7 +176,8 @@ class Home extends Component {
                 result: true,
                 res_msg: msg,
                 res_score: parseInt((100 - ((covidscore/0.5)*100)).toFixed(0)),
-                g_color: 'green'
+                g_color: 'green',
+                assessmentResultMessage: 'This result is based on Vitals assessment'
             })
         } else if (covidscore < 0.5 && influscore > 0.5 ) {
             msg = "Your probability to have Influenza"
@@ -184,7 +186,8 @@ class Home extends Component {
                 result: true,
                 res_msg: msg,
                 res_score: parseInt(((influscore)*100).toFixed(0)),
-                g_color: 'orange'
+                g_color: 'orange',
+                assessmentResultMessage: 'This result is based on Vitals assessment'
             })
         }  else if (covidscore > 0.5 && influscore < 0.5 ) {
             msg = "Your probability to have COVID"
@@ -193,7 +196,8 @@ class Home extends Component {
                 result: true,
                 res_msg: msg,
                 res_score: parseInt(((covidscore)*100).toFixed(0)),
-                g_color: 'red'
+                g_color: 'red',
+                assessmentResultMessage: 'This result is based on Vitals assessment'
             })
         } else {
             const covidinfluscore = await this.getCovidInfluPrediction();
@@ -204,7 +208,8 @@ class Home extends Component {
                     result: true,
                     res_msg: msg,
                     res_score: parseInt((100 - ((covidinfluscore/0.5)*100)).toFixed(0)),
-                    g_color: 'orange'
+                    g_color: 'orange',
+                    assessmentResultMessage: 'This result is based on Vitals assessment'
                 })
             } else {
                 msg = "Your probability to have COVID"
@@ -213,7 +218,8 @@ class Home extends Component {
                     result: true,
                     res_msg: msg,
                     res_score: parseInt(((1-((1-covidinfluscore)/0.5))*100).toFixed(0)),
-                    g_color: 'red'
+                    g_color: 'red',
+                    assessmentResultMessage: 'This result is based on Vitals assessment'
                 })
             }
         }
@@ -233,7 +239,7 @@ class Home extends Component {
             var activity_token = ''
             for( var q = 0; q < array.length; q++ ) {
                 try {
-                    if (array[q]["device"]["uid"] === "e3fc9470") {
+                    if (array[q]["device"]["uid"] === "3d58d1e0") {
                         if (array[q]["dataStreamId"].includes("heart_rate")) {
                           heart_rate_token = array[q]["dataStreamId"]
                         }
@@ -313,12 +319,15 @@ class Home extends Component {
             if(prob*100>=50) { 
                 this.setState({ 
                     res_msg:"You're likely to have Covid", 
-                    g_color:'red' 
+                    g_color:'red',
+                    assessmentResultMessage: 'This result is based on Symptoms assessment'
                 }) 
             } else { 
                 this.setState({ 
                     res_msg:"You're likely to have influenza", 
-                    g_color:'orange' }) 
+                    g_color:'orange',
+                    assessmentResultMessage: 'This result is based on Symptoms assessment'
+                }) 
             } 
             this.setState({ 
                 res_score:Math.round(prob*100) 
@@ -368,8 +377,11 @@ class Home extends Component {
                     <View style={styles.subcontainer}>
                         <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
                     </View>
+                    <View style={{paddingTop:30}}>
+                        <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
+                    </View> 
                     <View style={{paddingTop:60, paddingBottom:5}}>
-                        <Text style={{ fontSize: 13, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
+                        <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
                     </View>   
                     <View style={styles.subcontainerButton}>                                     
                         <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
@@ -390,7 +402,7 @@ const styles = StyleSheet.create({
         fontSize:35,
         color:'#00B0B9',
         paddingBottom:50,
-        paddingTop: 50,
+        paddingTop: 10,
         alignSelf:"center",
       },
     container: {
