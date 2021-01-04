@@ -8,6 +8,7 @@ import { LocalNotification, ScheduledLocalNotification } from './LocalPushContro
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SwiperButton from './swipeButton'
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -57,7 +58,9 @@ class Home extends Component {
             activity_token: '',
             startDate: "1607538600000",
             endDate: Date.now(),
-            assessmentResultMessage: ''
+            assessmentResultMessage: '',
+            firstSave: 'false',
+            startTest: false,
         }
         
     }
@@ -228,7 +231,7 @@ class Home extends Component {
     dataSources = async() => {
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
             headers: {
-                'Authorization': 'Bearer ' + this.state.google_token
+                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMB4gliJHbXagHFnduVcsHa-hZde5w2uRw0awtvpUmv_Q36XSWznDSAKq9vEcHb-4djDpHLZzzEG0FhrFZbo6Egl47qeGHIZzGKLgdqkS_Fy_2sOFO1nYaOq8RD2ol1sjeo5LPLZepqWPGu1hkUVBXuW9qVUnrCnSMRIBYE'
             }
         }).then((resp) => {
             var array = resp.data["dataSource"]
@@ -239,7 +242,7 @@ class Home extends Component {
             var activity_token = ''
             for( var q = 0; q < array.length; q++ ) {
                 try {
-                    if (array[q]["device"]["uid"] === "3d58d1e0") {
+                    if (array[q]["device"]["uid"] === "e3fc9470") {
                         if (array[q]["dataStreamId"].includes("heart_rate")) {
                           heart_rate_token = array[q]["dataStreamId"]
                         }
@@ -282,7 +285,7 @@ class Home extends Component {
         var result2 = this.state.endDate
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
             headers: {
-                'Authorization': 'Bearer ' + this.state.google_token
+                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMB4gliJHbXagHFnduVcsHa-hZde5w2uRw0awtvpUmv_Q36XSWznDSAKq9vEcHb-4djDpHLZzzEG0FhrFZbo6Egl47qeGHIZzGKLgdqkS_Fy_2sOFO1nYaOq8RD2ol1sjeo5LPLZepqWPGu1hkUVBXuW9qVUnrCnSMRIBYE'
             }
         }).then(async (resp) => {
             var array = resp.data["point"]
@@ -296,15 +299,25 @@ class Home extends Component {
     checkValidation = async () => {
         await this.getData();
         var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+        var first = await AsyncStorage.getItem('first_save')
         if(google_token_fetch !== null) {
             this.setState({
                 google_token: google_token_fetch
+            })
+        }
+        if(first !== null) {
+            this.setState({
+                firstSave: first
             })
         }
         if (this.state.google_token === null) {
             this.setState({
                 visibility:true,
             })
+        } else if(this.state.firstSave === 'false') {
+            await this.dataSources();
+            await this.heartRateData();
+            alert("There are some missing vitals values please enter those values through manual data entry")
         } else {
             await this.dataSources();
             await this.heartRateData();
@@ -336,15 +349,73 @@ class Home extends Component {
     } 
 
     render() {
-        return(
+        // return(
+        //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
+        //         <View style={styles.container}>
+        //             <View style={styles.infoButtonContainer}>                                     
+        //                 <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
+        //                         <Icon name='information-circle-outline' size={20} style={{position: 'relative'}} />
+        //                 </TouchableOpacity>
+        //             </View> 
+        //             <Text style={styles.header}>COVID Assessment</Text>
+        //             <Dialog.Container visible={this.state.visibility}> 
+        //                 <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
+        //                     <Dialog.Description>
+        //                         Oops! There seems to be some vital data missing. Please fill in your Vital details.
+        //                     </Dialog.Description>
+        //                 <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
+        //             </Dialog.Container>
+        //             <Dialog.Container visible={this.state.infoVisibility}> 
+        //                 <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
+        //                     <Dialog.Description>
+        //                     This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
+        //                     </Dialog.Description>
+        //                     <Dialog.Description>
+        //                     The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
+        //                     </Dialog.Description>
+        //                     <Dialog.Description>
+        //                     Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
+        //                     </Dialog.Description>
+        //                 <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
+        //             </Dialog.Container> 
+        //             <View style={styles.subcontainer} alignSelf='center'> 
+        //                 <SemiCircleProgress
+        //                     percentage={this.state.res_score}
+
+        //                     progressColor={this.state.g_color}
+        //                 >
+        //                     <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
+        //                 </SemiCircleProgress>
+        //             </View>
+        //             <View style={styles.subcontainer}>
+        //                 <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
+        //             </View>
+        //             <View style={{paddingTop:30}}>
+        //                 <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
+        //             </View> 
+        //             <View style={{paddingTop:60, paddingBottom:5}}>
+        //                 <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
+        //             </View>   
+        //             <View style={styles.subcontainerButton}>                                     
+        //                 <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
+        //                             <Text style={styles.btntext}>Symptoms</Text>
+        //                 </TouchableOpacity>
+        //                 <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
+        //                         <Text style={styles.btntext}>Vitals</Text>
+        //                 </TouchableOpacity>
+        //             </View>
+        //         </View>
+        //     </ScrollView>
+        // );
+        return (
             <ScrollView style={{backgroundColor: '#F5FCFF'}}>
                 <View style={styles.container}>
                     <View style={styles.infoButtonContainer}>                                     
                         <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-                                <Icon name='information-circle-outline' size={20} style={{position: 'relative'}} />
+                                <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
                         </TouchableOpacity>
-                    </View> 
-                    <Text style={styles.header}>Covid-19 Assessment</Text>
+                    </View>
+                    <Text style={styles.header}>COVID Assessment</Text>
                     <Dialog.Container visible={this.state.visibility}> 
                         <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
                             <Dialog.Description>
@@ -365,35 +436,10 @@ class Home extends Component {
                             </Dialog.Description>
                         <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
                     </Dialog.Container> 
-                    <View style={styles.subcontainer} alignSelf='center'> 
-                        <SemiCircleProgress
-                            percentage={this.state.res_score}
-
-                            progressColor={this.state.g_color}
-                        >
-                            <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
-                        </SemiCircleProgress>
-                    </View>
-                    <View style={styles.subcontainer}>
-                        <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
-                    </View>
-                    <View style={{paddingTop:30}}>
-                        <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
-                    </View> 
-                    <View style={{paddingTop:60, paddingBottom:5}}>
-                        <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
-                    </View>   
-                    <View style={styles.subcontainerButton}>                                     
-                        <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
-                                    <Text style={styles.btntext}>Symptoms</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
-                                <Text style={styles.btntext}>Vitals</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <SwiperButton></SwiperButton>
                 </View>
             </ScrollView>
-        );
+        )
     }
 }
 
@@ -454,7 +500,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#F5FCFF',
         borderRadius:200,
         marginTop: 30,
-        width:60,
+        width:80,
         height:50,
         justifyContent:'center',
     },

@@ -76,7 +76,7 @@ const Page = ({ backgroundColor, iconName, title, headerTitle, heightTitle, weig
             :
             null
             }
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: 'white', textAlign: 'center', paddingBottom: 100, alignContent: 'space-around', alignItems: 'center', alignSelf:'center' }}>
+            <Text style={{ fontSize: 22, fontWeight: '100', color: 'white', textAlign: 'center', paddingBottom: 100, alignContent: 'space-around', alignItems: 'center', alignSelf:'center', marginLeft: 10, marginRight: 10 }}>
               {title}
             </Text>
             {weightTitle !== "" ?

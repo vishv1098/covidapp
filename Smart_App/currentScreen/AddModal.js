@@ -38,7 +38,8 @@ class AddModal extends Component {
             raback: "-1",
             genback: '-1',
             dobback: false,
-            dobdata: -1
+            dobdata: -1,
+            firstSave: 'false'
         }
     }
 
@@ -306,6 +307,7 @@ class AddModal extends Component {
             >
                 <ScrollView>
                     <Text style={{fontSize: 16, fontWeight: 'bold', textAlign: 'center', paddingBottom: 10, marginTop: 40}}>Vital and Demographics Data</Text>
+                    <Text style={{fontSize: 13, fontWeight: 'bold', textAlign: 'center', paddingBottom: 10, marginTop: 40, alignContent:'space-around', marginLeft: 10, marginRight: 10}}>If you don't know any of your vital values then press on save button without making any changes. So the model will take the default value for prediction</Text>
                     <TextInput
                         style={{
                             height: 40,
@@ -532,6 +534,9 @@ class AddModal extends Component {
                                     age: this.state.dobdata
                                 })
                             }
+                            this.setState({
+                                firstSave: 'true'
+                            })
                             // console.log(this.state.oxy,"------")
                             // console.log(this.state.sex,"------")
                             // console.log(this.state.white,"------")
@@ -563,6 +568,7 @@ class AddModal extends Component {
                             await AsyncStorage.setItem('others-valid', ""+this.state.others)
                             await AsyncStorage.setItem('ethini-valid', ""+this.state.ethini)
                             await AsyncStorage.setItem('age-group', ""+this.state.age)
+                            await AsyncStorage.setItem('first_save', ""+this.state.firstSave)
                             this.props.setData(x);
                             this.refs.myModal.close();
                         }}

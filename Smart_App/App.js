@@ -12,6 +12,7 @@ import SettingsScreen from './currentScreen/SettingsScreen';
 import OnboardingScreen from './currentScreen/OnboardingScreen'
 import ProfileScreen from './currentScreen/ProfileScreen';
 import TermsAndConditions from './currentScreen/TermsAndConditions';
+import LaunchScreen from './currentScreen/LaunchScreen'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -63,6 +64,10 @@ class App extends Component {
                                 <StatusBar style="dark" />
                                 <NavigationContainer>
                                         <Stack.Navigator>
+                                                <Stack.Screen name="Launch" component={LaunchScreen}
+                                                options={({ navigation }) => ({
+                                                headerShown: false  
+                                                })}/>
                                                 <Stack.Screen name="Onboarding" component={OnboardingScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
@@ -151,6 +156,10 @@ class App extends Component {
                 //                         <StatusBar style="dark" />
                 //                         <NavigationContainer>
                 //                                 <Stack.Navigator>
+                //                                         <Stack.Screen name="Launch" component={LaunchScreen}
+                //                                         options={({ navigation }) => ({
+                //                                         headerShown: false  
+                //                                         })}/>
                 //                                         <Stack.Screen name="Onboarding" component={OnboardingScreen}
                 //                                         options={({ navigation }) => ({
                 //                                         headerShown: false  

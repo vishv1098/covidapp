@@ -36,7 +36,7 @@ const TermsAndConditions = () => {
               <Text style={styles.tcP}>By Accepting this you are agreeing to all the terms and conditions.</Text>
               <Text style={styles.tcP}></Text>
           </ScrollView>
-          <TouchableOpacity disabled={ !accepted } onPress={ ()=>{alert("Terms and conditions accepted"); navigation.navigate('Home'); } } style={ accepted ? styles.button : styles.buttonDisabled }><Text style={styles.buttonLabel}>Accept</Text></TouchableOpacity>
+          <TouchableOpacity disabled={ !accepted } onPress={ ()=>{alert("Terms and conditions accepted"); navigation.navigate('Onboarding'); } } style={ accepted ? styles.button : styles.buttonDisabled }><Text style={styles.buttonLabel}>Accept</Text></TouchableOpacity>
     </View>
   );
 }
