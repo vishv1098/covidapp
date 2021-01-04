@@ -242,7 +242,7 @@ class Home extends Component {
     dataSources = async() => {
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
             headers: {
-                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMC_fWZUpVlnI5e3Kt0UOaBuEpBqHcbyug7SWfNEuGSKMbtNI--TgTBEo2N6iQ9FxL1pM7_WmFqJZ_xp7q_2OUOVYR_4Qdr2iff8NNWmNmi9qf-W3giR3hkuOZDRa7uuZm9dmmyFd7K9blcH3CGZZkthL2ObvwikcV17cZQ'
+                'Authorization': 'Bearer ' + this.state.google_token
             }
         }).then((resp) => {
             var array = resp.data["dataSource"]
@@ -296,7 +296,7 @@ class Home extends Component {
         var result2 = this.state.endDate
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
             headers: {
-                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMC_fWZUpVlnI5e3Kt0UOaBuEpBqHcbyug7SWfNEuGSKMbtNI--TgTBEo2N6iQ9FxL1pM7_WmFqJZ_xp7q_2OUOVYR_4Qdr2iff8NNWmNmi9qf-W3giR3hkuOZDRa7uuZm9dmmyFd7K9blcH3CGZZkthL2ObvwikcV17cZQ'
+                'Authorization': 'Bearer ' + this.state.google_token
             }
         }).then(async (resp) => {
             var array = resp.data["point"]
