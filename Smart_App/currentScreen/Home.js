@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import Dialog from "react-native-dialog";
 import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
@@ -8,7 +8,8 @@ import { LocalNotification, ScheduledLocalNotification } from './LocalPushContro
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
-import SwiperButton from './swipeButton'
+import AddModal from './AddModal';
+// import SwiperButton from './swipeButton'
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -20,6 +21,9 @@ const covid_infl_modelJson = require('../components/COVIDvsInfluenza/model.json'
 const covid_infl_modelWeights = require('../components/COVIDvsInfluenza/group1-shard1of1.bin')
 
 const BACKEND_CONFIG = 'cpu';
+
+var screenWidth = Dimensions.get('screen').width;
+var screenHeight = Math.round(Dimensions.get('window').height);
 
 class Home extends Component {
 
@@ -35,7 +39,7 @@ class Home extends Component {
             safe: false,
             result: false,
             res_score: 0,
-            res_msg: 'Please choose an assessment type',
+            res_msg: 'Please wait till the result get displayed',
             g_color: 'green',
             oxy: -1,
             dbp: -1,
@@ -61,8 +65,15 @@ class Home extends Component {
             assessmentResultMessage: '',
             firstSave: 'false',
             startTest: false,
+            symptomsCheck: false,
+            symp_res_msg: '',
+            symp_g_color: '',
+            symp_assessmentResultMessage: '',
+            symp_res_score: 0,
+            vitalTest: false,
+            formFill: false,
         }
-        
+        this._onFormData = this._onFormData.bind(this);
     }
 
     async componentDidMount() {
@@ -231,7 +242,7 @@ class Home extends Component {
     dataSources = async() => {
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
             headers: {
-                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMB4gliJHbXagHFnduVcsHa-hZde5w2uRw0awtvpUmv_Q36XSWznDSAKq9vEcHb-4djDpHLZzzEG0FhrFZbo6Egl47qeGHIZzGKLgdqkS_Fy_2sOFO1nYaOq8RD2ol1sjeo5LPLZepqWPGu1hkUVBXuW9qVUnrCnSMRIBYE'
+                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMC_fWZUpVlnI5e3Kt0UOaBuEpBqHcbyug7SWfNEuGSKMbtNI--TgTBEo2N6iQ9FxL1pM7_WmFqJZ_xp7q_2OUOVYR_4Qdr2iff8NNWmNmi9qf-W3giR3hkuOZDRa7uuZm9dmmyFd7K9blcH3CGZZkthL2ObvwikcV17cZQ'
             }
         }).then((resp) => {
             var array = resp.data["dataSource"]
@@ -285,7 +296,7 @@ class Home extends Component {
         var result2 = this.state.endDate
         await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
             headers: {
-                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMB4gliJHbXagHFnduVcsHa-hZde5w2uRw0awtvpUmv_Q36XSWznDSAKq9vEcHb-4djDpHLZzzEG0FhrFZbo6Egl47qeGHIZzGKLgdqkS_Fy_2sOFO1nYaOq8RD2ol1sjeo5LPLZepqWPGu1hkUVBXuW9qVUnrCnSMRIBYE'
+                'Authorization': 'Bearer ' + 'ya29.a0AfH6SMC_fWZUpVlnI5e3Kt0UOaBuEpBqHcbyug7SWfNEuGSKMbtNI--TgTBEo2N6iQ9FxL1pM7_WmFqJZ_xp7q_2OUOVYR_4Qdr2iff8NNWmNmi9qf-W3giR3hkuOZDRa7uuZm9dmmyFd7K9blcH3CGZZkthL2ObvwikcV17cZQ'
             }
         }).then(async (resp) => {
             var array = resp.data["point"]
@@ -326,29 +337,94 @@ class Home extends Component {
         
     }
 
+    checkValid = async () => {
+        await this.getData();
+        console.log("bye")
+        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+        var first = await AsyncStorage.getItem('first_save')
+        if(google_token_fetch !== null) {
+            this.setState({
+                google_token: google_token_fetch
+            })
+        }
+        console.log("check")
+        if (this.state.google_token === null) {
+            this.setState({
+                visibility:true,
+            })
+        }
+        await this.dataSync()
+        // console.log("Hi")
+        // await this.dataSources();
+        // await this.heartRateData();
+    }
+
+    dataSync = async () => {
+        console.log("Hi")
+        await this.dataSources();
+        await this.heartRateData();
+    }
+
     onSymptomAssess = () => { 
         const {prob} = this.props.route.params?this.props.route.params:0 
         if(isNaN(prob) === false){ 
             if(prob*100>=50) { 
                 this.setState({ 
-                    res_msg:"You're likely to have Covid", 
-                    g_color:'red',
-                    assessmentResultMessage: 'This result is based on Symptoms assessment'
+                    symp_res_msg:"You're likely to have Covid", 
+                    symp_g_color:'red',
+                    symp_assessmentResultMessage: 'This result is based on Symptoms assessment',
+                    symp_res_score:Math.round(prob*100),
                 }) 
             } else { 
                 this.setState({ 
-                    res_msg:"You're likely to have influenza", 
-                    g_color:'orange',
-                    assessmentResultMessage: 'This result is based on Symptoms assessment'
+                    symp_res_msg:"You're likely to have influenza", 
+                    symp_g_color:'orange',
+                    symp_assessmentResultMessage: 'This result is based on Symptoms assessment',
+                    symp_res_score:Math.round(prob*100),
                 }) 
             } 
-            this.setState({ 
-                res_score:Math.round(prob*100) 
+            this.setState({
+                symptomsCheck: true,
+                startTest: false
             }) 
-        } 
+        }
+        console.log(this.state.symp_res_score)
     } 
 
+    onStartTest = async() => {
+        await this.setState({
+            startTest: true
+        })
+    }
+
+    _onFormData = async() => {
+        this.refs.addModal.showAddModal();
+    }
+
+    Reset = async () => {
+        this.setState({
+            formFill: false,
+            startTest: false,
+            symptomsCheck: false,
+            vitalTest: false
+        })
+    }
+
+    setData = async() => {
+        this.setState({
+            formFill: true,
+            startTest: false,
+            symptomsCheck: false,
+            vitalTest: false
+        })
+        console.log("Test")
+        await this.dataSources();
+        await this.heartRateData();
+        await this.getCovidTest();
+    }
+
     render() {
+        // console.log(this.state.symp_res_score)
         // return(
         //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
         //         <View style={styles.container}>
@@ -407,6 +483,41 @@ class Home extends Component {
         //         </View>
         //     </ScrollView>
         // );
+        // if (this.state.startTest === true) {
+        //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
+        //             <View style={styles.container}>
+        //                 <View style={styles.infoButtonContainer}>                                     
+        //                     <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
+        //                             <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
+        //                     </TouchableOpacity>
+        //                 </View>
+        //                 <Text style={styles.header}>COVID-19 Assessment</Text>
+        //                 <Dialog.Container visible={this.state.visibility}> 
+        //                     <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
+        //                         <Dialog.Description>
+        //                             Oops! There seems to be some vital data missing. Please fill in your Vital details.
+        //                         </Dialog.Description>
+        //                     <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
+        //                 </Dialog.Container>
+        //                 <Dialog.Container visible={this.state.infoVisibility}> 
+        //                     <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
+        //                         <Dialog.Description>
+        //                         This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
+        //                         </Dialog.Description>
+        //                         <Dialog.Description>
+        //                         The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
+        //                         </Dialog.Description>
+        //                         <Dialog.Description>
+        //                         Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
+        //                         </Dialog.Description>
+        //                     <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
+        //                 </Dialog.Container> 
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your test has been Started</Text>
+        //                 </View> 
+        //             </View>
+        //         </ScrollView>
+        // } else {}
         return (
             <ScrollView style={{backgroundColor: '#F5FCFF'}}>
                 <View style={styles.container}>
@@ -415,11 +526,14 @@ class Home extends Component {
                                 <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.header}>COVID Assessment</Text>
+                    <Text style={styles.header}>COVID-19 Assessment</Text>
                     <Dialog.Container visible={this.state.visibility}> 
                         <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-                            <Dialog.Description>
+                            {/* <Dialog.Description>
                                 Oops! There seems to be some vital data missing. Please fill in your Vital details.
+                            </Dialog.Description> */}
+                            <Dialog.Description>
+                                Please Sign-In to your fitness tracker.
                             </Dialog.Description>
                         <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
                     </Dialog.Container>
@@ -435,8 +549,108 @@ class Home extends Component {
                             Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
                             </Dialog.Description>
                         <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
-                    </Dialog.Container> 
-                    <SwiperButton></SwiperButton>
+                    </Dialog.Container>
+                    {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === false ?
+                    <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.onStartTest}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Start the COVID test</Text>
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    null
+                    }
+                    {this.state.startTest === true && this.state.symptomsCheck === false && this.state.vitalTest === false ?
+                    <>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={() => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
+                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Symptoms</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                    :
+                    null
+                    }
+                    {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token === null ?
+                    <>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.checkValid}>
+                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                    :
+                    null
+                    }
+                    {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token !== null ?
+                    <>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this._onFormData}>
+                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <AddModal ref={'addModal'} setData={this.setData}>
+                        </AddModal>
+                    </>
+                    :
+                    null
+                    }
+                    {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === true ?
+                    <>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Here are your results</Text>
+                        </View>
+                        <View style={styles.subcontainer} alignSelf='center'> 
+                            <SemiCircleProgress
+                                percentage={this.state.res_score}
+
+                                progressColor={this.state.g_color}
+                            >
+                                <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
+                            </SemiCircleProgress>
+                        </View>
+                        <View style={styles.subcontainer}>
+                            <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
+                        </View>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
+                        </View> 
+                        <View style={{paddingTop: 40}}></View>
+                        <View style={styles.subcontainer} alignSelf='center'> 
+                            <SemiCircleProgress
+                                percentage={this.state.symp_res_score}
+
+                                progressColor={this.state.symp_g_color}
+                            >
+                                <Text style={{ fontSize: 32, color:this.state.symp_g_color }}> {this.state.symp_res_score}%</Text>
+                            </SemiCircleProgress>
+                        </View>
+                        <View style={styles.subcontainer}>
+                            <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.symp_g_color}}>{this.state.symp_res_msg}</Text>
+                        </View>
+                        <View style={{paddingTop:30}}>
+                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.symp_assessmentResultMessage}</Text>
+                        </View> 
+                        <View style={{paddingTop:60, paddingBottom:5}}>
+                            <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.Reset}>
+                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Reset</Text>
+                        </TouchableOpacity>
+                    </View> 
+                    </>
+                    :
+                    null
+                    }
                 </View>
             </ScrollView>
         )
