@@ -1,13 +1,10 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import ViewPager from '@react-native-community/viewpager';
-import { useNavigation } from '@react-navigation/native';
 import PageLaunch from './PageLaunch'
-import Footer from './Footer'
 
 const LaunchScreen = () => {
     const pagerRef = useRef(null);
-    const navigation = useNavigation();
     return (
         <View style={{ flex: 1 }}>
             <ViewPager style={{ flex: 1 }} scrollEnabled={false} initialPage={0} ref={pagerRef}>
@@ -18,13 +15,6 @@ const LaunchScreen = () => {
                         headerTitle="COVID-19 Guardian Angel"
                         iconsize="10"
                     />
-                    {/* <Footer
-                        backgroundColor="black"
-                        rightButtonLabel="Get Started"
-                        rightButtonPress={ async () => {
-                            navigation.navigate('Terms');
-                          }}
-                    /> */}
                 </View>
             </ViewPager>
         </View>
@@ -32,16 +22,3 @@ const LaunchScreen = () => {
 }
 
 export default LaunchScreen
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    slider: {
-        flex: 0.61,
-    },
-    footer: {
-        flex: 1,
-    }
-})
-

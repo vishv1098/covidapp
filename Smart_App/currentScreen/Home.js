@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AddModal from './AddModal';
-// import SwiperButton from './swipeButton'
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -339,7 +338,6 @@ class Home extends Component {
 
     checkValid = async () => {
         await this.getData();
-        console.log("bye")
         var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
         var first = await AsyncStorage.getItem('first_save')
         if(google_token_fetch !== null) {
@@ -347,20 +345,15 @@ class Home extends Component {
                 google_token: google_token_fetch
             })
         }
-        console.log("check")
         if (this.state.google_token === null) {
             this.setState({
                 visibility:true,
             })
         }
         await this.dataSync()
-        // console.log("Hi")
-        // await this.dataSources();
-        // await this.heartRateData();
     }
 
     dataSync = async () => {
-        console.log("Hi")
         await this.dataSources();
         await this.heartRateData();
     }
@@ -388,7 +381,6 @@ class Home extends Component {
                 startTest: false
             }) 
         }
-        console.log(this.state.symp_res_score)
     } 
 
     onStartTest = async() => {
@@ -424,100 +416,6 @@ class Home extends Component {
     }
 
     render() {
-        // console.log(this.state.symp_res_score)
-        // return(
-        //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
-        //         <View style={styles.container}>
-        //             <View style={styles.infoButtonContainer}>                                     
-        //                 <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-        //                         <Icon name='information-circle-outline' size={20} style={{position: 'relative'}} />
-        //                 </TouchableOpacity>
-        //             </View> 
-        //             <Text style={styles.header}>COVID Assessment</Text>
-        //             <Dialog.Container visible={this.state.visibility}> 
-        //                 <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-        //                     <Dialog.Description>
-        //                         Oops! There seems to be some vital data missing. Please fill in your Vital details.
-        //                     </Dialog.Description>
-        //                 <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
-        //             </Dialog.Container>
-        //             <Dialog.Container visible={this.state.infoVisibility}> 
-        //                 <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
-        //                     <Dialog.Description>
-        //                     This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
-        //                     </Dialog.Description>
-        //                     <Dialog.Description>
-        //                     The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
-        //                     </Dialog.Description>
-        //                     <Dialog.Description>
-        //                     Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
-        //                     </Dialog.Description>
-        //                 <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
-        //             </Dialog.Container> 
-        //             <View style={styles.subcontainer} alignSelf='center'> 
-        //                 <SemiCircleProgress
-        //                     percentage={this.state.res_score}
-
-        //                     progressColor={this.state.g_color}
-        //                 >
-        //                     <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
-        //                 </SemiCircleProgress>
-        //             </View>
-        //             <View style={styles.subcontainer}>
-        //                 <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
-        //             </View>
-        //             <View style={{paddingTop:30}}>
-        //                 <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
-        //             </View> 
-        //             <View style={{paddingTop:60, paddingBottom:5}}>
-        //                 <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
-        //             </View>   
-        //             <View style={styles.subcontainerButton}>                                     
-        //                 <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
-        //                             <Text style={styles.btntext}>Symptoms</Text>
-        //                 </TouchableOpacity>
-        //                 <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
-        //                         <Text style={styles.btntext}>Vitals</Text>
-        //                 </TouchableOpacity>
-        //             </View>
-        //         </View>
-        //     </ScrollView>
-        // );
-        // if (this.state.startTest === true) {
-        //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
-        //             <View style={styles.container}>
-        //                 <View style={styles.infoButtonContainer}>                                     
-        //                     <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-        //                             <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
-        //                     </TouchableOpacity>
-        //                 </View>
-        //                 <Text style={styles.header}>COVID-19 Assessment</Text>
-        //                 <Dialog.Container visible={this.state.visibility}> 
-        //                     <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-        //                         <Dialog.Description>
-        //                             Oops! There seems to be some vital data missing. Please fill in your Vital details.
-        //                         </Dialog.Description>
-        //                     <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
-        //                 </Dialog.Container>
-        //                 <Dialog.Container visible={this.state.infoVisibility}> 
-        //                     <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
-        //                         <Dialog.Description>
-        //                         This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
-        //                         </Dialog.Description>
-        //                         <Dialog.Description>
-        //                         The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
-        //                         </Dialog.Description>
-        //                         <Dialog.Description>
-        //                         Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
-        //                         </Dialog.Description>
-        //                     <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
-        //                 </Dialog.Container> 
-        //                 <View style={{paddingTop:30}}>
-        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your test has been Started</Text>
-        //                 </View> 
-        //             </View>
-        //         </ScrollView>
-        // } else {}
         return (
             <ScrollView style={{backgroundColor: '#F5FCFF'}}>
                 <View style={styles.container}>
@@ -529,9 +427,6 @@ class Home extends Component {
                     <Text style={styles.header}>COVID-19 Assessment</Text>
                     <Dialog.Container visible={this.state.visibility}> 
                         <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-                            {/* <Dialog.Description>
-                                Oops! There seems to be some vital data missing. Please fill in your Vital details.
-                            </Dialog.Description> */}
                             <Dialog.Description>
                                 Please Sign-In to your fitness tracker.
                             </Dialog.Description>

@@ -107,10 +107,6 @@ class SettingsScreen extends Component {
         await this.getFitbitData();
     }
 
-    // componentWillUnmount(){
-    //     dataAccess()
-    //   }
-
     getVitalData = async() => {
         var hr = await AsyncStorage.getItem('HeartRate')
         this.setState({
