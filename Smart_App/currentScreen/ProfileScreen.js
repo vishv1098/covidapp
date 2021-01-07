@@ -16,7 +16,8 @@ class ProfileScreen extends React.Component {
       user_race: '',
       user_gender: '',
       user_ht: '',
-      user_wt: ''
+      user_wt: '',
+      user_ethini: '',
     }
     this._onFormData = this._onFormData.bind(this);
   }
@@ -31,6 +32,7 @@ class ProfileScreen extends React.Component {
       const user_ht_value = await AsyncStorage.getItem('userHeight')
       const user_wt_value = await AsyncStorage.getItem('userWeight')
       const user_race_value = await AsyncStorage.getItem('userRace')
+      const user_ethini_value = await AsyncStorage.getItem('userEthini')
       var realFeet = ((user_ht_value*0.393700) / 12);
       var feet = Math.floor(realFeet);
       var inches = Math.round((realFeet - feet) * 12);
@@ -44,7 +46,8 @@ class ProfileScreen extends React.Component {
         user_race: user_race_value,
         user_gender: user_gender_value,
         user_ht: feet + " ft, " + inches + ' in',
-        user_wt: user_wt_value
+        user_wt: user_wt_value,
+        user_ethini: user_ethini_value
       })
     } catch (error) {
       console.log(error)
@@ -92,8 +95,11 @@ class ProfileScreen extends React.Component {
             <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
               <Text style={{fontSize: 20}}>Weight : {this.state.user_wt} kg</Text>
             </View>
-            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20, marginBottom: 40}}>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20}}>
               <Text style={{fontSize: 20}}>Race : {this.state.user_race}</Text>
+            </View>
+            <View style={{alignSelf: 'center', flexDirection: "row", justifyContent: 'center',backgroundColor:'#fff', width: '90%', padding:20, paddingBottom: 22, borderRadius:10, shadowOpacity:80, elevation: 15, marginTop: 20, marginBottom: 40}}>
+              <Text style={{fontSize: 20}}>Ethnicity : {this.state.user_ethini}</Text>
             </View>
             <View>
                 <Text style={{color: 'white', marginTop: 50, textAlign: 'center', alignContent:'space-around', alignItems: 'center'}}>These values will go in to the model to predict the results. You can even edit your details</Text>

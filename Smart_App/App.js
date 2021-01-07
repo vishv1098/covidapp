@@ -9,10 +9,12 @@ import PushNotification from "react-native-push-notification";
 import Home from './currentScreen/Home'
 import Assessment from './currentScreen/AssessmentScreen'
 import SettingsScreen from './currentScreen/SettingsScreen';
-import OnboardingScreen from './currentScreen/OnboardingScreen'
 import ProfileScreen from './currentScreen/ProfileScreen';
-import TermsAndConditions from './currentScreen/TermsAndConditions';
-import LaunchScreen from './currentScreen/LaunchScreen'
+import TermsAndConditions from './onBoardingScreens/TermsAndConditions';
+import LaunchScreen from './onBoardingScreens/LaunchScreen'
+import BmiScreen from './onBoardingScreens/BmiScreen'
+import AgeScreen from './onBoardingScreens/AgeScreen';
+import RaceScreen from './onBoardingScreens/RaceScreen'
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -68,14 +70,22 @@ class App extends Component {
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
-                                                <Stack.Screen name="Onboarding" component={OnboardingScreen}
+                                                <Stack.Screen name="Terms" component={TermsAndConditions}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
-                                                <Stack.Screen name="Terms" component={TermsAndConditions}
-                                                        options={({ navigation }) => ({
-                                                        headerShown: false  
-                                                        })}/>
+                                                <Stack.Screen name="bmi" component={BmiScreen}
+                                                options={({ navigation }) => ({
+                                                headerShown: false  
+                                                })}/>
+                                                <Stack.Screen name="age" component={AgeScreen}
+                                                options={({ navigation }) => ({
+                                                headerShown: false  
+                                                })}/>
+                                                <Stack.Screen name="race" component={RaceScreen}
+                                                options={({ navigation }) => ({
+                                                headerShown: false  
+                                                })}/>
                                                 <Stack.Screen name="Home" component={Home} 
                                                 options={({ navigation }) => ({
                                                         title: 'Home',
@@ -160,11 +170,19 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                         headerShown: false  
                 //                                         })}/>
-                //                                         <Stack.Screen name="Onboarding" component={OnboardingScreen}
+                //                                         <Stack.Screen name="Terms" component={TermsAndConditions}
                 //                                         options={({ navigation }) => ({
                 //                                         headerShown: false  
                 //                                         })}/>
-                //                                         <Stack.Screen name="Terms" component={TermsAndConditions}
+                //                                         <Stack.Screen name="bmi" component={BmiScreen}
+                //                                         options={({ navigation }) => ({
+                //                                         headerShown: false  
+                //                                         })}/>
+                //                                         <Stack.Screen name="age" component={AgeScreen}
+                //                                         options={({ navigation }) => ({
+                //                                         headerShown: false  
+                //                                         })}/>
+                //                                         <Stack.Screen name="race" component={RaceScreen}
                 //                                         options={({ navigation }) => ({
                 //                                         headerShown: false  
                 //                                         })}/>
