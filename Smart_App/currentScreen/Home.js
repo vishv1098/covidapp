@@ -1,490 +1,303 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
 import Dialog from "react-native-dialog";
-import SemiCircleProgress from './SemiCircle';
+// import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
+// import AddModal from './AddModal';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { RFValue } from "react-native-responsive-fontsize";
 
-const covid_modelJson = require('../components/COVIDOnly/model.json')
-const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
+var screenWidth = Dimensions.get('screen').width;
+var screenHeight = Math.round(Dimensions.get('window').height);
 
-const influ_modelJson = require('../components/InfluenzaOnly/model.json')
-const influ_modelWeights = require('../components/InfluenzaOnly/group1-shard1of1.bin')
-
-const covid_infl_modelJson = require('../components/COVIDvsInfluenza/model.json')
-const covid_infl_modelWeights = require('../components/COVIDvsInfluenza/group1-shard1of1.bin')
-
-const BACKEND_CONFIG = 'cpu';
+const {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+  } = Dimensions.get('window');
+  
+  const scale = SCREEN_WIDTH / 380;
+  
+  let entireScreenWidth = Dimensions.get('window').width;
+  EStyleSheet.build({$rem: entireScreenWidth / 380});
+  
+export function normalize(size) {
+    const newSize = size * scale 
+    if (Platform.OS === 'ios') {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize))
+    } else {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+    }
+}
 
 class Home extends Component {
 
     constructor(props){
         super(props)
-        this._testScheduleNotification();
-        this.getData();
+        // this._testScheduleNotification();
+        // this.getData();
         this.state = {
-            visibility:false,
-            infoVisibility:false,
-            covid: false,
-            influ: false,
-            safe: false,
-            result: false,
-            res_score: 0,
-            res_msg: 'Please click on the button to check result',
-            g_color: 'green',
-            oxy: -1,
-            dbp: -1,
-            sbp: -1,
-            hr: -1,
-            res_r: -1,
-            b_tmp: -1,
-            sex: 0,
-            white: 1,
-            black: 0,
-            others: 0,
-            ethini: 0,
-            age: 1,
-            google_token: null,
-            fitbit_token: null,
-            heart_rate_token: '',
-            distance_token: '',
-            calories_token: '',
-            step_count_token: '',
-            activity_token: '',
-            startDate: "1607538600000",
-            endDate: Date.now(),
-        }
-        
-    }
-
-    async componentDidMount() {
-        // const {prob} = this.props.route.params?this.props.route.params:0
-        // console.log(prob)
-        console.log("Hi")
-        await tf.setBackend(BACKEND_CONFIG);
-        await tf.ready();
-        console.log("componentDidMount: tf.ready is set");
-        console.log("the MyModelLoadLocal component is mounted");
-        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
-        if (google_token_fetch !== null) {
-            this.setState({
-                google_token: google_token_fetch,
-            })
+            //
         }
     }
 
-    // async componentDidUpdate() {
-    //     console.log("Hello")
-    // }
-
-    // async componentDidCatch() {
-    //     console.log("Bye")
-    // }
-
-    // async componentWillUnmount() {
-    //     console.log("Test")
-    // }
-
-    getData = async () => {
-        console.log("Hi")
-        var oxygen = await AsyncStorage.getItem('oxygen_saturation')
-        var bloodp = await AsyncStorage.getItem('diastolic_bloodpressure')
-        var bloodsp = await AsyncStorage.getItem('systolic_bloodpressure')
-        var hr = await AsyncStorage.getItem('heart_rate')
-        var rp = await AsyncStorage.getItem('respiratory_rate')
-        var temp = await AsyncStorage.getItem('temperature')
-        var s = await AsyncStorage.getItem('sex')
-        var white = await AsyncStorage.getItem('white-valid')
-        var black = await AsyncStorage.getItem('black-valid')
-        var other = await AsyncStorage.getItem('others-valid')
-        var ethini = await AsyncStorage.getItem('ethini-valid')
-        var age = await AsyncStorage.getItem('age-group')
-        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
-        if (google_token_fetch !== null) {
-            this.setState({
-                google_token: google_token_fetch,
-            })
-        }
-        this.setState({
-            oxy: parseInt(oxygen),
-            dbp: parseInt(bloodp),
-            sbp: parseInt(bloodsp),
-            hr: parseInt(hr),
-            res_r: parseInt(rp),
-            b_tmp: parseFloat(temp),
-            sex: parseInt(s),
-            white: parseInt(white),
-            black: parseInt(black),
-            others: parseInt(other),
-            ethini: parseInt(ethini),
-            age: parseFloat(age),
-        })
-    }
-
-    _testnotification = async() => {
-        LocalNotification()
-    }
-
-    _testScheduleNotification = async() => {
-        ScheduledLocalNotification()
-    }
-
-    getCovidPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        console.log(z)
-        const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to be covid";
-        } else {
-            msg = "You are unlikely to be covid";
-        }
-        return da[0]
-      }
-    
-      getInfluenzaPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to have Influenza";
-        } else {
-             msg = "You are unlikely to have Influenza";
-        }
-        return da[0]
-      }
-    
-      getCovidInfluPrediction = async () => {
-        var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
-        const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
-        const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
-        const res = model.predict(a);
-        const da = await res.data();
-        const y = JSON.stringify(da).toString()
-        var msg= '';
-        if (da[0] > 0.5) {
-            msg = "You are likely to be Covid";
-        } else {
-            msg = "You are likely to have Influenza";
-        }
-        return da[0]
-    }
-
-    getCovidTest = async () => {
-        const covidscore = await this.getCovidPrediction();
-        const influscore = await this.getInfluenzaPrediction();
-        var msg= '';
-        if (covidscore < 0.5 && influscore < 0.5 ) {
-            msg = "You are unlikely to have COVID or Influenza"
-            this.setState({
-                safe: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt((100 - ((covidscore/0.5)*100)).toFixed(0)),
-                g_color: 'green'
-            })
-        } else if (covidscore < 0.5 && influscore > 0.5 ) {
-            msg = "You are likely to have Influenza"
-            this.setState({
-                influ: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt(((influscore)*100).toFixed(0)),
-                g_color: 'orange'
-            })
-        }  else if (covidscore > 0.5 && influscore < 0.5 ) {
-            msg = "You are likely to have COVID"
-            this.setState({
-                covid: true,
-                result: true,
-                res_msg: msg,
-                res_score: parseInt(((covidscore)*100).toFixed(0)),
-                g_color: 'red'
-            })
-        } else {
-            const covidinfluscore = await this.getCovidInfluPrediction();
-            if (covidinfluscore < 0.5) {
-                msg = "You are likely to have Influenza"
-                this.setState({
-                    influ: true,
-                    result: true,
-                    res_msg: msg,
-                    res_score: parseInt((100 - ((covidinfluscore/0.5)*100)).toFixed(0)),
-                    g_color: 'orange'
-                })
-            } else {
-                msg = "You are likely to have COVID"
-                this.setState({
-                    covid: true,
-                    result: true,
-                    res_msg: msg,
-                    res_score: parseInt(((1-((1-covidinfluscore)/0.5))*100).toFixed(0)),
-                    g_color: 'red'
-                })
-            }
-        }
-    }
-
-    dataSources = async() => {
-        await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
-            headers: {
-                'Authorization': 'Bearer '+this.state.google_token
-            }
-        }).then((resp) => {
-            // console.log(resp.data)
-            var array = resp.data["dataSource"]
-             console.log(array)
-            var heart_rate_token = ''
-            var step_count_token = ''
-            var distance_token = ''
-            var calories_token = ''
-            var activity_token = ''
-            for( var q = 0; q < array.length; q++ ) {
-                try {
-                    if (array[q]["device"]["uid"] === "c91a7563") {
-                        // console.log(array[q]["dataStreamId"])
-                        if (array[q]["dataStreamId"].includes("heart_rate")) {
-                          heart_rate_token = array[q]["dataStreamId"]
-                        }
-                        if (array[q]["dataStreamId"].includes("distance")) {
-                          distance_token = array[q]["dataStreamId"]
-                        }
-                        if (array[q]["dataStreamId"].includes("step_count")) {
-                          step_count_token = array[q]["dataStreamId"]
-                        }
-                        if (array[q]["dataStreamId"].includes("calories")) {
-                          calories_token = array[q]["dataStreamId"]
-                        }
-                        if (array[q]["dataStreamId"].includes("activity")) {
-                          activity_token = array[q]["dataStreamId"]
-                        }
-                      }
-                    console.log(heart_rate_token)
-                    console.log(step_count_token)
-                    console.log(distance_token)
-                    console.log(calories_token)
-                    console.log(activity_token)
-                    this.setState({
-                        heart_rate_token: heart_rate_token,
-                        step_count_token: step_count_token,
-                        distance_token: distance_token,
-                        calories_token: calories_token,
-                        activity_token: activity_token
-                    })
-                    
-                } catch (error) {
-                    // console.log(error)
-                }
-            }
-            if ((heart_rate_token === '') && (step_count_token === '') && (distance_token === '') && (calories_token === '') && (activity_token === '')) {
-                alert('There is no device connected to your Google fit account. Please enter your vital signs manually from settings')
-            }
-        })
-
-
-    }
-
-    heartRateData = async() => {
-        // console.log(this.state.startDate+"T00:00:00+0000")
-        var myDate = new Date(this.state.startDate+"T00:00:00+0000");
-        // console.log(myDate)
-        var result1 = myDate.getTime();
-        var result2 = this.state.endDate
-        // console.log('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000')
-        await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+result2+'000000',{
-            headers: {
-                'Authorization': 'Bearer '+this.state.google_token
-            }
-        }).then(async (resp) => {
-            var array = resp.data["point"]
-            var x = array[array.length - 1]
-            var res = x.value[0].fpVal
-            console.log(typeof(res))
-            await AsyncStorage.setItem("HeartRate",res+'')
-        })
-
-    }
-
-    checkValidation = async () => {
-        // console.log("HI")
-        // console.log(this.state.google_token)
-        await this.getData();
-        var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
-        if (google_token_fetch !== null) {
-            this.setState({
-                google_token: google_token_fetch,
-            })
-        }
-        if (this.state.google_token === null) {
-            this.setState({
-                visibility:true,
-            })
-        } else {
-            await this.dataSources();
-            await this.heartRateData();
-            await this.getCovidTest();
-        }
-        
-    }
-    onSymptomAssess=()=>{
-        const {prob} = this.props.route.params?this.props.route.params:0
-        if(isNaN(prob)===false){        
-            if(prob*100>=50){
-            this.setState({
-                res_msg:"You're likely to have Covid",
-                g_color:'red'
-            })
-            }
-            else{
-                this.setState({
-                    res_msg:"You're likely to have influenza",
-                    g_color:'orange'
-                })
-            }
-            this.setState({
-                res_score:Math.round(prob*100)
-            })
-        }
-
-    }
     render() {
-        
-        // console.log(prob)
-        // console.log("Hi")
-        return(
+        return (
             <View style={styles.container}>
-                <View style={styles.infoButtonContainer}>                                     
-                    <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-                            <Text style={styles.infobtntext} >i</Text>
-                    </TouchableOpacity>
-                </View> 
-                <Text style={styles.header}>Covid-19 Assessment</Text>
-                <Dialog.Container visible={this.state.visibility}> 
-                    <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-                        <Dialog.Description>
-                            Oops! There seems to be some vital data missing. Please fill in your Vital details.
-                        </Dialog.Description>
-                    <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
-                </Dialog.Container>
-                <Dialog.Container visible={this.state.infoVisibility}> 
-                    <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
-                        <Dialog.Description>
-                        This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.{"\n"}
-                        {"\n"}
-                        The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.{"\n"}
-                        {"\n"}
-                        Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
-                        </Dialog.Description>
-                    <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
-                </Dialog.Container> 
-                <View style={styles.subcontainer} alignSelf='center'> 
-                    <SemiCircleProgress
-                        percentage={this.state.res_score}
-
-                        progressColor={this.state.g_color}
-                    >
-                        <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
-                    </SemiCircleProgress>
-                 </View>
-                <View  style={styles.subcontainer}>
-                    <Text style={{ fontSize: 24, color:this.state.g_color,textAlign:'center'}}>{this.state.res_msg}</Text>
-                </View>   
-                <View style={styles.subcontainerButton}>                                     
-                    <TouchableOpacity style={styles.leftbutton} activeOpacity = {.5} onPress={ () => this.props.navigation.navigate('Self Assessment',
-                    {assess:this.onSymptomAssess.bind(this)})}>
-                                <Text style={styles.btntext}>Symptoms</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} activeOpacity = {.5} onPress={this.checkValidation}>
-                            <Text style={styles.btntext}>Vitals</Text>
-                    </TouchableOpacity>
+                <ScrollView contentContainerStyle={{flexGrow: 1,}}>
+                <View style={styles.contentContainer}>
+                    <View style={styles.titleBox}>
+                        <View style={styles.trackerTitle}>
+                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
+                        </View>
+                        <View style={styles.trackerContent}>
+                                <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
+                        </View>
+                    </View>
+                    <View style={styles.fitbitBox}>
+                        <TouchableOpacity style={styles.fitbitButtonTop} activeOpacity = {.5}>
+                            <Image source={require('../appIcons/fitbit.png')} resizeMode='contain' style={styles.ImageIconStyle}></Image>
+                            <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>Connect to a Fitbit tracker</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.googleFitBox}>
+                        <TouchableOpacity style={styles.googlefitButtonTop} activeOpacity = {.5}>
+                            <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} resizeMode='contain' style={styles.ImageIconStyle}></Image>
+                            <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>Connect to Google Fit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.assessmentBox}>
+                        <View style={styles.assessInfo}>
+                            <View style={styles.testTitle}>
+                                <View style={styles.testName}>
+                                    <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
+                                </View>
+                                <View style={styles.testIcon}>
+                                    <Icon name='information-circle-outline' size={30} />
+                                </View>
+                            </View>
+                            <View style={styles.testInfo}>
+                                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
+                            </View>
+                        </View>
+                        <View style={styles.assessButton}>
+                            <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Self Assessment')}}>
+                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.profileBox}>
+                        <View style={styles.profileText}>
+                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
+                        </View>
+                        <View style={styles.profileButton}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.termsAndConditionBox}>
+                        <View style={styles.aboutApp}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>About this App</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.termsBox}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>T {"&"} C</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-            
+                </ScrollView>
             </View>
-        );
+        )
     }
 }
 
-const styles = StyleSheet.create({
-    header:{
-        fontSize:40,
-        color:'#00B0B9',
-        paddingBottom:30,
-        alignSelf:"center",
-      },
+const styles = EStyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        flex:1,
+        padding: 10,
+        backgroundColor: 'white'
     },
-    subcontainer:{
-        
-        alignSelf:"stretch",
-        paddingBottom:70
+    contentContainer: {
+        width: "100%",
+        paddingTop: '30rem',
+        aspectRatio: 0.5,
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    subcontainerButton:{
-        flexDirection: "row",
-        alignSelf:"stretch",
-        justifyContent:"space-around",
-        paddingBottom:70
+    ImageIconStyle: {
+        height: '40rem',
+        width: '40rem',
+        resizeMode : 'stretch',
+        marginLeft: '20rem'
     },
-    infoButtonContainer:{
-        flexDirection: "row",
-        alignSelf:"stretch",
-        justifyContent:"flex-end",
-        paddingRight:20,
-        paddingBottom:10
+    titleBox: {
+        flex: 2,
+        width: "100%",
+        flexDirection: 'column',
     },
-    btntext:{
-        color:'white',
-        fontSize:22,
-        textAlign:'center'
+    assessInfo: {
+        flex: 1,
+        flexDirection: 'column'
     },
-    infobtntext:{
-        color:'white',
-        fontFamily:'monospace',
-        fontSize:22,
-        textAlign:'center'
+    testName: {
+        flex: 9,
     },
-    leftbutton: {
-        alignSelf:'center',
-        alignItems:'center',
-        padding:20,
-        backgroundColor:'#00B0B9',
-        borderRadius:20,
-        marginTop: 30,
-        width:150,
-        
+    testIcon: {
+        flex: 1.5,
     },
-    infoButton: {
-        padding:20,
-        backgroundColor:'#00B0B9',
-        borderRadius:200,
-        marginTop: 30,
-        width:50,
-        height:50,
-        justifyContent:'center'
+    assessButton: {
+        flex: 1,
     },
-    button: {
-        alignSelf:'center',
-        alignItems:'center',
-        padding:20,
-        backgroundColor:'#00B0B9',
-        borderRadius:20,
-        marginTop: 30,
-        width:150,
+    testTitle: {
+        flex: 1.5,
+        flexDirection: 'row'
     },
-});
+    buttonTop: {
+        backgroundColor: '#158158',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    fitbitButtonTop: {
+        backgroundColor: '#000000',
+        flexDirection: 'row',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    googlefitButtonTop: {
+        backgroundColor: '#f2f2f2',
+        flexDirection: 'row',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    profileButtonTop: {
+        backgroundColor: '#adadad',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    buttonTextStyle: {
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        marginLeft: '25rem', 
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: '#000000',
+    },
+    fitbitButtonTextStyle: {
+        flex: 10, 
+        textAlign: 'center', 
+        alignContent:'flex-start',
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: 'white',
+    },
+    googleFitButtonTextStyle: {
+        flex: 10, 
+        textAlign: 'center', 
+        alignContent:'flex-start',
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: '#000000',
+    },
+    testInfo: {
+        flex: 2.5,
+    },
+    trackerTitle: {
+        flex: 1.3,
+        justifyContent: 'center',
+        alignContent: 'center',
+    },
+    titleNameStyle: {
+        fontSize: RFValue(24,Dimensions.get("window").height),
+        fontWeight: 'bold',
+        marginTop: '5rem',
+        marginBottom: '3rem',
+        marginLeft: '10rem',
+        marginRight: '10rem',
+        alignItems: 'center',
+        alignContent: 'center'
+    },
+    titleContentStyle: {
+        marginTop: '3rem',
+        marginBottom: '5rem',
+        marginLeft: '10rem',
+        marginRight: '10rem',
+        fontSize: RFValue(20,Dimensions.get("window").height),
+    },
+    trackerContent: {
+        flex: 3,
+    },
+    fitbitBox: {
+        flex: 1.5,
+        justifyContent: 'center',
+        width: "100%",
+    },
+    googleFitBox: {
+        flex: 1.5,
+        width: "100%",
+    },
+    assessmentBox: {
+        flex: 3,
+        width: "100%",
+    },
+    profileBox: {
+        flex: 2,
+        width: "100%",
+        flexDirection: 'column'
+    },
+    termsAndConditionBox: {
+        flex: 2,
+        width: "100%",
+        flexDirection: 'row'
+    },
+    profileText: {
+        flex: 1.
+    },
+    aboutApp: {
+        flex: 1,
+    },
+    aboutAppTextStyle: {
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        marginLeft: '10rem', 
+        marginRight: '10rem',
+        fontSize: '18rem', 
+        color: '#000000',
+    },
+    termsBox: {
+        flex: 1,
+    },
+    profileButton: {
+        flex: 2,
+    }
+})
 
 export default Home
