@@ -19,10 +19,10 @@ const {
     height: SCREEN_HEIGHT,
   } = Dimensions.get('window');
   
-  const scale = SCREEN_WIDTH / 380;
-  
-  let entireScreenWidth = Dimensions.get('window').width;
-  EStyleSheet.build({$rem: entireScreenWidth / 380});
+const scale = SCREEN_WIDTH / 380;
+
+let entireScreenWidth = Dimensions.get('window').width;
+EStyleSheet.build({$rem: entireScreenWidth / 380});
   
 export function normalize(size) {
     const newSize = size * scale 
@@ -54,7 +54,7 @@ class Home extends Component {
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
                         </View>
                         <View style={styles.trackerContent}>
-                                <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
+                            <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
                         </View>
                     </View>
                     <View style={styles.fitbitBox}>

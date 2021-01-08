@@ -16,6 +16,9 @@ import BmiScreen from './onBoardingScreens/BmiScreen'
 import AgeScreen from './onBoardingScreens/AgeScreen';
 import RaceScreen from './onBoardingScreens/RaceScreen'
 import VitalsScreen from './screens/VitalsScreen'
+import CovidScreen from './screens/CovidScreen'
+import InfluScreen from './screens/InfluScreen'
+import SafeScreen from './screens/SafeScreen';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -102,6 +105,54 @@ class App extends Component {
                                                 <Stack.Screen name="race" component={RaceScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
+                                                })}/>
+                                                <Stack.Screen name="covid" component={CovidScreen} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerLeft: null,
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
+                                                })}/>
+                                                <Stack.Screen name="influ" component={InfluScreen} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerLeft: null,
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
+                                                })}/>
+                                                <Stack.Screen name="safe" component={SafeScreen} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerLeft: null,
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
                                                 })}/>
                                                 <Stack.Screen name="Home" component={Home} 
                                                 options={({ navigation }) => ({
