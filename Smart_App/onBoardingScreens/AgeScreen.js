@@ -40,7 +40,7 @@ const AgeScreen = () => {
 
     const [isDobData, setIsDobData] = useState('Your age as of today will be displayed here.')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [isDate, setIsDate] = useState('Enter your date of birth');
+    const [isDate, setIsDate] = useState('Select your date of birth');
     const navigation = useNavigation();
 
     const showDatePicker = () => {
@@ -76,12 +76,12 @@ const AgeScreen = () => {
                     </View>
                     <View style={styles.headerHtField}>
                       <View style={styles.innerTopHeaderHtField}>
-                        <Text style={styles.tcP}>Date of Birth</Text>
+                        <Text adjustsFontSizeToFit style={styles.tcP}>Date of Birth</Text>
                       </View>
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
                           <TouchableOpacity style={styles.fieldStyle} activeOpacity = {.5} onPress={ showDatePicker }>
-                            <Text>{isDate}</Text>
+                            <Text adjustsFontSizeToFit>{isDate}</Text>
                           </TouchableOpacity>
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
@@ -94,20 +94,20 @@ const AgeScreen = () => {
                     </View>
                     <View style={styles.headerWtField}>
                         <View style={styles.innerTopHeaderHtField}>
-                            <Text style={styles.tcP}>Age</Text>
+                            <Text adjustsFontSizeToFit style={styles.tcP}>Age</Text>
                         </View>
                         <View style={styles.innerBottomHeaderHtField}>
                             <View style={styles.innerBottFieldHeaderHtField}>
-                                <Text style={styles.tcL}>{isDobData}</Text>
+                                <Text adjustsFontSizeToFit style={styles.tcL}>{isDobData}</Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.headerMeaasge}>
-                        <Text style={styles.content}>Your age is provided as an input to our Machine Learning models. Age is indicative of vitality and diseases affect people of different age groups in dissimilar ways.</Text>
+                        <Text adjustsFontSizeToFit style={styles.content}>Your age is provided as an input to our Machine Learning models. Age is indicative of vitality and diseases affect people of different age groups in dissimilar ways.</Text>
                     </View>
                     <View style={styles.headerNavigate}>
                         <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('race')}}>
-                            <Text style={styles.buttonTextStyle}>Next</Text>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                         </TouchableOpacity>
                     </View>

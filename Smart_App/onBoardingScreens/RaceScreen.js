@@ -67,7 +67,7 @@ const RaceScreen = () => {
                     </View>
                     <View style={styles.headerHtField}>
                       <View style={styles.innerTopHeaderHtField}>
-                        <Text style={styles.tcP}>Sex</Text>
+                        <Text adjustsFontSizeToFit style={styles.tcP}>Sex</Text>
                       </View>
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
@@ -92,7 +92,7 @@ const RaceScreen = () => {
                     </View>
                     <View style={styles.headerWtField}>
                         <View style={styles.innerTopHeaderHtField}>
-                            <Text style={styles.tcP}>Race</Text>
+                            <Text adjustsFontSizeToFit style={styles.tcP}>Race</Text>
                         </View>
                         <View style={styles.innerBottomHeaderHtField}>
                             <View style={styles.innerBottFieldHeaderHtField}>
@@ -119,9 +119,9 @@ const RaceScreen = () => {
                     <View style={styles.headerMeaasge}>
                         <View style={styles.ethiniOuterBox}>
                           <View style={styles.ethiniInner}>
-                            <Text style={styles.ethiniStyle}>Are you Hispanic or Latino?</Text>
+                            <Text adjustsFontSizeToFit style={styles.ethiniStyle}>Are you Hispanic or Latino?</Text>
                           </View>
-                          <View style={{flex: 1}}>
+                          <View style={styles.checkView}>
                             <CheckBox
                               disabled={false}
                               value={toggleCheckBox}
@@ -132,12 +132,12 @@ const RaceScreen = () => {
                           </View>
                         </View>
                         <View style={styles.messgBox}>
-                          <Text style={styles.content}>Your sex and ethnicity are provided to our models, as diseases affect people of different groups in dissimilar ways.</Text>
+                          <Text adjustsFontSizeToFit style={styles.content}>Your sex and ethnicity are provided to our models, as diseases affect people of different groups in dissimilar ways.</Text>
                         </View>
                     </View>
                     <View style={styles.headerNavigate}>
                         <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { handleEthini(); navigation.navigate('Home')}}>
-                            <Text style={styles.buttonTextStyle}>Next</Text>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                         </TouchableOpacity>
                     </View>
@@ -188,7 +188,7 @@ const styles = EStyleSheet.create({
     flexDirection: 'row'
   },
   ethiniInner: {
-    flex: 2,
+    flex: 2.5,
     justifyContent: 'center'
   },
   headerIconStyle: {
@@ -304,6 +304,10 @@ const styles = EStyleSheet.create({
   },
   messgBox: {
     flex: 2.8
+  },
+  checkView: {
+    flex: 1, 
+    justifyContent:'center'
   }
 })
 

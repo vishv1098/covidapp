@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
 import Dialog from "react-native-dialog";
 import SemiCircleProgress from './SemiCircle';
 import * as tf from '@tensorflow/tfjs';
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AddModal from './AddModal';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const covid_modelJson = require('../components/COVIDOnly/model.json')
 const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
@@ -24,11 +25,32 @@ const BACKEND_CONFIG = 'cpu';
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
 
+// const navigation = useNavigation();
+
+const {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+  } = Dimensions.get('window');
+  
+  const scale = SCREEN_WIDTH / 380;
+  
+  let entireScreenWidth = Dimensions.get('window').width;
+  EStyleSheet.build({$rem: entireScreenWidth / 380});
+  
+export function normalize(size) {
+    const newSize = size * scale 
+    if (Platform.OS === 'ios') {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize))
+    } else {
+        return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+    }
+}
+
 class Home extends Component {
 
     constructor(props){
         super(props)
-        this._testScheduleNotification();
+        // this._testScheduleNotification();
         this.getData();
         this.state = {
             visibility:false,
@@ -416,212 +438,489 @@ class Home extends Component {
     }
 
     render() {
+        // return (
+        //     <ScrollView style={{backgroundColor: '#F5FCFF'}}>
+        //         <View style={styles.container}>
+        //             <View style={styles.infoButtonContainer}>                                     
+        //                 <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
+        //                         <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
+        //                 </TouchableOpacity>
+        //             </View>
+        //             <Text style={styles.header}>COVID-19 Assessment</Text>
+        //             <Dialog.Container visible={this.state.visibility}> 
+        //                 <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
+        //                     <Dialog.Description>
+        //                         Please Sign-In to your fitness tracker.
+        //                     </Dialog.Description>
+        //                 <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
+        //             </Dialog.Container>
+        //             <Dialog.Container visible={this.state.infoVisibility}> 
+        //                 <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
+        //                     <Dialog.Description>
+        //                     This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
+        //                     </Dialog.Description>
+        //                     <Dialog.Description>
+        //                     The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
+        //                     </Dialog.Description>
+        //                     <Dialog.Description>
+        //                     Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
+        //                     </Dialog.Description>
+        //                 <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
+        //             </Dialog.Container>
+        //             {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === false ?
+        //             <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+        //                 <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.onStartTest}>
+        //                     <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Start the COVID test</Text>
+        //                 </TouchableOpacity>
+        //             </View>
+        //             :
+        //             null
+        //             }
+        //             {this.state.startTest === true && this.state.symptomsCheck === false && this.state.vitalTest === false ?
+        //             <>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+        //                 </View>
+        //                 <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+        //                     <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={() => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
+        //                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Symptoms</Text>
+        //                     </TouchableOpacity>
+        //                 </View>
+        //             </>
+        //             :
+        //             null
+        //             }
+        //             {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token === null ?
+        //             <>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+        //                 </View>
+        //                 <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+        //                     <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.checkValid}>
+        //                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+        //                     </TouchableOpacity>
+        //                 </View>
+        //             </>
+        //             :
+        //             null
+        //             }
+        //             {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token !== null ?
+        //             <>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+        //                 </View>
+        //                 <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+        //                     <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this._onFormData}>
+        //                         <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+        //                     </TouchableOpacity>
+        //                 </View>
+        //                 <AddModal ref={'addModal'} setData={this.setData}>
+        //                 </AddModal>
+        //             </>
+        //             :
+        //             null
+        //             }
+        //             {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === true ?
+        //             <>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Here are your results</Text>
+        //                 </View>
+        //                 <View style={styles.subcontainer} alignSelf='center'> 
+        //                     <SemiCircleProgress
+        //                         percentage={this.state.res_score}
+
+        //                         progressColor={this.state.g_color}
+        //                     >
+        //                         <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
+        //                     </SemiCircleProgress>
+        //                 </View>
+        //                 <View style={styles.subcontainer}>
+        //                     <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
+        //                 </View>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
+        //                 </View> 
+        //                 <View style={{paddingTop: 40}}></View>
+        //                 <View style={styles.subcontainer} alignSelf='center'> 
+        //                     <SemiCircleProgress
+        //                         percentage={this.state.symp_res_score}
+
+        //                         progressColor={this.state.symp_g_color}
+        //                     >
+        //                         <Text style={{ fontSize: 32, color:this.state.symp_g_color }}> {this.state.symp_res_score}%</Text>
+        //                     </SemiCircleProgress>
+        //                 </View>
+        //                 <View style={styles.subcontainer}>
+        //                     <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.symp_g_color}}>{this.state.symp_res_msg}</Text>
+        //                 </View>
+        //                 <View style={{paddingTop:30}}>
+        //                     <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.symp_assessmentResultMessage}</Text>
+        //                 </View> 
+        //                 <View style={{paddingTop:60, paddingBottom:5}}>
+        //                     <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
+        //                 </View>
+        //                 <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
+        //                 <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.Reset}>
+        //                     <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Reset</Text>
+        //                 </TouchableOpacity>
+        //             </View> 
+        //             </>
+        //             :
+        //             null
+        //             }
+        //         </View>
+        //     </ScrollView>
+        // )
+
         return (
-            <ScrollView style={{backgroundColor: '#F5FCFF'}}>
-                <View style={styles.container}>
-                    <View style={styles.infoButtonContainer}>                                     
-                        <TouchableOpacity style={styles.infoButton} activeOpacity = {.5} onPress={()=>this.setState({infoVisibility:true})}>
-                                <Icon name='information-circle-outline' size={30} style={{position: 'relative'}} />
+            <View style={styles.container}>
+                <ScrollView contentContainerStyle={{flexGrow: 1,}}>
+                <View style={styles.contentContainer}>
+                    <View style={styles.titleBox}>
+                        <View style={styles.trackerTitle}>
+                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
+                        </View>
+                        <View style={styles.trackerContent}>
+                            {/* <ScrollView> */}
+                                <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
+                            {/* </ScrollView> */}
+                        </View>
+                    </View>
+                    <View style={styles.fitbitBox}>
+                        <TouchableOpacity style={styles.fitbitButtonTop} activeOpacity = {.5}>
+                            <Image source={require('../appIcons/fitbit.png')} resizeMode='contain' style={styles.ImageIconStyle}></Image>
+                            <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>Connect to a Fitbit tracker</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.header}>COVID-19 Assessment</Text>
-                    <Dialog.Container visible={this.state.visibility}> 
-                        <Dialog.Title style={{textAlign:'center'}}>Missing Data</Dialog.Title>
-                            <Dialog.Description>
-                                Please Sign-In to your fitness tracker.
-                            </Dialog.Description>
-                        <Dialog.Button label="OK" onPress = {() => this.setState({visibility:false},this.props.navigation.navigate('Profile') )}/>
-                    </Dialog.Container>
-                    <Dialog.Container visible={this.state.infoVisibility}> 
-                        <Dialog.Title style={{textAlign:'center'}}>Disclaimer</Dialog.Title>
-                            <Dialog.Description>
-                            This App provides real-time tracking of vital signs and self-reported symptoms to predict probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this application is provided as an information resource only, and is not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.
-                            </Dialog.Description>
-                            <Dialog.Description>
-                            The application cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.
-                            </Dialog.Description>
-                            <Dialog.Description>
-                            Data Privacy: Your data is only used to make predictions on-device using Machine Learning models and is not stored or collected for other use.
-                            </Dialog.Description>
-                        <Dialog.Button label="OK" onPress = {() => this.setState({infoVisibility:false} )}/>
-                    </Dialog.Container>
-                    {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === false ?
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.onStartTest}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Start the COVID test</Text>
+                    <View style={styles.googleFitBox}>
+                        <TouchableOpacity style={styles.googlefitButtonTop} activeOpacity = {.5}>
+                            <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} resizeMode='contain' style={styles.ImageIconStyle}></Image>
+                            <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>Connect to Google Fit</Text>
                         </TouchableOpacity>
                     </View>
-                    :
-                    null
-                    }
-                    {this.state.startTest === true && this.state.symptomsCheck === false && this.state.vitalTest === false ?
-                    <>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+                    <View style={styles.assessmentBox}>
+                        <View style={styles.assessInfo}>
+                            <View style={styles.testTitle}>
+                                <View style={styles.testName}>
+                                    <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
+                                </View>
+                                <View style={styles.testIcon}>
+                                    <Icon name='information-circle-outline' size={30} />
+                                </View>
+                            </View>
+                            <View style={styles.testInfo}>
+                                {/* <ScrollView> */}
+                                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
+                                {/* </ScrollView> */}
+                            </View>
                         </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
-                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={() => this.props.navigation.navigate('Self Assessment', {assess:this.onSymptomAssess.bind(this)})}>
-                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Symptoms</Text>
+                        <View style={styles.assessButton}>
+                            <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Self Assessment')}}>
+                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
                             </TouchableOpacity>
                         </View>
-                    </>
-                    :
-                    null
-                    }
-                    {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token === null ?
-                    <>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
+                    </View>
+                    <View style={styles.profileBox}>
+                        <View style={styles.profileText}>
+                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
                         </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
-                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.checkValid}>
-                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+                        <View style={styles.profileButton}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
                             </TouchableOpacity>
                         </View>
-                    </>
-                    :
-                    null
-                    }
-                    {this.state.startTest === false && this.state.symptomsCheck === true && this.state.vitalTest === false && this.state.google_token !== null ?
-                    <>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Your COVID test is in progress</Text>
-                        </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
-                            <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this._onFormData}>
-                                <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Vitals</Text>
+                    </View>
+                    <View style={styles.termsAndConditionBox}>
+                        <View style={styles.aboutApp}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>About this App</Text>
                             </TouchableOpacity>
                         </View>
-                        <AddModal ref={'addModal'} setData={this.setData}>
-                        </AddModal>
-                    </>
-                    :
-                    null
-                    }
-                    {this.state.startTest === false && this.state.symptomsCheck === false && this.state.vitalTest === false && this.state.formFill === true ?
-                    <>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>Here are your results</Text>
+                        <View style={styles.termsBox}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                                <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>T {"&"} C</Text>
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.subcontainer} alignSelf='center'> 
-                            <SemiCircleProgress
-                                percentage={this.state.res_score}
-
-                                progressColor={this.state.g_color}
-                            >
-                                <Text style={{ fontSize: 32, color:this.state.g_color }}> {this.state.res_score}%</Text>
-                            </SemiCircleProgress>
-                        </View>
-                        <View style={styles.subcontainer}>
-                            <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.g_color}}>{this.state.res_msg}</Text>
-                        </View>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.assessmentResultMessage}</Text>
-                        </View> 
-                        <View style={{paddingTop: 40}}></View>
-                        <View style={styles.subcontainer} alignSelf='center'> 
-                            <SemiCircleProgress
-                                percentage={this.state.symp_res_score}
-
-                                progressColor={this.state.symp_g_color}
-                            >
-                                <Text style={{ fontSize: 32, color:this.state.symp_g_color }}> {this.state.symp_res_score}%</Text>
-                            </SemiCircleProgress>
-                        </View>
-                        <View style={styles.subcontainer}>
-                            <Text style={{ fontSize: 24, textAlign: 'center', color:this.state.symp_g_color}}>{this.state.symp_res_msg}</Text>
-                        </View>
-                        <View style={{paddingTop:30}}>
-                            <Text style={{ fontSize: 16, textAlign: 'center', color:'blue', fontWeight: 'bold'}}>{this.state.symp_assessmentResultMessage}</Text>
-                        </View> 
-                        <View style={{paddingTop:60, paddingBottom:5}}>
-                            <Text style={{ fontSize: 12, textAlign: 'center', color:'black', fontWeight: 'bold'}}>Note: The probability here will represent only the confidence level of the model</Text>
-                        </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1, paddingTop: screenHeight/6.0 }}>
-                        <TouchableOpacity style={{ margin: 10, paddingLeft: 25, paddingRight: 25, width: 360, height: 80, backgroundColor:'#007AFF', borderRadius: 25, justifyContent: 'center', }} activeOpacity = {.5} onPress={this.Reset}>
-                            <Text style={{textAlign:'center', fontSize: 30, color: 'white', fontWeight: 'bold'}}>Reset</Text>
-                        </TouchableOpacity>
-                    </View> 
-                    </>
-                    :
-                    null
-                    }
+                    </View>
                 </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    header:{
-        fontSize:35,
-        color:'#00B0B9',
-        paddingBottom:50,
-        paddingTop: 10,
-        alignSelf:"center",
-      },
+const styles = EStyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        flex:1,
+        padding: 10,
+        backgroundColor: 'white'
     },
-    subcontainer:{
-        paddingTop:20,
-        alignSelf:"stretch",
-        paddingBottom:5
+    contentContainer: {
+        width: "100%",
+        paddingTop: '30rem',
+        aspectRatio: 0.5,
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'center',
+        // backgroundColor: 'yellow'
     },
-    subcontainerButton:{
-        flexDirection: "row",
-        alignSelf:"stretch",
-        justifyContent:"space-around",
-        paddingBottom:70
+    ImageIconStyle: {
+        // padding: 10,
+        // margin: 2,
+        // color: 'white',
+        height: '40rem',
+        width: '40rem',
+        resizeMode : 'stretch',
+        // marginRight: '20rem',
+        marginLeft: '20rem'
     },
-    infoButtonContainer:{
-        flexDirection: "row",
-        alignSelf:"stretch",
-        justifyContent:"flex-end",
-        paddingRight:20,
-        paddingBottom:10
+    titleBox: {
+        flex: 2,
+        // backgroundColor: 'blue',
+        width: "100%",
+        flexDirection: 'column',
     },
-    btntext:{
-        color:'white',
-        fontSize:22,
-        textAlign:'center'
+    assessInfo: {
+        flex: 1,
+        // backgroundColor: 'red',
+        flexDirection: 'column'
     },
-    infobtntext:{
-        color:'black',
-        fontFamily:'monospace',
-        fontSize:22,
-        textAlign:'center'
+    testName: {
+        flex: 9,
     },
-    leftbutton: {
-        alignSelf:'center',
-        alignItems:'center',
-        padding:20,
-        backgroundColor:'#00B0B9',
-        borderRadius:20,
-        marginTop: 30,
-        width:150, 
+    testIcon: {
+        flex: 1.5,
+        // backgroundColor: 'red',
     },
-    infoButton: {
-        padding:20,
-        backgroundColor:'#F5FCFF',
-        borderRadius:200,
-        marginTop: 30,
-        width:80,
-        height:50,
-        justifyContent:'center',
+    assessButton: {
+        flex: 1,
+        // backgroundColor: 'blue'
     },
-    button: {
-        alignSelf:'center',
-        alignItems:'center',
-        padding:20,
-        backgroundColor:'#00B0B9',
-        borderRadius:20,
-        marginTop: 30,
-        width:150,
+    testTitle: {
+        flex: 1.5,
+        // backgroundColor: 'yellow',
+        flexDirection: 'row'
     },
-});
+    buttonTop: {
+        backgroundColor: '#158158',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    fitbitButtonTop: {
+        backgroundColor: '#000000',
+        flexDirection: 'row',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    googlefitButtonTop: {
+        backgroundColor: '#f2f2f2',
+        flexDirection: 'row',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    profileButtonTop: {
+        backgroundColor: '#adadad',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginLeft: '10rem', 
+        marginRight: '10rem'
+    },
+    buttonTextStyle: {
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        marginLeft: '25rem', 
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: '#000000',
+    },
+    fitbitButtonTextStyle: {
+        flex: 10, 
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        // marginLeft: '25rem', 
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: 'white',
+    },
+    googleFitButtonTextStyle: {
+        flex: 10, 
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        // marginLeft: '25rem', 
+        marginRight: '25rem',
+        fontSize: '20rem', 
+        color: '#000000',
+    },
+    testInfo: {
+        flex: 2.5,
+    },
+    trackerTitle: {
+        flex: 1.3,
+        justifyContent: 'center',
+        alignContent: 'center',
+        // alignItems: 'center'
+    },
+    titleNameStyle: {
+        fontSize: '20rem',
+        fontWeight: 'bold',
+        marginTop: '5rem',
+        marginBottom: '3rem',
+        marginLeft: '10rem',
+        marginRight: '10rem',
+        alignItems: 'center',
+        alignContent: 'center'
+    },
+    titleContentStyle: {
+        marginTop: '3rem',
+        marginBottom: '5rem',
+        marginLeft: '10rem',
+        marginRight: '10rem',
+        fontSize: '14.8rem',
+    },
+    trackerContent: {
+        flex: 3,
+        // backgroundColor: 'red'
+    },
+    fitbitBox: {
+        flex: 1.5,
+        // backgroundColor: 'green',
+        justifyContent: 'center',
+        width: "100%",
+    },
+    googleFitBox: {
+        flex: 1.5,
+        // backgroundColor: 'orange',
+        width: "100%",
+    },
+    assessmentBox: {
+        flex: 3,
+        // backgroundColor: 'violet',
+        width: "100%",
+    },
+    profileBox: {
+        flex: 2,
+        // backgroundColor: 'yellow',
+        width: "100%",
+        flexDirection: 'column'
+    },
+    termsAndConditionBox: {
+        flex: 2,
+        // backgroundColor: 'red',
+        width: "100%",
+        flexDirection: 'row'
+    },
+    profileText: {
+        flex: 1.
+    },
+    aboutApp: {
+        flex: 1,
+        // backgroundColor: 'red'
+    },
+    aboutAppTextStyle: {
+        textAlign: 'center', 
+        alignContent:'flex-start', 
+        marginLeft: '10rem', 
+        marginRight: '10rem',
+        fontSize: '18rem', 
+        color: '#000000',
+    },
+    termsBox: {
+        flex: 1,
+    },
+    profileButton: {
+        flex: 2,
+        // backgroundColor: 'red'
+    }
+})
+
+// const styles = StyleSheet.create({
+//     header:{
+//         fontSize:35,
+//         color:'#00B0B9',
+//         paddingBottom:50,
+//         paddingTop: 10,
+//         alignSelf:"center",
+//       },
+//     container: {
+//         flex: 1,
+//         justifyContent: 'flex-start',
+//         alignItems: 'center',
+//         backgroundColor: '#F5FCFF',
+//     },
+//     subcontainer:{
+//         paddingTop:20,
+//         alignSelf:"stretch",
+//         paddingBottom:5
+//     },
+//     subcontainerButton:{
+//         flexDirection: "row",
+//         alignSelf:"stretch",
+//         justifyContent:"space-around",
+//         paddingBottom:70
+//     },
+//     infoButtonContainer:{
+//         flexDirection: "row",
+//         alignSelf:"stretch",
+//         justifyContent:"flex-end",
+//         paddingRight:20,
+//         paddingBottom:10
+//     },
+//     btntext:{
+//         color:'white',
+//         fontSize:22,
+//         textAlign:'center'
+//     },
+//     infobtntext:{
+//         color:'black',
+//         fontFamily:'monospace',
+//         fontSize:22,
+//         textAlign:'center'
+//     },
+//     leftbutton: {
+//         alignSelf:'center',
+//         alignItems:'center',
+//         padding:20,
+//         backgroundColor:'#00B0B9',
+//         borderRadius:20,
+//         marginTop: 30,
+//         width:150, 
+//     },
+//     infoButton: {
+//         padding:20,
+//         backgroundColor:'#F5FCFF',
+//         borderRadius:200,
+//         marginTop: 30,
+//         width:80,
+//         height:50,
+//         justifyContent:'center',
+//     },
+//     button: {
+//         alignSelf:'center',
+//         alignItems:'center',
+//         padding:20,
+//         backgroundColor:'#00B0B9',
+//         borderRadius:20,
+//         marginTop: 30,
+//         width:150,
+//     },
+// });
 
 export default Home

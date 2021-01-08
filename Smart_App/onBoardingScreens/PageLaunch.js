@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const {
   width: SCREEN_WIDTH,
@@ -59,8 +58,7 @@ const PageLaunch = ({ headerTitle }) => {
           </View>
           <View style={styles.bottomContainer}>
             <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { navigation.navigate('Terms')}}>
-              <Icon name='checkmark-circle-outline' size={40} color="white" style={styles.iconStyle} />
-              <Text style={styles.buttonTextStyle}>Get Started</Text>
+              <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Get Started</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -150,7 +148,8 @@ const styles = EStyleSheet.create({
     flex: 10, 
     textAlign: 'center', 
     alignContent:'flex-start', 
-    marginRight: '40rem', 
+    marginLeft: '25rem', 
+    marginRight: '25rem',
     fontSize: '25rem', 
     color: 'white',
   }

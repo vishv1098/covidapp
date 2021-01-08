@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Dimensions, TouchableOpacity, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const {
   width: SCREEN_WIDTH,
@@ -50,20 +49,19 @@ const TermsAndConditions = () => {
                 setAccepted(true);
               }
             }}>
-            <Text style={styles.tcP}>No Advice</Text>
-              <Text style={styles.tcL}>This app, “COVID-19 Guardian Angel”, provides only information, not medical or treatment advice and may not be treated as such by the user. As such, this App may not be relied upon for the purposes of medical diagnosis or as a recommendation for medical care or treatment. The information on this App is not a substitute for professional medical advice, diagnosis or treatment. All content, including text, graphics, images and information, contained on or available through this App is for general information purposes only.</Text>
-            <Text style={styles.tcP}>Professional Medical Assistance</Text>
-              <Text style={styles.tcL}>You are strongly encouraged to confirm any information obtained from or through this App with your physician or another professional healthcare provider and to review all information regarding any medical condition or treatment with your physician or another professional healthcare provider.</Text>
-            <Text style={styles.tcP}>No Reliance</Text>
-              <Text style={styles.tcL}>You must not rely on any information obtained using this app for any diagnosis or recommendation for medical treatment. You must not rely on the information received from this app as an alternative to medical advice from your physician or other professional healthcare provider.</Text>
-              <Text style={styles.tcL}>You must never disregard professional medical advice or delay seeking medical treatment as result of any information you have seen on or accessed through this app. if you have any specific questions about any medical matter you should consult your physician or other professional healthcare provider. if you think you may be suffering from any medical condition you should seek immediate medical attention.</Text>
-            <Text style={styles.tcPend}>By accepting this you are agreeing to all the terms and conditions.</Text>
+            <Text adjustsFontSizeToFit style={styles.tcP}>No Advice</Text>
+              <Text adjustsFontSizeToFit style={styles.tcL}>This app, “COVID-19 Guardian Angel”, provides only information, not medical or treatment advice and may not be treated as such by the user. As such, this App may not be relied upon for the purposes of medical diagnosis or as a recommendation for medical care or treatment. The information on this App is not a substitute for professional medical advice, diagnosis or treatment. All content, including text, graphics, images and information, contained on or available through this App is for general information purposes only.</Text>
+            <Text adjustsFontSizeToFit style={styles.tcP}>Professional Medical Assistance</Text>
+              <Text adjustsFontSizeToFit style={styles.tcL}>You are strongly encouraged to confirm any information obtained from or through this App with your physician or another professional healthcare provider and to review all information regarding any medical condition or treatment with your physician or another professional healthcare provider.</Text>
+            <Text adjustsFontSizeToFit style={styles.tcP}>No Reliance</Text>
+              <Text adjustsFontSizeToFit style={styles.tcL}>You must not rely on any information obtained using this app for any diagnosis or recommendation for medical treatment. You must not rely on the information received from this app as an alternative to medical advice from your physician or other professional healthcare provider.</Text>
+              <Text adjustsFontSizeToFit style={styles.tcL}>You must never disregard professional medical advice or delay seeking medical treatment as result of any information you have seen on or accessed through this app. if you have any specific questions about any medical matter you should consult your physician or other professional healthcare provider. if you think you may be suffering from any medical condition you should seek immediate medical attention.</Text>
+            <Text adjustsFontSizeToFit style={styles.tcPend}>By accepting this you are agreeing to all the terms and conditions.</Text>
           </ScrollView>
         </View>
         <View style={styles.bottomContainer}>
           <TouchableOpacity  disabled={ !accepted } activeOpacity = {.5} style={accepted ? styles.buttonTop : styles.buttonTopDisabled} onPress={ () => { navigation.navigate('bmi') }}>
-              <Icon name='checkmark-circle-outline' size={40} color="white" style={styles.iconStyle} />
-              <Text style={styles.buttonTextStyle}>Agree and Continue</Text>
+              <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Agree and Continue</Text>
             </TouchableOpacity>
         </View>
       </View>
@@ -163,7 +161,8 @@ const styles = EStyleSheet.create({
     flex: 10, 
     textAlign: 'center', 
     alignContent:'center', 
-    marginRight: '40rem', 
+    marginLeft: '25rem', 
+    marginRight: '25rem', 
     fontSize: '22rem', 
     color: 'white'
   }

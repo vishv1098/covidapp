@@ -56,7 +56,7 @@ const BmiScreen = () => {
               </View>
               <View style={styles.headerHtField}>
                   <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Height</Text>
+                    <Text adjustsFontSizeToFit style={styles.tcP}>Height</Text>
                   </View>
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
@@ -70,13 +70,13 @@ const BmiScreen = () => {
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text style={styles.tcL}>cm</Text>
+                      <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
                     </View>
                   </View>
               </View>
               <View style={styles.headerWtField}>
                   <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Weight</Text>
+                    <Text adjustsFontSizeToFit style={styles.tcP}>Weight</Text>
                   </View>
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
@@ -90,16 +90,16 @@ const BmiScreen = () => {
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text style={styles.tcL}>kg</Text>
+                      <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
                     </View>
                   </View>
               </View>
               <View style={styles.headerMeaasge}>
-                <Text style={styles.content}>Your height and weight are used to compute your Body Mass Index (BMI), which is provided as an input to our Machine Learning models.</Text>
+                <Text adjustsFontSizeToFit style={styles.content}>Your height and weight are used to compute your Body Mass Index (BMI), which is provided as an input to our Machine Learning models.</Text>
               </View>
               <View style={styles.headerNavigate}>
                 <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('age')}}>
-                  <Text style={styles.buttonTextStyle}>Next</Text>
+                  <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                   <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                 </TouchableOpacity>
               </View>
