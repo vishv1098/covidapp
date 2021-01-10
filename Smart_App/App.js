@@ -9,7 +9,7 @@ import PushNotification from "react-native-push-notification";
 import Home from './screens/Home'
 import Assessment from './screens/AssessmentScreen'
 import SettingsScreen from './currentScreen/SettingsScreen';
-import ProfileScreen from './currentScreen/ProfileScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import TermsAndConditions from './onBoardingScreens/TermsAndConditions';
 import LaunchScreen from './onBoardingScreens/LaunchScreen'
 import BmiScreen from './onBoardingScreens/BmiScreen'
@@ -86,7 +86,7 @@ class App extends Component {
                                 <StatusBar style="dark" />
                                 <NavigationContainer>
                                         <Stack.Navigator>
-                                                <Stack.Screen name="Launch" component={LaunchScreen}
+                                                {/* <Stack.Screen name="Launch" component={LaunchScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
@@ -105,6 +105,22 @@ class App extends Component {
                                                 <Stack.Screen name="race" component={RaceScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
+                                                })}/> */}
+                                                <Stack.Screen name="profile" component={ProfileScreen} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerLeft: null,
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
                                                 })}/>
                                                 <Stack.Screen name="covid" component={CovidScreen} 
                                                 options={({ navigation }) => ({

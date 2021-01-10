@@ -56,6 +56,7 @@ const AgeScreen = () => {
       var x = today.toDateString().split(' ')
       var res = x[1]+' '+x[2]+', '+x[3]; 
       var age = getAge(date)
+      await AsyncStorage.setItem('userFullDob', res);
       await AsyncStorage.setItem('userDOB', age + " ");
       setIsDate(res)
       setIsDobData('As of today, you are ' + age + ' years old.')
