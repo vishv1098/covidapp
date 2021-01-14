@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
@@ -32,7 +34,8 @@ class Home extends Component {
         // this._testScheduleNotification();
         // this.getData();
         this.state = {
-            //
+            googleFitName: 'Connect to Google Fit',
+            fitbitName: 'Connect to a Fitbit tracker',
         }
     }
 
@@ -52,13 +55,13 @@ class Home extends Component {
                     <View style={styles.fitbitBox}>
                         <TouchableOpacity style={styles.fitbitButtonTop} activeOpacity = {.5}>
                             <Image source={require('../appIcons/fitbit.png')} resizeMode='contain' style={styles.ImageIconStyle}></Image>
-                            <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>Connect to a Fitbit tracker</Text>
+                            <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>{this.state.fitbitName}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.googleFitBox}>
                         <TouchableOpacity style={styles.googlefitButtonTop} activeOpacity = {.5}>
                             <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} resizeMode='contain' style={styles.ImageIconStyle}></Image>
-                            <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>Connect to Google Fit</Text>
+                            <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>{this.state.googleFitName}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.assessmentBox}>
