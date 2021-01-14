@@ -181,7 +181,7 @@ const styles = EStyleSheet.create({
   ethiniStyle: {
     marginLeft: '30rem', 
     marginRight: '30rem',
-    fontSize: '15.5rem'
+    fontSize: '15rem'
   },
   ethiniOuterBox: {
     flex: 1, 
@@ -214,7 +214,7 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '28rem', 
+    fontSize: '27rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -222,7 +222,8 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   innerTopHeaderHtField: {
-    flex: 1,
+    flex: 2,
+    justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
     flex: 3,
@@ -231,7 +232,7 @@ const styles = EStyleSheet.create({
   tcP: {
     marginTop: '5rem',
     marginBottom: '3rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '30rem',
     marginRight: '30rem'
@@ -239,7 +240,7 @@ const styles = EStyleSheet.create({
   tcL: {
     marginTop: '4rem',
     marginBottom: '10rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
@@ -260,7 +261,7 @@ const styles = EStyleSheet.create({
   content:{
     marginTop: '12rem',
     marginBottom: '5rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
@@ -269,7 +270,7 @@ const styles = EStyleSheet.create({
     textAlign: 'center', 
     alignContent:'center', 
     marginLeft: '40rem', 
-    fontSize: '22rem', 
+    fontSize: '18rem', 
     color: '#000000'
   },
   buttonTop: {
@@ -289,7 +290,7 @@ const styles = EStyleSheet.create({
   dropDownTextStyle: {
     backgroundColor: '#b39ddb',
     width: '300rem',
-    height: '100rem',
+    height: '110rem',
     borderColor: '#000000',
   },
   dropDownRaceTextStyle: {

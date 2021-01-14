@@ -102,7 +102,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center'
   },
   headerTitle: {
-    fontSize: '30rem', 
+    fontSize: '27rem', //change
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -113,7 +113,7 @@ const styles = EStyleSheet.create({
   tcP: {
     marginTop: '5rem',
     marginBottom: '3rem',
-    fontSize: '14rem',
+    fontSize: '15rem', //change
     fontWeight: 'bold',
     marginLeft: '10rem',
     marginRight: '10rem'
@@ -123,12 +123,12 @@ const styles = EStyleSheet.create({
     marginTop: '1rem',
     marginBottom: '10rem',
     marginRight: '10rem',
-    fontSize: '14rem'
+    fontSize: '15rem' //change
   },
   tcPend: {
     marginTop: '10rem',
     marginBottom: '10rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '10rem',
     marginRight: '10rem'
@@ -163,7 +163,7 @@ const styles = EStyleSheet.create({
     alignContent:'center', 
     marginLeft: '25rem', 
     marginRight: '25rem', 
-    fontSize: '22rem', 
+    fontSize: '18rem', 
     color: 'white'
   }
 })

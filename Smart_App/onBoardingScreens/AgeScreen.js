@@ -40,7 +40,7 @@ const AgeScreen = () => {
 
     const [isDobData, setIsDobData] = useState('Your age as of today will be displayed here.')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [isDate, setIsDate] = useState('Select your date of birth');
+    const [isDate, setIsDate] = useState('Pick your date of birth');
     const navigation = useNavigation();
 
     const showDatePicker = () => {
@@ -82,7 +82,7 @@ const AgeScreen = () => {
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
                           <TouchableOpacity style={styles.fieldStyle} activeOpacity = {.5} onPress={ showDatePicker }>
-                            <Text adjustsFontSizeToFit>{isDate}</Text>
+                            <Text adjustsFontSizeToFit style={styles.dateFont}>{isDate}</Text>
                           </TouchableOpacity>
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
@@ -172,7 +172,7 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '28rem', 
+    fontSize: '27rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -180,7 +180,8 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   innerTopHeaderHtField: {
-    flex: 1,
+    flex: 2,
+    justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
     flex: 3,
@@ -189,7 +190,7 @@ const styles = EStyleSheet.create({
   tcP: {
     marginTop: '5rem',
     marginBottom: '3rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '30rem',
     marginRight: '30rem'
@@ -197,7 +198,7 @@ const styles = EStyleSheet.create({
   tcL: {
     marginTop: '4rem',
     marginBottom: '10rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
@@ -212,7 +213,7 @@ const styles = EStyleSheet.create({
   fieldStyle: {
     height: '25rem',
     width: '290rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginLeft: '30rem',
@@ -221,7 +222,7 @@ const styles = EStyleSheet.create({
   content:{
     marginTop: '12rem',
     marginBottom: '5rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
@@ -230,7 +231,7 @@ const styles = EStyleSheet.create({
     textAlign: 'center', 
     alignContent:'center', 
     marginLeft: '40rem', 
-    fontSize: '22rem', 
+    fontSize: '18rem', 
     color: '#000000'
   },
   buttonTop: {
@@ -247,5 +248,8 @@ const styles = EStyleSheet.create({
     flex: 1.7, 
     backgroundColor: '#75a478',
   },
+  dateFont: {
+    fontSize:'15rem',
+  }
 })
 

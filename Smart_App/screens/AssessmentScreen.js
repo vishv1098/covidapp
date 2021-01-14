@@ -60,7 +60,7 @@ class AssessmentScreen extends Component {
               <View style={styles.contentContainer}>
                 <View style={styles.headerTitle}>
                   <Text adjustsFontSizeToFit style={styles.headerTitleText}>
-                      Covid-19 Assessment
+                      COVID-19 Assessment
                   </Text>
                 </View>
                 <View style={styles.headerIcon}>
@@ -219,12 +219,12 @@ const styles = EStyleSheet.create({
     padding:10
   },
   headerTitle: {
-    flex: 0.3,
+    flex: 1,
     width: "100%",
     backgroundColor: '#ffcc80',
   },
   headerTitleText: {
-    fontSize: '28rem', 
+    fontSize: '27rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -255,7 +255,7 @@ const styles = EStyleSheet.create({
     marginTop: '12rem',
     marginBottom: '5rem',
     marginLeft: '5rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     fontWeight: 'bold',
   },
   infoText:{
@@ -284,9 +284,9 @@ const styles = EStyleSheet.create({
     alignSelf:'stretch',
     flex:1,
     borderColor:'black',
-    borderBottomWidth:1,
-    borderLeftWidth:1,
-    borderRightWidth:1
+    borderBottomWidth:2,
+    borderLeftWidth:2,
+    borderRightWidth:2
     
   },
   buttonTop:{
@@ -296,7 +296,7 @@ const styles = EStyleSheet.create({
     alignItems:'center',
     flex:1,
     borderColor:'black',
-    borderWidth:1,
+    borderWidth:2,
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
   },
@@ -308,9 +308,9 @@ const styles = EStyleSheet.create({
     flex:1,
     backgroundColor:'#ffcc80',
     borderColor:'black',
-    borderBottomWidth:1,
-    borderLeftWidth:1,
-    borderRightWidth:1,
+    borderBottomWidth:2,
+    borderLeftWidth:2,
+    borderRightWidth:2,
     borderBottomLeftRadius: 50, 
     borderBottomRightRadius: 50,
   },
@@ -320,7 +320,7 @@ const styles = EStyleSheet.create({
     textAlign: 'center', 
     alignContent:'center', 
     alignSelf:'center',
-    fontSize:'20rem',
+    fontSize:'18rem',
   },
   nextButton: {
     backgroundColor: '#ca9b52',
@@ -337,7 +337,7 @@ const styles = EStyleSheet.create({
     textAlign: 'center', 
     alignContent:'center', 
     marginLeft: '40rem', 
-    fontSize: '22rem', 
+    fontSize: '18rem', 
     color: '#000000'
   },
   iconStyle: {

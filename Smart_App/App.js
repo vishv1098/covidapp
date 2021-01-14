@@ -86,7 +86,7 @@ class App extends Component {
                                 <StatusBar style="dark" />
                                 <NavigationContainer>
                                         <Stack.Navigator>
-                                                {/* <Stack.Screen name="Launch" component={LaunchScreen}
+                                                <Stack.Screen name="Launch" component={LaunchScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
@@ -105,14 +105,13 @@ class App extends Component {
                                                 <Stack.Screen name="race" component={RaceScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
-                                                })}/> */}
+                                                })}/>
                                                 <Stack.Screen name="profile" component={ProfileScreen} 
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
                                                         backgroundColor: '#158158',
                                                         },
-                                                        headerLeft: null,
                                                         headerTintColor: '#000000',
                                                         headerTitleStyle: {
                                                         fontWeight: 'bold',
@@ -120,6 +119,9 @@ class App extends Component {
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
                                                         fontSize: normalize(25)
+                                                        },
+                                                        headerTitleContainerStyle:{
+                                                        left: TITLE_OFFSET_CENTER_ALIGN - 150,
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="covid" component={CovidScreen} 
@@ -232,20 +234,6 @@ class App extends Component {
                                                         // headerTitleContainerStyle: {
                                                         // left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
                                                         // },
-                                                })}/>
-                                                <Stack.Screen name="ProfileEdit" component={ProfileScreen}
-                                                options={({ navigation }) => ({
-                                                        title: 'Profile',
-                                                        headerStyle: {
-                                                        backgroundColor: '#00B0B9',
-                                                        },
-                                                        headerTintColor: '#fff',
-                                                        headerTitleStyle: {
-                                                        fontWeight: 'bold',
-                                                        },
-                                                        headerTitleContainerStyle: {
-                                                        left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                                                        },
                                                 })}/>
                                         </Stack.Navigator>
                                 </NavigationContainer>

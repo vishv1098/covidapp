@@ -163,7 +163,7 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '28rem', 
+    fontSize: '27rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -171,7 +171,8 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   innerTopHeaderHtField: {
-    flex: 1,
+    flex: 2,
+    justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
     flex: 3,
@@ -180,13 +181,13 @@ const styles = EStyleSheet.create({
   tcP: {
     marginTop: '5rem',
     marginBottom: '3rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
   tcL: {
-    fontSize: '14rem',
+    fontSize: '15rem',
   },
   innerBottFieldHeaderHtField: {
     flex:16,
@@ -199,7 +200,7 @@ const styles = EStyleSheet.create({
   fieldStyle: {
     height: '40rem',
     width: '250rem',
-    fontSize: '14rem',
+    fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginLeft: '30rem',
@@ -208,7 +209,7 @@ const styles = EStyleSheet.create({
   content:{
     marginTop: '12rem',
     marginBottom: '5rem',
-    fontSize: '16rem',
+    fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
   },
@@ -217,7 +218,7 @@ const styles = EStyleSheet.create({
     textAlign: 'center', 
     alignContent:'center', 
     marginLeft: '40rem', 
-    fontSize: '22rem', 
+    fontSize: '18rem', 
     color: '#000000'
   },
   buttonTop: {

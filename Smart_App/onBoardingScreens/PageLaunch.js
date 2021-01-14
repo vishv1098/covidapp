@@ -98,7 +98,7 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '35rem', 
+    fontSize: '27rem', //change 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -150,7 +150,7 @@ const styles = EStyleSheet.create({
     alignContent:'flex-start', 
     marginLeft: '25rem', 
     marginRight: '25rem',
-    fontSize: '25rem', 
+    fontSize: '21rem', 
     color: 'white',
   }
 })

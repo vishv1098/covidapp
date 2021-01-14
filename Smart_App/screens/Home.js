@@ -10,6 +10,7 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import AddModal from './AddModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
+// import { RFValue } from "react-native-responsive-fontsize";
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
@@ -19,10 +20,10 @@ const {
     height: SCREEN_HEIGHT,
   } = Dimensions.get('window');
   
-const scale = SCREEN_WIDTH / 380;
-
-let entireScreenWidth = Dimensions.get('window').width;
-EStyleSheet.build({$rem: entireScreenWidth / 380});
+  const scale = SCREEN_WIDTH / 380;
+  
+  let entireScreenWidth = Dimensions.get('window').width;
+  EStyleSheet.build({$rem: entireScreenWidth / 380});
   
 export function normalize(size) {
     const newSize = size * scale 
@@ -54,7 +55,7 @@ class Home extends Component {
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
                         </View>
                         <View style={styles.trackerContent}>
-                            <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
+                                <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
                         </View>
                     </View>
                     <View style={styles.fitbitBox}>
@@ -94,7 +95,7 @@ class Home extends Component {
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
                         </View>
                         <View style={styles.profileButton}>
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('profile')}}>
                                 <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
                             </TouchableOpacity>
                         </View>
@@ -143,7 +144,7 @@ const styles = EStyleSheet.create({
         marginLeft: '20rem'
     },
     titleBox: {
-        flex: 2,
+        flex: 2.5,
         width: "100%",
         flexDirection: 'column',
     },
@@ -161,7 +162,7 @@ const styles = EStyleSheet.create({
         flex: 1,
     },
     testTitle: {
-        flex: 1.5,
+        flex: 2,
         flexDirection: 'row'
     },
     buttonTop: {
@@ -207,7 +208,7 @@ const styles = EStyleSheet.create({
         alignContent:'flex-start', 
         marginLeft: '25rem', 
         marginRight: '25rem',
-        fontSize: '20rem', 
+        fontSize: '18rem', 
         color: '#000000',
     },
     fitbitButtonTextStyle: {
@@ -215,7 +216,7 @@ const styles = EStyleSheet.create({
         textAlign: 'center', 
         alignContent:'flex-start',
         marginRight: '25rem',
-        fontSize: '20rem', 
+        fontSize: '18rem', 
         color: 'white',
     },
     googleFitButtonTextStyle: {
@@ -223,7 +224,7 @@ const styles = EStyleSheet.create({
         textAlign: 'center', 
         alignContent:'flex-start',
         marginRight: '25rem',
-        fontSize: '20rem', 
+        fontSize: '18rem', 
         color: '#000000',
     },
     testInfo: {
@@ -235,7 +236,7 @@ const styles = EStyleSheet.create({
         alignContent: 'center',
     },
     titleNameStyle: {
-        fontSize: '20rem',
+        fontSize: '21rem',
         fontWeight: 'bold',
         marginTop: '5rem',
         marginBottom: '3rem',
@@ -249,7 +250,7 @@ const styles = EStyleSheet.create({
         marginBottom: '5rem',
         marginLeft: '10rem',
         marginRight: '10rem',
-        fontSize: '14.8rem',
+        fontSize: '15rem',
     },
     trackerContent: {
         flex: 3,
