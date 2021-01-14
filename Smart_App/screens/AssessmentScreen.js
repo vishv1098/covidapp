@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity,Dimensions } from 'react-native'
-import CheckBox from '@react-native-community/checkbox';
+import { Text, View, TouchableOpacity,Dimensions } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 

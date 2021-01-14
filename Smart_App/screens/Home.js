@@ -1,16 +1,7 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
-import Dialog from "react-native-dialog";
-// import SemiCircleProgress from './SemiCircle';
-import * as tf from '@tensorflow/tfjs';
-import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
-import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
-import AsyncStorage from '@react-native-community/async-storage';
-import axios from 'axios';
+import { Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-// import AddModal from './AddModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
-// import { RFValue } from "react-native-responsive-fontsize";
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);

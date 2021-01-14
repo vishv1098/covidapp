@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions, Platform, PixelRatio } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -43,20 +43,14 @@ class ProfileScreen extends Component {
 
     getData = async () => {
         var height = await AsyncStorage.getItem('userHeight');
-        // height = 190
         var realFeet = ((height*0.393700) / 12);
         var feet = Math.floor(realFeet);
         var inches = Math.round((realFeet - feet) * 12);
         var weight_val = await AsyncStorage.getItem('userWeight');
-        // weight_val = 75
         var dob_val = await AsyncStorage.getItem('userFullDob');
-        // dob_val = "Dec 25, 1997"
         var gender = await AsyncStorage.getItem('userGender');
-        // gender = "male"
         var race_val = await AsyncStorage.getItem('userRace');
-        // race_val = 'Asian'
         var ethini_val = await AsyncStorage.getItem('userEthini');
-        // ethini_val = "Hispanic or Latino"
         if (ethini_val === 'Hispanic or Latino') {
             ethini_val = "Yes"
         } else {

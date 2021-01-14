@@ -98,7 +98,7 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '27rem', //change 
+    fontSize: '27rem',
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  

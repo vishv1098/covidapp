@@ -280,7 +280,6 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     marginLeft: '30rem',
     justifyContent: 'flex-start',
-    // backgroundColor: 'red'
   },
   tcP: {
     marginTop: '5rem',
@@ -307,8 +306,6 @@ const styles = EStyleSheet.create({
   },
   innerBottFieldHeaderBpField: {
     flex:1,
-    // justifyContent: 'flex-start'
-    // backgroundColor: 'yellow'
   },
   innerBottUnitHeaderHtField: {
     flex:4,

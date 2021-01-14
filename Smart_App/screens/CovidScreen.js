@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, Platform, PixelRatio } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, TouchableOpacity, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 var screenWidth = Dimensions.get('screen').width;

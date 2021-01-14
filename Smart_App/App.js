@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Text, Dimensions, StyleSheet, Platform, PixelRatio } from 'react-native';
+import { Dimensions, StyleSheet, Platform, PixelRatio } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { StatusBar } from 'expo-status-bar';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import PushNotification from "react-native-push-notification";
 import Home from './screens/Home'
 import Assessment from './screens/AssessmentScreen'
-import SettingsScreen from './currentScreen/SettingsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import TermsAndConditions from './onBoardingScreens/TermsAndConditions';
 import LaunchScreen from './onBoardingScreens/LaunchScreen'
@@ -187,53 +185,14 @@ class App extends Component {
                                                         alignSelf: 'center',
                                                         fontSize: normalize(25)
                                                         },
-                                                        // headerTitleContainerStyle: {
-                                                        // left: TITLE_OFFSET_CENTER_ALIGN- 60, // THIS RIGHT HERE
-                                                        // alignContent:'center'
-                                                        // },
-                                                        // headerRight: () => (
-                                                        // <TouchableOpacity style={{paddingRight: 16}} onPress={ () => navigation.navigate('Profile') }>
-                                                        //         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
-                                                        // </TouchableOpacity>
-                                                        // ),
-                                                        // headerLeft: () => (
-                                                        // <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
-                                                        //         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
-                                                        // </TouchableOpacity>
-                                                        // ),
                                                 })}/>
                                                 <Stack.Screen name="vitals" component={VitalsScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
-                                                <Stack.Screen name="Profile" component={SettingsScreen}
-                                                options={({ navigation }) => ({
-                                                        title: 'Settings',
-                                                        headerStyle: {
-                                                        backgroundColor: '#00B0B9',
-                                                        },
-                                                        headerTintColor: '#fff',
-                                                        headerTitleStyle: {
-                                                        fontWeight: 'bold',
-                                                        },
-                                                        headerTitleContainerStyle: {
-                                                        left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                                                        },
-                                                })}/>
                                                 <Stack.Screen name="Self Assessment" component={Assessment}
                                                 options={({ navigation }) => ({
-                                                        headerShown: false  
-                                                        // title: 'Self Assessment',
-                                                        // headerStyle: {
-                                                        // backgroundColor: '#00B0B9',
-                                                        // },
-                                                        // headerTintColor: '#fff',
-                                                        // headerTitleStyle: {
-                                                        // fontWeight: 'bold',
-                                                        // },
-                                                        // headerTitleContainerStyle: {
-                                                        // left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
-                                                        // },
+                                                        headerShown: false
                                                 })}/>
                                         </Stack.Navigator>
                                 </NavigationContainer>
@@ -268,72 +227,95 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                         headerShown: false  
                 //                                         })}/>
-                //                                         <Stack.Screen name="Home" component={Home} 
+                //                                         <Stack.Screen name="profile" component={ProfileScreen} 
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Home',
+                //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                                 headerTitleContainerStyle:{
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="covid" component={CovidScreen} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
                 //                                                 headerLeft: null,
-                //                                                 headerTintColor: '#fff',
+                //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
                 //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                //                                                 },
-                //                                                 headerRight: () => (
-                //                                                 <TouchableOpacity style={{paddingRight: 16}} onPress={ () => navigation.navigate('Profile') }>
-                //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
-                //                                                 </TouchableOpacity>
-                //                                                 ),
-                //                                                 headerLeft: () => (
-                //                                                 <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
-                //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
-                //                                                 </TouchableOpacity>
-                //                                                 ),
                 //                                         })}/>
-                //                                         <Stack.Screen name="Profile" component={SettingsScreen}
+                //                                         <Stack.Screen name="influ" component={InfluScreen} 
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Settings',
+                //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
-                //                                                 headerTintColor: '#fff',
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
                 //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                //                                         })}/>
+                //                                         <Stack.Screen name="safe" component={SafeScreen} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="Home" component={Home} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
+                //                                         options={({ navigation }) => ({
+                //                                         headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="Self Assessment" component={Assessment}
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Self Assessment',
-                //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
-                //                                                 },
-                //                                                 headerTintColor: '#fff',
-                //                                                 headerTitleStyle: {
-                //                                                 fontWeight: 'bold',
-                //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
-                //                                                 },
-                //                                         })}/>
-                //                                         <Stack.Screen name="ProfileEdit" component={ProfileScreen}
-                //                                         options={({ navigation }) => ({
-                //                                                 title: 'Profile',
-                //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
-                //                                                 },
-                //                                                 headerTintColor: '#fff',
-                //                                                 headerTitleStyle: {
-                //                                                 fontWeight: 'bold',
-                //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                //                                                 },
+                //                                                 headerShown: false
                 //                                         })}/>
                 //                                 </Stack.Navigator>
                 //                         </NavigationContainer>
@@ -345,71 +327,94 @@ class App extends Component {
                 //                         <StatusBar style="dark" />
                 //                         <NavigationContainer>
                 //                                 <Stack.Navigator>
-                //                                 <Stack.Screen name="Home" component={Home} 
+                //                                         <Stack.Screen name="Home" component={Home} 
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Home',
+                //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
                 //                                                 headerLeft: null,
-                //                                                 headerTintColor: '#fff',
+                //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
                 //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                //                                                 },
-                //                                                 headerRight: () => (
-                //                                                 <TouchableOpacity style={{paddingRight: 16}} onPress={ () => navigation.navigate('Profile') }>
-                //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Settings</Text>
-                //                                                 </TouchableOpacity>
-                //                                                 ),
-                //                                                 headerLeft: () => (
-                //                                                 <TouchableOpacity style={{paddingLeft: 16}} onPress={ () => navigation.navigate('ProfileEdit') }>
-                //                                                         <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 16 }}>Profile</Text>
-                //                                                 </TouchableOpacity>
-                //                                                 ),
                 //                                         })}/>
-                //                                         <Stack.Screen name="Profile" component={SettingsScreen}
+                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Settings',
-                //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
-                //                                                 },
-                //                                                 headerTintColor: '#fff',
-                //                                                 headerTitleStyle: {
-                //                                                 fontWeight: 'bold',
-                //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
-                //                                                 },
+                //                                         headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="Self Assessment" component={Assessment}
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Self Assessment',
+                //                                                 headerShown: false
+                //                                         })}/>
+                //                                         <Stack.Screen name="profile" component={ProfileScreen} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
-                //                                                 headerTintColor: '#fff',
+                //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
                 //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 30, // THIS RIGHT HERE
+                //                                                 headerTitleContainerStyle:{
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
                 //                                                 },
                 //                                         })}/>
-                //                                         <Stack.Screen name="ProfileEdit" component={ProfileScreen}
+                //                                         <Stack.Screen name="covid" component={CovidScreen} 
                 //                                         options={({ navigation }) => ({
-                //                                                 title: 'Profile',
+                //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#00B0B9',
+                //                                                 backgroundColor: '#158158',
                 //                                                 },
-                //                                                 headerTintColor: '#fff',
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
                 //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
-                //                                                 headerTitleContainerStyle: {
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN + 15, // THIS RIGHT HERE
+                //                                         })}/>
+                //                                         <Stack.Screen name="influ" component={InfluScreen} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="safe" component={SafeScreen} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                         })}/>
                 //                                 </Stack.Navigator>
