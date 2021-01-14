@@ -197,7 +197,7 @@ const VitalsScreen = () => {
                   </View>
               </View>
               <View style={styles.headerNavigate}>
-                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('result')}}>
+                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('safe')}}>
                   <Text style={styles.buttonTextStyle}>View Result</Text>
                 </TouchableOpacity>
               </View>

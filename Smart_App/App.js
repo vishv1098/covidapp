@@ -84,7 +84,7 @@ class App extends Component {
                                 <StatusBar style="dark" />
                                 <NavigationContainer>
                                         <Stack.Navigator>
-                                                {/* <Stack.Screen name="Launch" component={LaunchScreen}
+                                                <Stack.Screen name="Launch" component={LaunchScreen}
                                                 options={({ navigation }) => ({
                                                 headerShown: false  
                                                 })}/>
@@ -153,7 +153,7 @@ class App extends Component {
                                                         alignSelf: 'center',
                                                         fontSize: normalize(25)
                                                         },
-                                                })}/> */}
+                                                })}/>
                                                 <Stack.Screen name="safe" component={SafeScreen} 
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
