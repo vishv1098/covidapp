@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Dimensions, TouchableOpacity, Platform, PixelRatio } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, Dimensions, TouchableOpacity, BackHandler, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -33,6 +33,12 @@ const TermsAndConditions = () => {
   };
 
   const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => { 
+    BackHandler.addEventListener('hardwareBackPress', function () { 
+      return true; 
+    }); 
+  }) 
 
   return (
     <View style={styles.container}>

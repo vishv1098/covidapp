@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as tf from '@tensorflow/tfjs';
+import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import axios from 'axios';
 
 const {
   width: SCREEN_WIDTH,
@@ -24,188 +26,204 @@ export function normalize(size) {
   }
 }
 
-const VitalsScreen = () => {
+const covid_modelJson = require('../components/COVIDOnly/model.json')
+const covid_modelWeights = require('../components/COVIDOnly/group1-shard1of1.bin')
 
-  const navigation = useNavigation();
+const influ_modelJson = require('../components/InfluenzaOnly/model.json')
+const influ_modelWeights = require('../components/InfluenzaOnly/group1-shard1of1.bin')
 
-  const handleOxygenbox = async (inputText) => {
+const covid_infl_modelJson = require('../components/COVIDvsInfluenza/model.json')
+const covid_infl_modelWeights = require('../components/COVIDvsInfluenza/group1-shard1of1.bin')
+
+const BACKEND_CONFIG = 'cpu';
+
+class VitalsScreen extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  handleOxygenbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('oxygen_saturation', inputText);
     }
   }
 
-  const handleHRbox = async (inputText) => {
+  handleHRbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('heart_rate', inputText);
     }
   }
 
-  const handleRRbox = async (inputText) => {
+  handleRRbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('respiratory_rate', inputText);
     }
   }
 
-  const handleTempbox = async (inputText) => {
+  handleTempbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('temperature', inputText);
     }
   }
 
-  const handleDBPbox = async (inputText) => {
+  handleDBPbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('diastolic_bloodpressure', inputText);
     }
   }
-  const handleSBPbox = async (inputText) => {
+
+  handleSBPbox = async (inputText) => {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('systolic_bloodpressure', inputText);
     }
   }
 
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-          <View style={styles.contentContainer}>
-              <View style={styles.headerTitle}>
-                  <Text adjustsFontSizeToFit style={styles.headerTitleText}>
-                      COVID-19 Assessment
-                  </Text>
-              </View>
-              <View style={styles.headerIcon}>
-                  <Icon name='heart-outline' size={100} color="black" style={styles.headerIconStyle} />
-              </View>
-              <View style={styles.headerField}>
-                <View>
-                  <Text style={styles.tcP}>Vitals</Text>
+  render() {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
+            <View style={styles.contentContainer}>
+                <View style={styles.headerTitle}>
+                    <Text adjustsFontSizeToFit style={styles.headerTitleText}>
+                        COVID-19 Assessment
+                    </Text>
+                </View>
+                <View style={styles.headerIcon}>
+                    <Icon name='heart-outline' size={100} color="black" style={styles.headerIconStyle} />
                 </View>
                 <View style={styles.headerField}>
-                  <Text style={styles.tcsub}>Enter the remaining vitals if you know them.</Text>
+                  <View>
+                    <Text style={styles.tcP}>Vitals</Text>
+                  </View>
+                  <View style={styles.headerField}>
+                    <Text style={styles.tcsub}>Enter the remaining vitals if you know them.</Text>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.headerElField}>
-                  <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Oxygen Saturation</Text>
-                  </View>
-                  <View style={styles.innerBottomHeaderHtField}>
-                    <View style={styles.innerBottFieldHeaderHtField}>
-                        <TextInput
-                          style={styles.fieldStyle}
-                          onChangeText = { (text) => handleOxygenbox(text) }
-                          placeholder = {'Enter your oxygen saturation value'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                <View style={styles.headerElField}>
+                    <View style={styles.innerTopHeaderHtField}>
+                      <Text style={styles.tcP}>Oxygen Saturation</Text>
                     </View>
-                    <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text style={styles.tcL}>%</Text>
+                    <View style={styles.innerBottomHeaderHtField}>
+                      <View style={styles.innerBottFieldHeaderHtField}>
+                          <TextInput
+                            style={styles.fieldStyle}
+                            onChangeText = { (text) => this.handleOxygenbox(text) }
+                            placeholder = {'Enter your oxygen saturation value'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
+                      <View style={styles.innerBottUnitHeaderHtField}>
+                        <Text style={styles.tcL}>%</Text>
+                      </View>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.headerElField}>
-                  <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Heart Rate</Text>
-                  </View>
-                  <View style={styles.innerBottomHeaderHtField}>
-                    <View style={styles.innerBottFieldHeaderHtField}>
-                        <TextInput
-                          style={styles.fieldStyle}
-                          onChangeText = { (text) => handleHRbox(text) }
-                          placeholder = {'Enter your heart rate in bpm'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                </View>
+                <View style={styles.headerElField}>
+                    <View style={styles.innerTopHeaderHtField}>
+                      <Text style={styles.tcP}>Heart Rate</Text>
                     </View>
-                    <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text style={styles.tcL}>bpm</Text>
+                    <View style={styles.innerBottomHeaderHtField}>
+                      <View style={styles.innerBottFieldHeaderHtField}>
+                          <TextInput
+                            style={styles.fieldStyle}
+                            onChangeText = { (text) => this.handleHRbox(text) }
+                            placeholder = {'Enter your heart rate in bpm'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
+                      <View style={styles.innerBottUnitHeaderHtField}>
+                        <Text style={styles.tcL}>bpm</Text>
+                      </View>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.headerElField}>
-                  <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Respiratory Rate</Text>
-                  </View>
-                  <View style={styles.innerBottomHeaderHtField}>
-                    <View style={styles.innerBottFieldHeaderHtField}>
-                        <TextInput
-                          style={styles.fieldStyle}
-                          onChangeText = { (text) => handleRRbox(text) }
-                          placeholder = {'Enter your respiratory rate value'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                </View>
+                <View style={styles.headerElField}>
+                    <View style={styles.innerTopHeaderHtField}>
+                      <Text style={styles.tcP}>Respiratory Rate</Text>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.headerElField}>
-                  <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Body Temperature</Text>
-                  </View>
-                  <View style={styles.innerBottomHeaderHtField}>
-                    <View style={styles.innerBottFieldHeaderHtField}>
-                        <TextInput
-                          style={styles.fieldStyle}
-                          onChangeText = { (text) => handleTempbox(text) }
-                          placeholder = {'Enter your body temperature'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                    <View style={styles.innerBottomHeaderHtField}>
+                      <View style={styles.innerBottFieldHeaderHtField}>
+                          <TextInput
+                            style={styles.fieldStyle}
+                            onChangeText = { (text) => this.handleRRbox(text) }
+                            placeholder = {'Enter your respiratory rate value'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.headerElField}>
-                  <View style={styles.innerTopHeaderHtField}>
-                    <Text style={styles.tcP}>Blood Pressure</Text>
-                  </View>
-                  <View style={styles.innerBottomHeaderBpField}>
-                    <View style={styles.innerBottFieldHeaderBpField}>
-                        <TextInput
-                          style={styles.fieldStyleBp}
-                          onChangeText = { (text) => handleSBPbox(text) }
-                          placeholder = {'Systolic BP'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                </View>
+                <View style={styles.headerElField}>
+                    <View style={styles.innerTopHeaderHtField}>
+                      <Text style={styles.tcP}>Body Temperature</Text>
                     </View>
-                    <View style={styles.innerBottFieldHeaderBpField}>
-                      <Text style={styles.tcLbp}> / </Text>
+                    <View style={styles.innerBottomHeaderHtField}>
+                      <View style={styles.innerBottFieldHeaderHtField}>
+                          <TextInput
+                            style={styles.fieldStyle}
+                            onChangeText = { (text) => this.handleTempbox(text) }
+                            placeholder = {'Enter your body temperature'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
                     </View>
-                    <View style={styles.innerBottFieldHeaderBpField}>
-                        <TextInput
-                          style={styles.fieldStyleBp}
-                          onChangeText = { (text) => handleDBPbox(text) }
-                          placeholder = {'Diastolic BP'}
-                          placeholderTextColor="#000000" 
-                          keyboardType={'numeric'}
-                          numeric
-                        />
+                </View>
+                <View style={styles.headerElField}>
+                    <View style={styles.innerTopHeaderHtField}>
+                      <Text style={styles.tcP}>Blood Pressure</Text>
                     </View>
-                    <View style={styles.innerBottUnitHeaderBpField}>
-                      <Text style={styles.tcLbp}>mmHg</Text>
+                    <View style={styles.innerBottomHeaderBpField}>
+                      <View style={styles.innerBottFieldHeaderBpField}>
+                          <TextInput
+                            style={styles.fieldStyleBp}
+                            onChangeText = { (text) => this.handleSBPbox(text) }
+                            placeholder = {'Systolic BP'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
+                      <View style={styles.innerBottFieldHeaderBpField}>
+                        <Text style={styles.tcLbp}> / </Text>
+                      </View>
+                      <View style={styles.innerBottFieldHeaderBpField}>
+                          <TextInput
+                            style={styles.fieldStyleBp}
+                            onChangeText = { (text) => this.handleDBPbox(text) }
+                            placeholder = {'Diastolic BP'}
+                            placeholderTextColor="#000000" 
+                            keyboardType={'numeric'}
+                            numeric
+                          />
+                      </View>
+                      <View style={styles.innerBottUnitHeaderBpField}>
+                        <Text style={styles.tcLbp}>mmHg</Text>
+                      </View>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.headerNavigate}>
-                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('safe')}}>
-                  <Text style={styles.buttonTextStyle}>View Result</Text>
-                </TouchableOpacity>
-              </View>
-          </View>
-      </View>
-    </TouchableWithoutFeedback>
-  )
-};
+                </View>
+                <View style={styles.headerNavigate}>
+                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.props.navigation.navigate('safe')}}>
+                    <Text style={styles.buttonTextStyle}>View Result</Text>
+                  </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+}
 
 export default VitalsScreen;
 
