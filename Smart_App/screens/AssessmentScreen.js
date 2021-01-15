@@ -87,98 +87,98 @@ class AssessmentScreen extends Component {
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opfev}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.button,{backgroundColor: this.state.bgpc}]} onPress={ async() => {if(this.state.bgpc === '#ffcc80'){
-                      this.setState({
-                        bgpc:'#ca9b52',
-                        pc:true,
-                        oppc:1,
-                      })
-                }else{
-                  this.setState({
-                    bgpc:'#ffcc80',
-                    pc:false,
-                    oppc:0,
-                  })
-                } }}>
+                            this.setState({
+                              bgpc:'#ca9b52',
+                              pc:true,
+                              oppc:1,
+                            })
+                      }else{
+                        this.setState({
+                          bgpc:'#ffcc80',
+                          pc:false,
+                          oppc:0,
+                        })
+                      } }}>
                         <Text style={styles.buttonTxt}>Persistent Cough</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.oppc}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.button,{backgroundColor: this.state.bgsb}] } onPress={ async() => {if(this.state.bgsb === '#ffcc80'){
-                      this.setState({
-                        bgsb:'#ca9b52',
-                        sb:true,
-                        opsb:1
-                      })
-                }else{
-                  this.setState({
-                    bgsb:'#ffcc80',
-                    sb:false,
-                    opsb:0
-                  })
-                } }}>
+                            this.setState({
+                              bgsb:'#ca9b52',
+                              sb:true,
+                              opsb:1
+                            })
+                      }else{
+                        this.setState({
+                          bgsb:'#ffcc80',
+                          sb:false,
+                          opsb:0
+                        })
+                      } }}>
                         <Text style={styles.buttonTxt}>Shortness of Breath</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opsb}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.button,{backgroundColor: this.state.bgsf}] } onPress={ async() => {if(this.state.bgsf === '#ffcc80'){
-                      this.setState({
-                        bgsf:'#ca9b52',
-                        sf:true,
-                        opsf:1,
-                      })
-                }else{
-                  this.setState({
-                    bgsf:'#ffcc80',
-                    sf:false,
-                    opsf:0
-                  })
-                } }}>
+                              this.setState({
+                                bgsf:'#ca9b52',
+                                sf:true,
+                                opsf:1,
+                              })
+                        }else{
+                          this.setState({
+                            bgsf:'#ffcc80',
+                            sf:false,
+                            opsf:0
+                          })
+                        } }}>
                         <Text style={styles.buttonTxt}>Severe Fatigue</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opsf}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.button,{backgroundColor: this.state.bglst}] } onPress={ async() => {if(this.state.bglst === '#ffcc80'){
-                      this.setState({
-                        bglst:'#ca9b52',
-                        lst:true,
-                        oplst:1
-                      })
-                }else{
-                  this.setState({
-                    bglst:'#ffcc80',
-                    lst:false,
-                    oplst:0
-                  })
-                } }}>
+                            this.setState({
+                              bglst:'#ca9b52',
+                              lst:true,
+                              oplst:1
+                            })
+                      }else{
+                        this.setState({
+                          bglst:'#ffcc80',
+                          lst:false,
+                          oplst:0
+                        })
+                      } }}>
                         <Text style={styles.buttonTxt}>Loss of Smell and Taste</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.oplst}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.button,{backgroundColor: this.state.bgla}] } onPress={ async() => {if(this.state.bgla === '#ffcc80'){
-                      this.setState({
-                        bgla:'#ca9b52',
-                        la:true,
-                        opla:1
-                      })
-                }else{
-                  this.setState({
-                    bgla:'#ffcc80',
-                    la:false,
-                    opla:0
-                  })
-                } }}>
+                            this.setState({
+                              bgla:'#ca9b52',
+                              la:true,
+                              opla:1
+                            })
+                      }else{
+                        this.setState({
+                          bgla:'#ffcc80',
+                          la:false,
+                          opla:0
+                        })
+                      } }}>
                         <Text style={styles.buttonTxt}>Loss of Appetite </Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opla}]} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonBottom,{backgroundColor: this.state.bgdiarr}]} onPress={ async() => {if(this.state.bgdiarr === '#ffcc80'){
-                      this.setState({
-                        bgdiarr:'#ca9b52',
-                        diarr:true,
-                        opdiarr:1
-                      })
-                }else{
-                  this.setState({
-                    bgdiarr:'#ffcc80',
-                    diarr:false,
-                    opdiarr:0
-                  })
-                } }}>
+                            this.setState({
+                              bgdiarr:'#ca9b52',
+                              diarr:true,
+                              opdiarr:1
+                            })
+                      }else{
+                        this.setState({
+                          bgdiarr:'#ffcc80',
+                          diarr:false,
+                          opdiarr:0
+                        })
+                      } }}>
                         <Text style={styles.buttonTxt}>Diarrhoea</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opdiarr}]} />
                     </TouchableOpacity>
