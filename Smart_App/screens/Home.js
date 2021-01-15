@@ -9,6 +9,8 @@ import { GoogleSignin, statusCodes } from '@react-native-community/google-signin
 import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 import config from '../configFiles/config'
 import googleConfig from '../configFiles/googleConfig'
+import { ConfirmDialog } from 'react-native-simple-dialogs';
+import AddModal from './AddModal';
 
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
@@ -97,7 +99,11 @@ class Home extends Component {
             fitbitName: 'Connect to a Fitbit tracker',
             fitbit_accesstoken: '',
             google_accesstoken: '',
+            infodialogVisible: false,
+            aboutAppDialogVisible: false,
+            termsandcondition: false,
         }
+        this._onFormData = this._onFormData.bind(this);
     }
 
     async componentDidMount() {
@@ -220,11 +226,56 @@ class Home extends Component {
         var check = await AsyncStorage.getItem("googlefit_accesstoken")
     }
 
+    setData = async () => {
+        //
+    }
+
+    _onFormData = async() => {
+        this.refs.addModal.showAddModal();
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1,}}>
                 <View style={styles.contentContainer}>
+                    <ConfirmDialog
+                        visible={this.state.infodialogVisible}
+                        title="Disclaimer"
+                        titleStyle={styles.disclaimer}
+                        dialogStyle={styles.disclaimerDialog}
+                        onTouchOutside={() => this.setState({infodialogVisible: false})}
+                        positiveButton={{
+                            title: "OK",
+                            titleStyle: styles.disclaimerButtonStyle,
+                            style: styles.disclaimerButton,
+                            onPress: () => this.setState({infodialogVisible: false})
+                        }}
+                        >
+                        <ScrollView>
+                            <Text style={styles.disclaimerContent}>This App provides real-time tracking of vital signs and self-reported symptoms to predict the probability of having COVID-19 vs Influenza on an individual basis. The data and services provided by this App are an information resource only, and are not to be used or relied on for any diagnostic or treatment purpose. This information does not create any patient-physician relationship, and should not be used as a substitute for professional diagnosis and treatment.</Text>
+                            <Text style={styles.disclaimerContent}>The App cannot be held accountable for any decisions made based on the information provided. Consult your healthcare provider before making any healthcare decisions or for guidance about a specific medical condition.</Text>
+                            <Text style={styles.disclaimerContent}>Your data is used to make predictions on-device using Machine Learning models, and is not collected or stored for any other purpose.</Text>
+                        </ScrollView>
+                    </ConfirmDialog>
+                    <ConfirmDialog
+                        visible={this.state.aboutAppDialogVisible}
+                        title="About this App"
+                        titleStyle={styles.disclaimer}
+                        dialogStyle={styles.disclaimerDialog}
+                        onTouchOutside={() => this.setState({aboutAppDialogVisible: false})}
+                        positiveButton={{
+                            title: "OK",
+                            titleStyle: styles.disclaimerButtonStyle,
+                            style: styles.disclaimerButton,
+                            onPress: () => this.setState({aboutAppDialogVisible: false})
+                        }}
+                        >
+                        <ScrollView>
+                            <Text style={styles.disclaimerContent}>Any details we wish to provide, such as developers, contacts and other licensing information.</Text>
+                            <Text style={styles.disclaimerContent}>Would be good to include some details on the models too.</Text>
+                        </ScrollView>
+                    </ConfirmDialog>
                     <View style={styles.titleBox}>
                         <View style={styles.trackerTitle}>
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
@@ -251,9 +302,9 @@ class Home extends Component {
                                 <View style={styles.testName}>
                                     <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
                                 </View>
-                                <View style={styles.testIcon}>
+                                <TouchableOpacity style={styles.testIcon} activeOpacity = {.5} onPress={()=>this.setState({infodialogVisible:true})}>
                                     <Icon name='information-circle-outline' size={30} />
-                                </View>
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.testInfo}>
                                     <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
@@ -277,16 +328,18 @@ class Home extends Component {
                     </View>
                     <View style={styles.termsAndConditionBox}>
                         <View style={styles.aboutApp}>
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={()=>this.setState({aboutAppDialogVisible:true})}>
                                 <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>About this App</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.termsBox}>
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={this._onFormData}>
                                 <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>T {"&"} C</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <AddModal ref={'addModal'} setData={this.setData}>
+                    </AddModal>
                 </View>
                 </ScrollView>
             </View>
@@ -311,6 +364,29 @@ const styles = EStyleSheet.create({
         flexDirection: "column",
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    disclaimer: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        fontSize: '23rem',
+        fontWeight: 'bold'
+    },
+    disclaimerDialog: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    disclaimerContent: {
+        fontSize: '16rem',
+        paddingBottom: '10rem',
+    },
+    disclaimerButtonStyle: {
+        fontSize:'16rem',
+    },
+    disclaimerButton: {
+        paddingBottom: '10rem'
     },
     ImageIconStyle: {
         height: '40rem',
@@ -472,7 +548,7 @@ const styles = EStyleSheet.create({
     },
     profileButton: {
         flex: 2,
-    }
+    },
 })
 
 export default Home
