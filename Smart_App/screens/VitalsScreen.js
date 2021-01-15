@@ -41,6 +41,25 @@ class VitalsScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      oxy: -1,
+      dbp: -1,
+      sbp: -1,
+      hr: -1,
+      res_r: -1,
+      b_tmp: -1,
+      sex: 0,
+      white: 1,
+      black: 0,
+      others: 0,
+      ethini: 0,
+      age: -1,
+    }
+  }
+
+  async componentDidMount() {
+    await tf.setBackend(BACKEND_CONFIG);
+    await tf.ready();
   }
 
   handleOxygenbox = async (inputText) => {
@@ -82,6 +101,54 @@ class VitalsScreen extends Component {
     if (inputText === '') {
     } else {
       await AsyncStorage.setItem('systolic_bloodpressure', inputText);
+    }
+  }
+
+  getCovidPrediction = async () => {
+    var z = [this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]
+    console.log(z)
+    const model = await tf.loadLayersModel(bundleResourceIO(covid_modelJson, covid_modelWeights));
+    const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    const res = model.predict(a);
+    const da = await res.data();
+    const y = JSON.stringify(da).toString()
+    return da[0]
+  }
+
+  getInfluenzaPrediction = async () => {
+    const model = await tf.loadLayersModel(bundleResourceIO(influ_modelJson, influ_modelWeights));
+    const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    const res = model.predict(a);
+    const da = await res.data();
+    const y = JSON.stringify(da).toString()
+    return da[0]
+  }
+
+  getCovidInfluPrediction = async () => {
+    const model = await tf.loadLayersModel(bundleResourceIO(covid_infl_modelJson, covid_infl_modelWeights));
+    const a = tf.tensor([[this.state.oxy, this.state.dbp, this.state.sbp, this.state.hr, this.state.res_r, this.state.b_tmp, this.state.sex, this.state.white, this.state.black, this.state.others, this.state.ethini, this.state.age]]);
+    const res = model.predict(a);
+    const da = await res.data();
+    const y = JSON.stringify(da).toString()
+    return da[0]
+  }
+
+  getCovidTest = async () => {
+    const covidscore = await this.getCovidPrediction();
+    const influscore = await this.getInfluenzaPrediction();
+    if (covidscore < 0.5 && influscore < 0.5 ) {
+      this.props.navigation.navigate('safe')
+    } else if (covidscore < 0.5 && influscore > 0.5 ) {
+      this.props.navigation.navigate('influ')
+    } else if (covidscore > 0.5 && influscore < 0.5 ) {
+      this.props.navigation.navigate('covid')
+    } else {
+      const covidinfluscore = await this.getCovidInfluPrediction();
+      if (covidinfluscore < 0.5) {
+        this.props.navigation.navigate('influ')
+      } else {
+        this.props.navigation.navigate('covid')
+      }
     }
   }
 
@@ -214,7 +281,7 @@ class VitalsScreen extends Component {
                     </View>
                 </View>
                 <View style={styles.headerNavigate}>
-                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.props.navigation.navigate('safe')}}>
+                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={this.getCovidTest}>
                     <Text style={styles.buttonTextStyle}>View Result</Text>
                   </TouchableOpacity>
                 </View>
