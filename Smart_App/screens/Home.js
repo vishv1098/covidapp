@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import { LocalNotification, ScheduledLocalNotification } from './LocalPushController'
 import config from '../configFiles/config'
 import googleConfig from '../configFiles/googleConfig'
 
@@ -90,7 +91,7 @@ class Home extends Component {
 
     constructor(props){
         super(props)
-        // this._testScheduleNotification();
+        this._testScheduleNotification();
         this.state = {
             googleFitName: 'Connect to Google Fit',
             fitbitName: 'Connect to a Fitbit tracker',
@@ -102,6 +103,14 @@ class Home extends Component {
     async componentDidMount() {
         await this.getData();
         await this.getFitbitData();
+    }
+
+    _testnotification = async() => {
+        LocalNotification()
+    }
+
+    _testScheduleNotification = async() => {
+        ScheduledLocalNotification()
     }
 
     getFitbitData = async () => {
