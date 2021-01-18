@@ -111,7 +111,7 @@ class ProfileScreen extends Component {
                         </View>
                     </View>
                     <View style={styles.profileSubmitButton}>
-                        <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5}>
+                        <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('edit')}}>
                             <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Edit Profile</Text>
                         </TouchableOpacity>
                     </View>

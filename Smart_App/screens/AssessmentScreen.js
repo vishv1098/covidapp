@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity,Dimensions } from 'react-native'
+import { Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function normalize(size) {
   const newSize = size * scale 
@@ -10,7 +11,8 @@ export function normalize(size) {
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
   }
-} 
+}
+
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -25,6 +27,7 @@ class AssessmentScreen extends Component {
   
     constructor(props) {
         super(props);
+        this.getData();
         this.state = {
             lst : false,
             la : false,
@@ -53,6 +56,32 @@ class AssessmentScreen extends Component {
         }
     }
 
+    getData = async () => {
+      try {
+        const DOB = await AsyncStorage.getItem('userDOB')
+        const Gender = await AsyncStorage.getItem('userGender')
+        if(Gender === "male" ) {
+          this.setState({
+            gender: 1,
+            age:DOB
+          })
+        }
+        else{
+          this.setState({
+            gender: 0,
+            age:DOB,
+          })
+        }
+      } catch(e) {
+      }
+    }
+
+    setProb = async () => {
+      await AsyncStorage.setItem('prob', ((Math.exp(-1.32-(0.01*this.state.age)+(0.44*this.state.gender)+(1.75*(this.state.lst?1:0))
+      +(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0))))/(1+Math.exp(-1.32-(0.01*this.state.age)+(0.44*this.state.gender)
+      +(1.75*(this.state.lst?1:0))+(0.31*(this.state.pc?1:0))+(0.49*(this.state.sf?1:0))+(0.39*(this.state.la?1:0)))))*100 + " ")
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -76,7 +105,7 @@ class AssessmentScreen extends Component {
                             fever:true,
                             opfev:1,
                           })
-                    }else{
+                    } else {
                       this.setState({
                         bgfev:'#ffcc80',
                         fever:false,
@@ -92,7 +121,7 @@ class AssessmentScreen extends Component {
                               pc:true,
                               oppc:1,
                             })
-                      }else{
+                      } else {
                         this.setState({
                           bgpc:'#ffcc80',
                           pc:false,
@@ -108,7 +137,7 @@ class AssessmentScreen extends Component {
                               sb:true,
                               opsb:1
                             })
-                      }else{
+                      } else {
                         this.setState({
                           bgsb:'#ffcc80',
                           sb:false,
@@ -124,7 +153,7 @@ class AssessmentScreen extends Component {
                                 sf:true,
                                 opsf:1,
                               })
-                        }else{
+                        } else {
                           this.setState({
                             bgsf:'#ffcc80',
                             sf:false,
@@ -140,13 +169,13 @@ class AssessmentScreen extends Component {
                               lst:true,
                               oplst:1
                             })
-                      }else{
-                        this.setState({
-                          bglst:'#ffcc80',
-                          lst:false,
-                          oplst:0
-                        })
-                      } }}>
+                        } else {
+                          this.setState({
+                            bglst:'#ffcc80',
+                            lst:false,
+                            oplst:0
+                          })
+                        } }}>
                         <Text style={styles.buttonTxt}>Loss of Smell and Taste</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.oplst}]} />
                     </TouchableOpacity>
@@ -156,7 +185,7 @@ class AssessmentScreen extends Component {
                               la:true,
                               opla:1
                             })
-                      }else{
+                      } else {
                         this.setState({
                           bgla:'#ffcc80',
                           la:false,
@@ -172,7 +201,7 @@ class AssessmentScreen extends Component {
                               diarr:true,
                               opdiarr:1
                             })
-                      }else{
+                      } else {
                         this.setState({
                           bgdiarr:'#ffcc80',
                           diarr:false,
@@ -184,12 +213,11 @@ class AssessmentScreen extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.nextButtonBox}>
-                      <TouchableOpacity  activeOpacity = {.5} style={styles.nextButton} onPress={ async() => { this.props.navigation.navigate('vitals')}}>
+                      <TouchableOpacity  activeOpacity = {.5} style={styles.nextButton} onPress={ async() => { this.setProb(), this.props.navigation.navigate('vitals')}}>
                             <Text style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                       </TouchableOpacity>
                 </View>
-                
               </View>
       </View>
     );

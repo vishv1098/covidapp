@@ -17,6 +17,7 @@ import VitalsScreen from './screens/VitalsScreen'
 import CovidScreen from './screens/CovidScreen'
 import InfluScreen from './screens/InfluScreen'
 import SafeScreen from './screens/SafeScreen';
+import EditProfile from './screens/EditProfile';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -86,23 +87,39 @@ class App extends Component {
                                         <Stack.Navigator>
                                                 <Stack.Screen name="Launch" component={LaunchScreen}
                                                 options={({ navigation }) => ({
-                                                headerShown: false  
+                                                        headerShown: false  
                                                 })}/>
                                                 <Stack.Screen name="Terms" component={TermsAndConditions}
                                                 options={({ navigation }) => ({
-                                                headerShown: false  
+                                                        headerShown: false  
                                                 })}/>
                                                 <Stack.Screen name="bmi" component={BmiScreen}
                                                 options={({ navigation }) => ({
-                                                headerShown: false  
+                                                        headerShown: false  
                                                 })}/>
                                                 <Stack.Screen name="age" component={AgeScreen}
                                                 options={({ navigation }) => ({
-                                                headerShown: false  
+                                                        headerShown: false  
                                                 })}/>
                                                 <Stack.Screen name="race" component={RaceScreen}
                                                 options={({ navigation }) => ({
-                                                headerShown: false  
+                                                        headerShown: false  
+                                                })}/>
+                                                <Stack.Screen name="Home" component={Home} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerLeft: null,
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
                                                 })}/>
                                                 <Stack.Screen name="profile" component={ProfileScreen} 
                                                 options={({ navigation }) => ({
@@ -121,6 +138,32 @@ class App extends Component {
                                                         headerTitleContainerStyle:{
                                                         left: TITLE_OFFSET_CENTER_ALIGN - 150,
                                                         },
+                                                })}/>
+                                                <Stack.Screen name="edit" component={EditProfile} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
+                                                        headerTitleContainerStyle:{
+                                                        left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                                                        },
+                                                })}/>
+                                                <Stack.Screen name="Self Assessment" component={Assessment}
+                                                options={({ navigation }) => ({
+                                                        headerShown: false
+                                                })}/>
+                                                <Stack.Screen name="vitals" component={VitalsScreen}
+                                                options={({ navigation }) => ({
+                                                        headerShown: false  
                                                 })}/>
                                                 <Stack.Screen name="covid" component={CovidScreen} 
                                                 options={({ navigation }) => ({
@@ -170,30 +213,6 @@ class App extends Component {
                                                         fontSize: normalize(25)
                                                         },
                                                 })}/>
-                                                <Stack.Screen name="Home" component={Home} 
-                                                options={({ navigation }) => ({
-                                                        title: 'COVID-19 Guardian Angel',
-                                                        headerStyle: {
-                                                        backgroundColor: '#158158',
-                                                        },
-                                                        headerLeft: null,
-                                                        headerTintColor: '#000000',
-                                                        headerTitleStyle: {
-                                                        fontWeight: 'bold',
-                                                        alignContent: 'center',
-                                                        alignItems: 'center',
-                                                        alignSelf: 'center',
-                                                        fontSize: normalize(25)
-                                                        },
-                                                })}/>
-                                                <Stack.Screen name="vitals" component={VitalsScreen}
-                                                options={({ navigation }) => ({
-                                                headerShown: false  
-                                                })}/>
-                                                <Stack.Screen name="Self Assessment" component={Assessment}
-                                                options={({ navigation }) => ({
-                                                        headerShown: false
-                                                })}/>
                                         </Stack.Navigator>
                                 </NavigationContainer>
                         </>
@@ -209,23 +228,39 @@ class App extends Component {
                 //                                 <Stack.Navigator>
                 //                                         <Stack.Screen name="Launch" component={LaunchScreen}
                 //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="Terms" component={TermsAndConditions}
                 //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="bmi" component={BmiScreen}
                 //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="age" component={AgeScreen}
                 //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="race" component={RaceScreen}
                 //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
+                //                                                 headerShown: false  
+                //                                         })}/>
+                //                                         <Stack.Screen name="Home" component={Home} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerLeft: null,
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="profile" component={ProfileScreen} 
                 //                                         options={({ navigation }) => ({
@@ -244,6 +279,32 @@ class App extends Component {
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
                 //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="edit" component={EditProfile} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                                 headerTitleContainerStyle:{
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="Self Assessment" component={Assessment}
+                //                                         options={({ navigation }) => ({
+                //                                                 headerShown: false
+                //                                         })}/>
+                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
+                //                                         options={({ navigation }) => ({
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="covid" component={CovidScreen} 
                 //                                         options={({ navigation }) => ({
@@ -293,30 +354,6 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                         })}/>
-                //                                         <Stack.Screen name="Home" component={Home} 
-                //                                         options={({ navigation }) => ({
-                //                                                 title: 'COVID-19 Guardian Angel',
-                //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
-                //                                                 },
-                //                                                 headerLeft: null,
-                //                                                 headerTintColor: '#000000',
-                //                                                 headerTitleStyle: {
-                //                                                 fontWeight: 'bold',
-                //                                                 alignContent: 'center',
-                //                                                 alignItems: 'center',
-                //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
-                //                                                 },
-                //                                         })}/>
-                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
-                //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
-                //                                         })}/>
-                //                                         <Stack.Screen name="Self Assessment" component={Assessment}
-                //                                         options={({ navigation }) => ({
-                //                                                 headerShown: false
-                //                                         })}/>
                 //                                 </Stack.Navigator>
                 //                         </NavigationContainer>
                 //                 </>
@@ -343,14 +380,6 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                         })}/>
-                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
-                //                                         options={({ navigation }) => ({
-                //                                         headerShown: false  
-                //                                         })}/>
-                //                                         <Stack.Screen name="Self Assessment" component={Assessment}
-                //                                         options={({ navigation }) => ({
-                //                                                 headerShown: false
-                //                                         })}/>
                 //                                         <Stack.Screen name="profile" component={ProfileScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
@@ -368,6 +397,32 @@ class App extends Component {
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
                 //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="edit" component={EditProfile} 
+                //                                         options={({ navigation }) => ({
+                //                                                 title: 'COVID-19 Guardian Angel',
+                //                                                 headerStyle: {
+                //                                                 backgroundColor: '#158158',
+                //                                                 },
+                //                                                 headerTintColor: '#000000',
+                //                                                 headerTitleStyle: {
+                //                                                 fontWeight: 'bold',
+                //                                                 alignContent: 'center',
+                //                                                 alignItems: 'center',
+                //                                                 alignSelf: 'center',
+                //                                                 fontSize: normalize(25)
+                //                                                 },
+                //                                                 headerTitleContainerStyle:{
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 },
+                //                                         })}/>
+                //                                         <Stack.Screen name="Self Assessment" component={Assessment}
+                //                                         options={({ navigation }) => ({
+                //                                                 headerShown: false
+                //                                         })}/>
+                //                                         <Stack.Screen name="vitals" component={VitalsScreen}
+                //                                         options={({ navigation }) => ({
+                //                                                 headerShown: false  
                 //                                         })}/>
                 //                                         <Stack.Screen name="covid" component={CovidScreen} 
                 //                                         options={({ navigation }) => ({
