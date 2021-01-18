@@ -8,6 +8,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useState } from 'react';
+
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -26,6 +27,7 @@ export function normalize(size) {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
   }
 }
+
 export function getAge(dateString) {
     var today = new Date();
     var birthDate = new Date(dateString);
@@ -35,7 +37,8 @@ export function getAge(dateString) {
       age--;
     }
     return age;
-  }
+}
+
 const EditProfile= () => {
 
   const navigation = useNavigation();
@@ -222,7 +225,7 @@ const EditProfile= () => {
                         </View>
                     </View>
                 <View style={styles.headerNavigate}>
-                    <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.setData(),navigation.navigate('Home')}}>
+                    <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.setData(),navigation.navigate('profile')}}>
                     <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Done</Text>
                     </TouchableOpacity>
                 </View>

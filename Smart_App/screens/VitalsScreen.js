@@ -41,6 +41,7 @@ class VitalsScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.getData();
     this.state = {
       oxy: -1,
       dbp: -1,
@@ -54,6 +55,12 @@ class VitalsScreen extends Component {
       others: 0,
       ethini: 0,
       age: -1,
+      google_token: '',
+      fitbit_token: '',
+      startDate: "1607538600000",
+      endDate: Date.now(),
+      hrplaceholder: 'Enter your heart rate in bpm',
+      hreditable: true,
     }
   }
 
@@ -62,45 +69,128 @@ class VitalsScreen extends Component {
     await tf.ready();
   }
 
+  getData = async () => {
+    try {
+      var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
+      var fitbit_token_fetch = await AsyncStorage.getItem('fitbit_accesstoken')
+      if (google_token_fetch !== null) {
+        this.setState({
+          google_token: google_token_fetch,
+        })
+      }
+      if (fitbit_token_fetch !== null) {
+        this.setState({
+          fitbit_token: fitbit_token_fetch,
+        })
+      }
+    } catch(e) {
+    }
+    await this.dataSources();
+    await this.heartRateData();
+  }
+
+  dataSources = async() => {
+    await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources',{
+        headers: {
+            'Authorization': 'Bearer ' + this.state.google_token
+        }
+    }).then((resp) => {
+        var array = resp.data["dataSource"]
+        var heart_rate_token = ''
+        var step_count_token = ''
+        var distance_token = ''
+        var calories_token = ''
+        var activity_token = ''
+        for( var q = 0; q < array.length; q++ ) {
+            try {
+                if (array[q]["device"]["uid"] === "e3fc9470") {
+                    if (array[q]["dataStreamId"].includes("heart_rate")) {
+                      heart_rate_token = array[q]["dataStreamId"]
+                    }
+                    if (array[q]["dataStreamId"].includes("distance")) {
+                      distance_token = array[q]["dataStreamId"]
+                    }
+                    if (array[q]["dataStreamId"].includes("step_count")) {
+                      step_count_token = array[q]["dataStreamId"]
+                    }
+                    if (array[q]["dataStreamId"].includes("calories")) {
+                      calories_token = array[q]["dataStreamId"]
+                    }
+                    if (array[q]["dataStreamId"].includes("activity")) {
+                      activity_token = array[q]["dataStreamId"]
+                    }
+                }
+                this.setState({
+                    heart_rate_token: heart_rate_token,
+                    step_count_token: step_count_token,
+                    distance_token: distance_token,
+                    calories_token: calories_token,
+                    activity_token: activity_token
+                })
+                
+            } catch (error) {
+            }
+        }
+        if ((heart_rate_token === '') && (step_count_token === '') && (distance_token === '') && (calories_token === '') && (activity_token === '')) {
+        }
+    })
+  }
+
+  heartRateData = async() => {
+    await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+this.state.endDate+'000000',{
+        headers: {
+            'Authorization': 'Bearer ' + this.state.google_token
+        }
+    }).then(async (resp) => {
+        var array = resp.data["point"]
+        var x = array[array.length - 1]
+        var res = x.value[0].fpVal
+        this.setState({
+          hreditable: false,
+          hrplaceholder: res + '',
+        })
+    })
+  }
+
   handleOxygenbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('oxygen_saturation', inputText);
+      this.state.oxy = inputText;
     }
   }
 
   handleHRbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('heart_rate', inputText);
+      this.state.hr = inputText;
     }
   }
 
   handleRRbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('respiratory_rate', inputText);
+      this.state.res_r = inputText;
     }
   }
 
   handleTempbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('temperature', inputText);
+      this.state.b_tmp = inputText;
     }
   }
 
   handleDBPbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('diastolic_bloodpressure', inputText);
+      this.state.dbp = inputText;
     }
   }
 
   handleSBPbox = async (inputText) => {
     if (inputText === '') {
     } else {
-      await AsyncStorage.setItem('systolic_bloodpressure', inputText);
+      this.state.sbp = inputText;
     }
   }
 
@@ -202,9 +292,10 @@ class VitalsScreen extends Component {
                           <TextInput
                             style={styles.fieldStyle}
                             onChangeText = { (text) => this.handleHRbox(text) }
-                            placeholder = {'Enter your heart rate in bpm'}
+                            placeholder = {this.state.hrplaceholder}
                             placeholderTextColor="#000000" 
                             keyboardType={'numeric'}
+                            editable={this.state.hreditable}
                             numeric
                           />
                       </View>
@@ -261,9 +352,6 @@ class VitalsScreen extends Component {
                             keyboardType={'numeric'}
                             numeric
                           />
-                      </View>
-                      <View style={styles.innerBottFieldHeaderBpField}>
-                        <Text style={styles.tcLbp}> / </Text>
                       </View>
                       <View style={styles.innerBottFieldHeaderBpField}>
                           <TextInput
@@ -344,6 +432,7 @@ const styles = EStyleSheet.create({
   headerNavigate: {
     flex: 0.8,
     width: "100%",
+    paddingTop: '20rem',
   },
   headerTitleText: {
     fontSize: '27rem', 
