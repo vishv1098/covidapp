@@ -102,6 +102,9 @@ const BmiScreen = () => {
                   <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                   <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                 </TouchableOpacity>
+                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBottom}>
+                  <Text adjustsFontSizeToFit style={styles.bottomButtonTextStyle}>Skip</Text>
+                </TouchableOpacity>
               </View>
           </View>
       </View>
@@ -161,6 +164,7 @@ const styles = EStyleSheet.create({
   headerNavigate: {
     flex: 0.8,
     width: "100%",
+    flexDirection: "column",
   },
   headerTitleText: {
     fontSize: '27rem', 
@@ -230,6 +234,20 @@ const styles = EStyleSheet.create({
     alignItems: 'center', 
     marginLeft: '30rem', 
     marginRight: '30rem',  
+  },
+  buttonBottom: {
+    backgroundColor: '#81d4fa',
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginLeft: '30rem', 
+    marginRight: '30rem',
+    paddingTop: '30rem',
+  },
+  bottomButtonTextStyle: {
+    textAlign: 'center', 
+    alignContent:'center',
+    fontSize: '18rem', 
+    color: '#000000'
   },
   iconStyle: {
     flex: 1.7, 

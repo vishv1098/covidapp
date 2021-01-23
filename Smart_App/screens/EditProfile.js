@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -93,6 +92,7 @@ const EditProfile= () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.contentContainer}>
               <View style={styles.headerTitle}>
                   <Text adjustsFontSizeToFit style={styles.headerTitleText}>
@@ -235,6 +235,7 @@ const EditProfile= () => {
                     </TouchableOpacity>
                 </View>
           </View>
+        </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -254,6 +255,7 @@ const styles = EStyleSheet.create({
   },
   contentContainer: {
     width: "100%",
+    paddingTop: '30rem',
     aspectRatio: 0.55,
     flexDirection: "column",
     justifyContent: 'center',

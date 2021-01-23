@@ -42,23 +42,44 @@ class ProfileScreen extends Component {
     }
 
     getData = async () => {
-        var height = await AsyncStorage.getItem('userHeight');
-        var realFeet = ((height*0.393700) / 12);
-        var feet = Math.floor(realFeet);
-        var inches = Math.round((realFeet - feet) * 12);
-        var weight_val = await AsyncStorage.getItem('userWeight');
-        var dob_val = await AsyncStorage.getItem('userFullDob');
-        var gender = await AsyncStorage.getItem('userGender');
-        var race_val = await AsyncStorage.getItem('userRace');
+        if(await AsyncStorage.getItem('userHeight')===null) {
+            var inches = '';
+            var feet = '   N/A';
+        } else {
+            var height = await AsyncStorage.getItem('userHeight');
+            var realFeet = ((height*0.393700) / 12);
+            var feet = Math.floor(realFeet);
+            var inches = ' ft, '+Math.round((realFeet - feet) * 12)+' in';
+        }
+        if(await AsyncStorage.getItem('userWeight')===null) {
+            var weight_val = '   N/A'
+        } else {
+            var weight_val = await AsyncStorage.getItem('userWeight')+' kg';
+        }
+        if(await AsyncStorage.getItem('userFullDob')){
+            var dob_val = await AsyncStorage.getItem('userFullDob'); 
+        } else {
+            var dob_val = '   N/A';
+        }
+        if(await AsyncStorage.getItem('userGender')) {
+            var gender = await AsyncStorage.getItem('userGender');
+        } else {
+            var gender = '   N/A';
+        }
+        if(await AsyncStorage.getItem('userRace')) {
+            var race_val = await AsyncStorage.getItem('userRace');
+        } else {
+            var race_val = '   N/A';
+        }
         var ethini_val = await AsyncStorage.getItem('userEthini');
         if (ethini_val === 'Hispanic or Latino') {
-            ethini_val = "Yes"
+            ethini_val = " Yes"
         } else {
-            ethini_val = "No"
+            ethini_val = " No"
         }
         this.setState({
-            height: feet + " ft, " + inches + ' in',
-            weight: weight_val + " kg",
+            height: feet +" "+ inches,
+            weight: weight_val ,
             dob: dob_val,
             gen: gender,
             race: race_val,

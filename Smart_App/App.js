@@ -136,7 +136,7 @@ class App extends Component {
                                                         fontSize: normalize(25)
                                                         },
                                                         headerTitleContainerStyle:{
-                                                        left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                                                        left: TITLE_OFFSET_CENTER_ALIGN - 140,
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="edit" component={EditProfile} 
@@ -154,7 +154,7 @@ class App extends Component {
                                                         fontSize: normalize(25)
                                                         },
                                                         headerTitleContainerStyle:{
-                                                        left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                                                        left: TITLE_OFFSET_CENTER_ALIGN - 140,
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="Self Assessment" component={Assessment}
@@ -277,7 +277,7 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="edit" component={EditProfile} 
@@ -295,7 +295,7 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="Self Assessment" component={Assessment}
@@ -395,7 +395,7 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="edit" component={EditProfile} 
@@ -413,7 +413,7 @@ class App extends Component {
                 //                                                 fontSize: normalize(25)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
-                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 150,
+                //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="Self Assessment" component={Assessment}

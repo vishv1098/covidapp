@@ -102,6 +102,7 @@ class Home extends Component {
             infodialogVisible: false,
             aboutAppDialogVisible: false,
             termsandcondition: false,
+            missingInfoWarn: false,
         }
         this._onFormData = this._onFormData.bind(this);
     }
@@ -127,7 +128,7 @@ class Home extends Component {
           if(value !== null) {
             this.setState({
               fitbit_accesstoken: value,
-              fitbitName: 'Dis-Connect from Fitbit tracker'
+              fitbitName: 'Disconnect from Fitbit tracker'
             })
           }
         } catch(e) {
@@ -140,7 +141,7 @@ class Home extends Component {
             if(value !== null) {
               this.setState({
                 google_accesstoken: value,
-                googleFitName: 'Dis-Connect from Google Fit'
+                googleFitName: 'Disconnect from Google Fit'
               })
             }
         } catch(e) {
@@ -234,10 +235,23 @@ class Home extends Component {
         this.refs.addModal.showAddModal();
     }
 
+    dataChecker = async() =>{
+        if(await AsyncStorage.getItem('userHeight') !== null && await AsyncStorage.getItem('userWeight') !== null && await AsyncStorage.getItem('userFullDob')
+        && await AsyncStorage.getItem('userGender') && await AsyncStorage.getItem('userRace')) {
+            this.props.navigation.navigate('Self Assessment');
+        }
+        else{
+            this.setState({
+                missingInfoWarn:true
+            })
+        }
+    }
+
+
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView contentContainerStyle={{flexGrow: 1,}}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.contentContainer}>
                     <ConfirmDialog
                         visible={this.state.infodialogVisible}
@@ -276,6 +290,30 @@ class Home extends Component {
                             <Text style={styles.disclaimerContent}>Would be good to include some details on the models too.</Text>
                         </ScrollView>
                     </ConfirmDialog>
+                    <ConfirmDialog
+                        visible={this.state.missingInfoWarn}
+                        title="Missing Data"
+                        titleStyle={styles.disclaimer}
+                        dialogStyle={styles.disclaimerDialog}
+                        onTouchOutside={() => this.setState({missingInfoWarn: false})}
+                        positiveButton={{
+                            title: "Edit Profile",
+                            titleStyle: styles.disclaimerButtonStyle,
+                            style: styles.disclaimerButton,
+                            onPress: () => {this.setState({missingInfoWarn: false}),this.props.navigation.navigate('profile')}
+                        }}
+                        negativeButton={{
+                            title: "Continue",
+                            titleStyle: styles.disclaimerButtonStyle,
+                            style: styles.disclaimerButton,
+                            onPress: () =>{this.setState({missingInfoWarn: false}),this.props.navigation.navigate('Self Assessment')} 
+                        }}
+                        >
+                        <ScrollView>
+                            <Text style={styles.disclaimerContent}>Oops! There seems to be some data that you haven't provided.</Text>
+                            <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+                        </ScrollView>
+                    </ConfirmDialog>
                     <View style={styles.titleBox}>
                         <View style={styles.trackerTitle}>
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
@@ -311,7 +349,7 @@ class Home extends Component {
                             </View>
                         </View>
                         <View style={styles.assessButton}>
-                            <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Self Assessment')}}>
+                            <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.dataChecker() }}>
                                 <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
                             </TouchableOpacity>
                         </View>

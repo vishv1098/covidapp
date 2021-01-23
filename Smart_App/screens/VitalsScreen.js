@@ -57,14 +57,23 @@ class VitalsScreen extends Component {
       age: -1,
       google_token: '',
       fitbit_token: '',
-      startDate: "1607538600000",
+      startDate: '',
       endDate: Date.now(),
       hrplaceholder: 'Enter your heart rate in bpm',
       hreditable: true,
+      ethiniDetails: false,
+      ethiniData: '',
     }
   }
 
   async componentDidMount() {
+    var ourDate = new Date();
+    var pastDate = ourDate.getDate() - 7;
+    ourDate.setDate(pastDate);
+    var n = ourDate.getTime()
+    this.setState({
+      startDate: n
+    })
     await tf.setBackend(BACKEND_CONFIG);
     await tf.ready();
   }
@@ -73,6 +82,15 @@ class VitalsScreen extends Component {
     try {
       var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
       var fitbit_token_fetch = await AsyncStorage.getItem('fitbit_accesstoken')
+      var gender = await AsyncStorage.getItem('userGender');
+      var race_val = await AsyncStorage.getItem('userRace');
+      var ethini_val = await AsyncStorage.getItem('userEthini');
+      if (ethini_val !== null) {
+        await this.setState({
+          ethiniData: ethini_val,
+          ethiniDetails: true,
+        })
+      }
       if (google_token_fetch !== null) {
         this.setState({
           google_token: google_token_fetch,
@@ -145,52 +163,82 @@ class VitalsScreen extends Component {
         var array = resp.data["point"]
         var x = array[array.length - 1]
         var res = x.value[0].fpVal
-        this.setState({
+        await this.setState({
           hreditable: false,
-          hrplaceholder: res + '',
+          hrplaceholder: res+'',
         })
     })
   }
 
   handleOxygenbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        oxy: -1,
+      })
     } else {
-      this.state.oxy = inputText;
+      await this.setState({
+        oxy: parseFloat(inputText),
+      })
     }
   }
 
   handleHRbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        hr: -1,
+      })
     } else {
-      this.state.hr = inputText;
+      await this.setState({
+        hr: parseInt(inputText),
+      })
     }
   }
 
   handleRRbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        res_r: -1,
+      })
     } else {
-      this.state.res_r = inputText;
+      await this.setState({
+        res_r: parseInt(inputText),
+      })
     }
   }
 
   handleTempbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        b_tmp: -1,
+      })
     } else {
-      this.state.b_tmp = inputText;
+      await this.setState({
+        b_tmp: parseFloat(inputText),
+      })
     }
   }
 
   handleDBPbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        dbp: -1,
+      })
     } else {
-      this.state.dbp = inputText;
+      await this.setState({
+        dbp: parseFloat(inputText),
+      })
     }
   }
 
   handleSBPbox = async (inputText) => {
     if (inputText === '') {
+      await this.setState({
+        sbp: -1,
+      })
     } else {
-      this.state.sbp = inputText;
+      await this.setState({
+        sbp: parseFloat(inputText),
+      })
     }
   }
 
@@ -240,6 +288,26 @@ class VitalsScreen extends Component {
         this.props.navigation.navigate('covid')
       }
     }
+  }
+
+  updateData = async () => {
+    if(this.state.hreditable === false) {
+      await this.setState({
+        hr: parseInt(this.state.hrplaceholder)
+      })
+    }
+    if(this.state.ethiniDetails === true) {
+      if (this.state.ethiniData === 'Hispanic or Latino') {
+        await this.setState({
+          ethini: 1,
+        })
+      } else {
+        await this.setState({
+          ethini: 0,
+        })
+      }
+    }
+    await this.getCovidTest();
   }
 
   render() {
@@ -369,7 +437,7 @@ class VitalsScreen extends Component {
                     </View>
                 </View>
                 <View style={styles.headerNavigate}>
-                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={this.getCovidTest}>
+                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={this.updateData}>
                     <Text style={styles.buttonTextStyle}>View Result</Text>
                   </TouchableOpacity>
                 </View>
