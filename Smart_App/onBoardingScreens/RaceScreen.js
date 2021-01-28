@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Image, ScrollView, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from '@react-native-community/checkbox';
+import { ConfirmDialog } from 'react-native-simple-dialogs';
 
 const {
   width: SCREEN_WIDTH,
@@ -30,6 +31,7 @@ const RaceScreen = () => {
 
     const navigation = useNavigation();
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    const [isMissingInfoWarn, setIsMissingInfoWarn] = useState(false)
 
     const handleracebox = async (inputText) => {
         if (inputText.value === 'x') {
@@ -53,9 +55,42 @@ const RaceScreen = () => {
       }
     }
 
+    const validate = async() => {
+      const z = await AsyncStorage.getItem('firstSkip');
+      if (z === null) {
+        await AsyncStorage.setItem('firstSkip', 'notnull');
+        setIsMissingInfoWarn(true)
+      } else {
+        navigation.navigate('Home')
+      }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
+                <ConfirmDialog
+                  visible={isMissingInfoWarn}
+                  title="Warning"
+                  titleStyle={styles.disclaimer}
+                  dialogStyle={styles.disclaimerDialog}
+                  onTouchOutside={() => setIsMissingInfoWarn(false)}
+                  positiveButton={{
+                      title: "cancel",
+                      titleStyle: styles.disclaimerButtonStyle,
+                      style: styles.disclaimerButton,
+                      onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('race')}
+                  }}
+                  negativeButton={{
+                      title: "Continue",
+                      titleStyle: styles.disclaimerButtonStyle,
+                      style: styles.disclaimerButton,
+                      onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('Home')} 
+                  }}
+                  >
+                  <ScrollView>
+                      <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+                  </ScrollView>
+                </ConfirmDialog>
                 <View style={styles.contentContainer}>
                     <View style={styles.headerTitle}>
                         <Text adjustsFontSizeToFit style={styles.headerTitleText}>
@@ -63,7 +98,7 @@ const RaceScreen = () => {
                         </Text>
                     </View>
                     <View style={styles.headerIcon}>
-                        <Icon name='analytics-outline' size={100} color="black" style={styles.headerIconStyle} />
+                      <Image source={require('../appIcons/baseline_groups_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
                     </View>
                     <View style={styles.headerHtField}>
                       <View style={styles.innerTopHeaderHtField}>
@@ -140,6 +175,9 @@ const RaceScreen = () => {
                             <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                         </TouchableOpacity>
+                        <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBottom} onPress={ async() => validate()}>
+                          <Text adjustsFontSizeToFit style={styles.bottomButtonTextStyle}>Skip</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -176,7 +214,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: '10rem', 
-    marginRight: '10rem'
+    marginRight: '10rem',
   },
   ethiniStyle: {
     marginLeft: '30rem', 
@@ -212,6 +250,7 @@ const styles = EStyleSheet.create({
   headerNavigate: {
     flex: 0.8,
     width: "100%",
+    flexDirection: "column",
   },
   headerTitleText: {
     fontSize: '27rem', 
@@ -283,6 +322,20 @@ const styles = EStyleSheet.create({
     marginLeft: '30rem', 
     marginRight: '30rem',  
   },
+  buttonBottom: {
+    backgroundColor: '#b39ddb',
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginLeft: '30rem', 
+    marginRight: '30rem',
+    paddingTop: '30rem',
+  },
+  bottomButtonTextStyle: {
+    textAlign: 'center', 
+    alignContent:'center',
+    fontSize: '18rem', 
+    color: '#000000'
+  },
   iconStyle: {
     flex: 1.7, 
     backgroundColor: '#836fa9',
@@ -309,6 +362,29 @@ const styles = EStyleSheet.create({
   checkView: {
     flex: 1, 
     justifyContent:'center'
-  }
+  },
+  disclaimer: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: '23rem',
+    fontWeight: 'bold'
+  },
+  disclaimerDialog: {
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+  },
+  disclaimerContent: {
+      fontSize: '16rem',
+      paddingBottom: '10rem',
+  },
+  disclaimerButtonStyle: {
+      fontSize:'16rem',
+  },
+  disclaimerButton: {
+      paddingBottom: '10rem'
+  },
 })
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Dimensions } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -92,7 +92,7 @@ class AssessmentScreen extends Component {
                   </Text>
                 </View>
                 <View style={styles.headerIcon}>
-                    <Icon name="thermometer-outline" size={100} color="black" style={styles.headerIconStyle} />
+                  <Image source={require('../appIcons/baseline_sick_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
                 </View>
                 <View style={styles.infoBox}>
                     <Text style={styles.infoTextHead}>Symptoms</Text>

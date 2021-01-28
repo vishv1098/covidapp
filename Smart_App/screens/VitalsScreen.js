@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
@@ -63,6 +62,14 @@ class VitalsScreen extends Component {
       hreditable: true,
       ethiniDetails: false,
       ethiniData: '',
+      genData: '',
+      genDetails: false,
+      raceData: '',
+      raceDetails: false,
+      ageData: '',
+      ageDetails: false,
+      fitbitStartDate: '',
+      fitbitEndDate: '',
     }
   }
 
@@ -71,8 +78,12 @@ class VitalsScreen extends Component {
     var pastDate = ourDate.getDate() - 7;
     ourDate.setDate(pastDate);
     var n = ourDate.getTime()
+    var x = ourDate.toISOString().split('T')
+    var m = new Date().toISOString().split('T')
     this.setState({
-      startDate: n
+      startDate: n,
+      fitbitStartDate: x[0],
+      fitbitEndDate: m[0],
     })
     await tf.setBackend(BACKEND_CONFIG);
     await tf.ready();
@@ -83,7 +94,19 @@ class VitalsScreen extends Component {
       var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
       var fitbit_token_fetch = await AsyncStorage.getItem('fitbit_accesstoken')
       var gender = await AsyncStorage.getItem('userGender');
+      if (gender !== null) {
+        await this.setState({
+          genData: gender,
+          genDetails: true,
+        })
+      }
       var race_val = await AsyncStorage.getItem('userRace');
+      if (race_val !== null) {
+        await this.setState({
+          raceData: race_val,
+          raceDetails: true,
+        })
+      }
       var ethini_val = await AsyncStorage.getItem('userEthini');
       if (ethini_val !== null) {
         await this.setState({
@@ -92,19 +115,27 @@ class VitalsScreen extends Component {
         })
       }
       if (google_token_fetch !== null) {
-        this.setState({
+        await this.setState({
           google_token: google_token_fetch,
         })
       }
       if (fitbit_token_fetch !== null) {
-        this.setState({
+        await this.setState({
           fitbit_token: fitbit_token_fetch,
+        })
+      }
+      var age_val = await AsyncStorage.getItem('userDOB')
+      if (age_val !== null) {
+        await this.setState({
+          ageData: age_val,
+          ageDetails: true,
         })
       }
     } catch(e) {
     }
     await this.dataSources();
     await this.heartRateData();
+    await this.fitbitData();
   }
 
   dataSources = async() => {
@@ -167,6 +198,20 @@ class VitalsScreen extends Component {
           hreditable: false,
           hrplaceholder: res+'',
         })
+    })
+  }
+
+  fitbitData = async() => {
+    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/'+this.state.fitbitStartDate+'/'+this.state.fitbitEndDate+'/1min.json',{
+      headers:{
+        Authorization: 'Bearer ' + this.state.fitbit_token
+      }
+    }).then((resp) => {
+      var testRead = resp
+      console.log(testRead.data["activities-heart"][0]["dateTime"])
+      console.log(JSON.stringify(testRead.data["activities-heart"][0]["value"]))
+    }).catch((error) => {
+      //
     })
   }
 
@@ -293,7 +338,7 @@ class VitalsScreen extends Component {
   updateData = async () => {
     if(this.state.hreditable === false) {
       await this.setState({
-        hr: parseInt(this.state.hrplaceholder)
+        hr: parseInt(this.state.hrplaceholder),
       })
     }
     if(this.state.ethiniDetails === true) {
@@ -306,6 +351,45 @@ class VitalsScreen extends Component {
           ethini: 0,
         })
       }
+    }
+    if(this.state.genDetails === true) {
+      if(this.state.genData === 'female') {
+        await this.setState({
+          sex: 1,
+        })
+      } else {
+        await this.setState({
+          sex: 0,
+        })
+      }
+    }
+    if (this.state.raceDetails === true) {
+      if (this.state.raceData === 'white') {
+        await this.setState({
+          white: 1,
+          black: 0,
+          others: 0,
+        })
+      }
+      if (this.state.raceData === 'black/african') {
+        await this.setState({
+          white: 0,
+          black: 1,
+          others: 0,
+        })
+      }
+      if (this.state.raceData === 'others') {
+        await this.setState({
+          white: 0,
+          black: 0,
+          others: 1,
+        })
+      }
+    }
+    if (this.state.ageDetails === true) {
+      await this.setState({
+        age: parseInt(this.state.ageData),
+      })
     }
     await this.getCovidTest();
   }
@@ -321,7 +405,7 @@ class VitalsScreen extends Component {
                     </Text>
                 </View>
                 <View style={styles.headerIcon}>
-                    <Icon name='heart-outline' size={100} color="black" style={styles.headerIconStyle} />
+                    <Image source={require('../appIcons/baseline_favorite_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
                 </View>
                 <View style={styles.headerField}>
                   <View>

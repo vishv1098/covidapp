@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from '@react-native-community/checkbox';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 const {
   width: SCREEN_WIDTH,
@@ -42,15 +42,56 @@ const EditProfile= () => {
 
   const navigation = useNavigation();
   const [height,htSet] = useState('');
+  const [heighted,htEdSet] = useState('')
+  const [weighted,wtEdSet] = useState('')
+  const [gendered,genEdSet] = useState('x')
   const [weight,wtSet] = useState('');
+  const [raceEd,raceEdSet] = useState('x');
+  const [isEdDate, setEdIsDate] = useState('');
   const [gender,genSet] = useState('x');
   const [dob,dobSet] = useState('');
   const [race,raceSet] = useState('x');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isDate, setIsDate] = useState('Pick your date of birth');
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
+  const [isDate, setIsDate] = useState('');
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
-
+  useEffect(() => {
+     gtData();
+  }, []);
+  
+  const gtData = async () =>{
+    if(await AsyncStorage.getItem('userHeight')===null){
+      htEdSet('Enter your height in centimeters');
+    }else{
+      htEdSet(await AsyncStorage.getItem('userHeight'));
+    }
+    if(await AsyncStorage.getItem('userWeight')===null){
+      wtEdSet('Enter your weight in kilograms');
+    }else{
+      wtEdSet(await AsyncStorage.getItem('userWeight'));
+    }
+    if(await AsyncStorage.getItem('userFullDob')){
+      setEdIsDate(await AsyncStorage.getItem('userFullDob'));
+    }else{
+      setEdIsDate('Pick your date of birth');
+    }
+    if(await AsyncStorage.getItem('userGender')){
+      genEdSet(await AsyncStorage.getItem('userGender'));  
+    }else{
+      genEdSet('x');
+    }
+    if(await AsyncStorage.getItem('userRace')){
+      raceEdSet(await AsyncStorage.getItem('userRace'));
+    }else{
+      raceEdSet('x');
+    }
+    var ethini_val = await AsyncStorage.getItem('userEthini');
+    if (ethini_val === 'Hispanic or Latino') {
+        setToggleCheckBox(true)
+    } else {
+      setToggleCheckBox(false)
+    }
+  }
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -68,9 +109,9 @@ const EditProfile= () => {
     setIsDate(res)
     hideDatePicker();
   };
-  
+
   setData = async () => {
-    if(isDate!=="Pick your date of birth"){
+    if(isDate!==''){
       await AsyncStorage.setItem('userFullDob', isDate);
       await AsyncStorage.setItem('userDOB', dob + " ");
     }
@@ -79,11 +120,11 @@ const EditProfile= () => {
     if(weight!=="")
         await AsyncStorage.setItem('userWeight', weight + " ");
     if(gender!=='x')
-        await AsyncStorage.setItem('userGender', gender + " ");
+        await AsyncStorage.setItem('userGender', gender);
     if(race!=='x')
-        await AsyncStorage.setItem('userRace', race + " ");
+        await AsyncStorage.setItem('userRace', race);
     if(toggleCheckBox) {
-        await AsyncStorage.setItem('userEthini', 'Hispanic or Latino')
+      await AsyncStorage.setItem('userEthini', 'Hispanic or Latino')
     } else {
         await AsyncStorage.setItem('userEthini', 'Not - Hispanic / Latino')
     }
@@ -92,7 +133,7 @@ const EditProfile= () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{flexGrow: 1,}}>
           <View style={styles.contentContainer}>
               <View style={styles.headerTitle}>
                   <Text adjustsFontSizeToFit style={styles.headerTitleText}>
@@ -108,7 +149,7 @@ const EditProfile= () => {
                         <TextInput
                           style={[styles.fieldStyle,{borderBottomWidth:1,borderBottomColor:'black'}]}
                           onChangeText = { (text) => htSet(text) }
-                          placeholder = {'Enter your height in centimeters'}
+                          placeholder = {heighted}
                           placeholderTextColor="#000000" 
                           keyboardType={'numeric'}
                           numeric
@@ -128,7 +169,7 @@ const EditProfile= () => {
                         <TextInput
                           style={[styles.fieldStyle,{borderBottomWidth:1,borderBottomColor:'black'}]}
                           onChangeText = { (text) => wtSet(text) }
-                          placeholder = {'Enter your weight in kilograms'}
+                          placeholder = {weighted}
                           placeholderTextColor="#000000" 
                           keyboardType={'numeric'}
                           numeric
@@ -146,7 +187,7 @@ const EditProfile= () => {
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
                           <TouchableOpacity style={[styles.fieldStyle,{borderBottomWidth:1,borderBottomColor:'black'}]} activeOpacity = {.5} onPress={ showDatePicker }>
-                            <Text adjustsFontSizeToFit style={styles.dateFont}>{isDate}</Text>
+                            <Text adjustsFontSizeToFit style={styles.dateFont}>{(isDate === '')?isEdDate:isDate}</Text>
                           </TouchableOpacity>
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
@@ -169,7 +210,7 @@ const EditProfile= () => {
                                     {label: 'Male', value: 'male'},
                                     {label: 'Female', value: 'female'},
                                 ]}
-                                defaultValue={'x'}
+                                defaultValue={gendered}
                                 containerStyle={styles.fieldStyleDrop}
                                 style={{borderWidth:1, borderColor: '#000000'}}
                                 itemStyle={{
@@ -195,7 +236,7 @@ const EditProfile= () => {
                                       {label: 'Black/African American', value: 'black/african'},
                                       {label: 'Others', value: 'others'},
                                   ]}
-                                  defaultValue={'x'}
+                                  defaultValue={raceEd}
                                   containerStyle={styles.fieldStyleDrop}
                                   style={{ borderWidth:1, borderColor: '#000000'}}
                                   itemStyle={{
@@ -235,7 +276,7 @@ const EditProfile= () => {
                     </TouchableOpacity>
                 </View>
           </View>
-        </ScrollView>
+          </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -255,7 +296,6 @@ const styles = EStyleSheet.create({
   },
   contentContainer: {
     width: "100%",
-    paddingTop: '30rem',
     aspectRatio: 0.55,
     flexDirection: "column",
     justifyContent: 'center',
@@ -402,4 +442,3 @@ const styles = EStyleSheet.create({
     justifyContent:'center'
   }
 })
-

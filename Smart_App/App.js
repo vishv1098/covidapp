@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Platform, PixelRatio } from 'react-native';
+import { Dimensions, StyleSheet, Platform, PixelRatio, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { StatusBar } from 'expo-status-bar';
@@ -18,6 +18,7 @@ import CovidScreen from './screens/CovidScreen'
 import InfluScreen from './screens/InfluScreen'
 import SafeScreen from './screens/SafeScreen';
 import EditProfile from './screens/EditProfile';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
@@ -163,7 +164,19 @@ class App extends Component {
                                                 })}/>
                                                 <Stack.Screen name="vitals" component={VitalsScreen}
                                                 options={({ navigation }) => ({
-                                                        headerShown: false  
+                                                        headerShown: false
+                                                        // title: ' ',
+                                                        // headerStyle: {
+                                                        // backgroundColor: '#ef9a9a',
+                                                        // elevation: 0,
+                                                        // shadowOpacity: 0,
+                                                        // borderBottomWidth: 0,
+                                                        // },
+                                                        // headerRight: () => (
+                                                        //         <TouchableOpacity style={{backgroundColor: '#ef9a9a', paddingRight: normalize(15)}}>
+                                                        //                 <Text style={{fontSize: normalize(16)}}>Cancel</Text>
+                                                        //         </TouchableOpacity>
+                                                        // ),
                                                 })}/>
                                                 <Stack.Screen name="covid" component={CovidScreen} 
                                                 options={({ navigation }) => ({

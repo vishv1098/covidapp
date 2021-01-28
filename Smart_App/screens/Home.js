@@ -163,7 +163,7 @@ class Home extends Component {
             })
             this.setState({
                 fitbit_accesstoken: authdata.accessToken,
-                fitbitName: 'Dis-Connect from Fitbit tracker',
+                fitbitName: 'Disconnect from Fitbit tracker',
             })
 
         } else {
@@ -197,14 +197,13 @@ class Home extends Component {
                             this.setState({
                                 google_accesstoken: g_accessToken
                             })
-
+                            this.setState({
+                                googleFitName: 'Disconnect from Google Fit'
+                            })
                         });
                     })
                     .catch((error) => {
                     });
-                this.setState({
-                    googleFitName: 'Dis-Connect from Google Fit'
-                })
                 await this.storeData()
             } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {

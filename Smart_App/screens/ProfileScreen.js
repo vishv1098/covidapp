@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Dimensions, Platform, PixelRatio } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, TouchableOpacity, Image, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -30,7 +29,6 @@ class ProfileScreen extends Component {
 
     constructor(props){
         super(props);
-        this.getData();
         this.state = {
             height: '',
             weight: '',
@@ -39,6 +37,16 @@ class ProfileScreen extends Component {
             race: '',
             ethini: '',
         }
+    }
+
+    componentDidMount() {
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getData();
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     getData = async () => {
@@ -73,6 +81,7 @@ class ProfileScreen extends Component {
         }
         var ethini_val = await AsyncStorage.getItem('userEthini');
         if (ethini_val === 'Hispanic or Latino') {
+            console.log("Yes")
             ethini_val = " Yes"
         } else {
             ethini_val = " No"
@@ -92,7 +101,7 @@ class ProfileScreen extends Component {
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
                     <View style={styles.profileLogo}>
-                        <Icon name='person-circle-outline' size={normalize(150)} color="black" style={styles.headerIconStyle} />
+                        <Image source={require('../appIcons/baseline_account_circle_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
                     </View>
                     <View style={styles.profileTitle}>
                         <Text adjustsFontSizeToFit style={styles.headerTitleText}>

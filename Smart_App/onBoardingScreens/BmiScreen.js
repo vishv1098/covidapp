@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, ScrollView, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import { ConfirmDialog } from 'react-native-simple-dialogs';
 
 const {
   width: SCREEN_WIDTH,
@@ -28,6 +29,8 @@ const BmiScreen = () => {
 
   const navigation = useNavigation();
 
+  const [isMissingInfoWarn, setIsMissingInfoWarn] = useState(false)
+
   const handleWtbox = async (inputText) => {
     if (inputText === '') {
     } else {
@@ -42,9 +45,42 @@ const BmiScreen = () => {
     }
   }
 
+  const validate = async() => {
+    const z = await AsyncStorage.getItem('firstSkip');
+    if (z === null) {
+      await AsyncStorage.setItem('firstSkip', 'notnull');
+      setIsMissingInfoWarn(true)
+    } else {
+      navigation.navigate('age')
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+          <ConfirmDialog
+              visible={isMissingInfoWarn}
+              title="Warning"
+              titleStyle={styles.disclaimer}
+              dialogStyle={styles.disclaimerDialog}
+              onTouchOutside={() => setIsMissingInfoWarn(false)}
+              positiveButton={{
+                  title: "cancel",
+                  titleStyle: styles.disclaimerButtonStyle,
+                  style: styles.disclaimerButton,
+                  onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('bmi')}
+              }}
+              negativeButton={{
+                  title: "Continue",
+                  titleStyle: styles.disclaimerButtonStyle,
+                  style: styles.disclaimerButton,
+                  onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('age')} 
+              }}
+              >
+              <ScrollView>
+                  <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+              </ScrollView>
+          </ConfirmDialog>
           <View style={styles.contentContainer}>
               <View style={styles.headerTitle}>
                   <Text adjustsFontSizeToFit style={styles.headerTitleText}>
@@ -52,7 +88,7 @@ const BmiScreen = () => {
                   </Text>
               </View>
               <View style={styles.headerIcon}>
-                  <Icon name='body-outline' size={100} color="black" style={styles.headerIconStyle} />
+                  <Image source={require('../appIcons/baseline_emoji_people_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
               </View>
               <View style={styles.headerHtField}>
                   <View style={styles.innerTopHeaderHtField}>
@@ -102,7 +138,7 @@ const BmiScreen = () => {
                   <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                   <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                 </TouchableOpacity>
-                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBottom}>
+                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBottom} onPress={ async() => validate()}>
                   <Text adjustsFontSizeToFit style={styles.bottomButtonTextStyle}>Skip</Text>
                 </TouchableOpacity>
               </View>
@@ -141,7 +177,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: '10rem', 
-    marginRight: '10rem'
+    marginRight: '10rem',
   },
   headerIconStyle: {
     justifyContent: 'center',
@@ -252,6 +288,29 @@ const styles = EStyleSheet.create({
   iconStyle: {
     flex: 1.7, 
     backgroundColor: '#4ba3c7',
+  },
+  disclaimer: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: '23rem',
+    fontWeight: 'bold'
+  },
+  disclaimerDialog: {
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+  },
+  disclaimerContent: {
+      fontSize: '16rem',
+      paddingBottom: '10rem',
+  },
+  disclaimerButtonStyle: {
+      fontSize:'16rem',
+  },
+  disclaimerButton: {
+      paddingBottom: '10rem'
   },
 })
 
