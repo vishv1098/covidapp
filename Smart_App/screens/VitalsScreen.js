@@ -152,7 +152,7 @@ class VitalsScreen extends Component {
         var activity_token = ''
         for( var q = 0; q < array.length; q++ ) {
             try {
-                if (array[q]["device"]["uid"] === "e3fc9470") {
+                if (array[q]["device"]["uid"] === "3d58d1e0") {
                     if (array[q]["dataStreamId"].includes("heart_rate")) {
                       heart_rate_token = array[q]["dataStreamId"]
                     }
