@@ -110,34 +110,28 @@ class ProfileScreen extends Component {
                     </View>
                     <View style={styles.profileContent}>
                         <View style={styles.profileContentHeight}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Height: {this.state.height}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Height</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.height}</Text>
                         </View>
                         <View style={styles.profileContentWeight}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Weight: {this.state.weight}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Weight</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.weight}</Text>
                         </View>
                         <View style={styles.profileContentDob}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Date of Birth: {this.state.dob}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Date of Birth</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.dob}</Text>
                         </View>
                         <View style={styles.profileContentSex}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Sex: {this.state.gen}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Sex</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.gen}</Text>
                         </View>
                         <View style={styles.profileContentRace}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Race: {this.state.race}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Race</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.race}</Text>
                         </View>
                         <View style={styles.profileContentEthini}>
-                            <Text adjustsFontSizeToFit style={styles.headerContentText}>
-                                Hispanic or Latino?: {this.state.ethini}
-                            </Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentText}>Hispanic or Latino?</Text>
+                            <Text adjustsFontSizeToFit style={styles.headerContentResultText}>{this.state.ethini}</Text>
                         </View>
                     </View>
                     <View style={styles.profileSubmitButton}>
@@ -208,34 +202,47 @@ const styles = EStyleSheet.create({
         marginRight: '10rem'
     },
     headerContentText: {
+        flex: 1,
         fontSize: '18rem', 
         color: '#000000',
-        marginLeft: '30rem', 
+        marginLeft: '30rem',
+    },
+    headerContentResultText: {
+        flex: 1,
+        fontSize: '18rem', 
+        color: '#000000',
+        textAlign:'right',
         marginRight: '30rem',
     },
     profileContentHeight: {
         flex: 0.7,
         width: '100%',
+        flexDirection: 'row',
     },
     profileContentWeight: {
         flex: 0.7,
         width: '100%',
+        flexDirection: 'row'
     },
     profileContentDob: {
         flex: 0.7,
         width: '100%',
+        flexDirection: 'row'
     },
     profileContentSex: {
         flex: 0.7,
         width: '100%',
+        flexDirection: 'row'
     },
     profileContentRace: {
         flex: 0.7,
         width: '100%',
+        flexDirection: 'row'
     },
     profileContentEthini: {
         flex: 1,
         width: '100%',
+        flexDirection: 'row'
     },
     profileButtonTop: {
         backgroundColor: '#adadad',

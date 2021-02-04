@@ -196,6 +196,8 @@ const styles = EStyleSheet.create({
   headerMeaasge: {
     flex: 1,
     width: "100%",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   headerNavigate: {
     flex: 0.8,

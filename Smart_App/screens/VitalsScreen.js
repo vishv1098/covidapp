@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import axios from 'axios';
@@ -133,7 +134,7 @@ class VitalsScreen extends Component {
       }
     } catch(e) {
     }
-    await this.dataSources();
+    // await this.dataSources();
     await this.heartRateData();
     await this.fitbitData();
   }
@@ -186,7 +187,8 @@ class VitalsScreen extends Component {
   }
 
   heartRateData = async() => {
-    await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+this.state.endDate+'000000',{
+    // await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/'+this.state.heart_rate_token+'/datasets/'+this.state.startDate+'000000-'+this.state.endDate+'000000',{
+    await axios.get('https://www.googleapis.com/fitness/v1/users/me/dataSources/derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm/datasets/'+this.state.startDate+'000000-'+this.state.endDate+'000000',{
         headers: {
             'Authorization': 'Bearer ' + this.state.google_token
         }
@@ -196,7 +198,7 @@ class VitalsScreen extends Component {
         var res = x.value[0].fpVal
         await this.setState({
           hreditable: false,
-          hrplaceholder: res+'',
+          hrplaceholder: parseInt(res)+'',
         })
     })
   }
@@ -405,7 +407,8 @@ class VitalsScreen extends Component {
                     </Text>
                 </View>
                 <View style={styles.headerIcon}>
-                    <Image source={require('../appIcons/baseline_favorite_black_48pt_3x.png')} resizeMode='contain' style={styles.headerIconStyle}></Image>
+                    <Icon name='heartbeat' size={normalize(130)} color="black" style={styles.headerIconStyle}/>
+                    {/* <Image source={require('../appIcons/heartbeat-solid.svg')} resizeMode='contain' style={styles.headerIconStyle}></Image> */}
                 </View>
                 <View style={styles.headerField}>
                   <View>
