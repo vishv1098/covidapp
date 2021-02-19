@@ -491,6 +491,9 @@ class VitalsScreen extends Component {
                             numeric
                           />
                       </View>
+                      <View style={styles.innerBottUnitHeaderHtField}>
+                        <Text style={styles.tcL}>{'\u00b0'}C</Text>
+                      </View>
                     </View>
                 </View>
                 <View style={styles.headerElField}>

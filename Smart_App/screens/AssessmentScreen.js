@@ -208,7 +208,7 @@ class AssessmentScreen extends Component {
                           opdiarr:0
                         })
                       } }}>
-                        <Text style={styles.buttonTxt}>Diarrhoea</Text>
+                        <Text style={styles.buttonTxt}>Diarrhea</Text>
                         <Icon name='checkmark-circle' size={22} color="#000000" style={[styles.iconStyle, {opacity:this.state.opdiarr}]} />
                     </TouchableOpacity>
                 </View>

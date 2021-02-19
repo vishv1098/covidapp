@@ -34,11 +34,11 @@ const TermsAndConditions = () => {
 
   const [accepted, setAccepted] = useState(false);
 
-  useEffect(() => { 
-    BackHandler.addEventListener('hardwareBackPress', function () { 
-      return true; 
-    }); 
-  }) 
+  // useEffect(() => { 
+  //   BackHandler.addEventListener('hardwareBackPress', function () { 
+  //     return true; 
+  //   }); 
+  // }) 
 
   return (
     <View style={styles.container}>

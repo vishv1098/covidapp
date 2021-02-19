@@ -42,11 +42,11 @@ class SafeScreen extends Component {
                     {/* </View> */}
                     {/* <View style={styles.headerResult}> */}
                         <TouchableOpacity style={styles.testButtonTop} activeOpacity = {.5}>
-                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You seem to be safe</Text>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You seem to be healthy</Text>
                         </TouchableOpacity>
                     {/* </View> */}
                     {/* <View style={styles.headerMessage}> */}
-                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Consult your physician at the earliest and receive their recommendation on whether you should take a COVID-19 test.</Text>
+                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>However, if you feel unwell or develop any symptoms, you should consult your physician immediately. If recommended, do take a COVID-19 test at the earliest.</Text>
                     {/* </View> */}
                     {/* <View style={styles.reset}> */}
                         <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Home')}}>

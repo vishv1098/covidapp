@@ -299,8 +299,9 @@ class Home extends Component {
                         }}
                         >
                         <ScrollView>
-                            <Text style={styles.disclaimerContent}>Any details we wish to provide, such as developers, contacts and other licensing information.</Text>
-                            <Text style={styles.disclaimerContent}>Would be good to include some details on the models too.</Text>
+                            <Text style={styles.disclaimerContent}>This App makes non-diagnostic predictions about your health based on your vital signs using Neural Networks. Symptom-based predictions are made based on the algorithm proposed in Menni, C., Valdes, A.M., Freidin, M.B. et al. Real-time tracking of self-reported symptoms to predict potential COVID-19. Nat Med 26, 1037–1040 (2020).</Text>
+                            <Text style={styles.disclaimerContent}>Google Fit is a trademark of Google LLC.</Text>
+                            <Text style={styles.disclaimerContent}>The Fitbit logo is a registered trademark of Fitbit®.</Text>
                         </ScrollView>
                     </ConfirmDialog>
                     <ConfirmDialog

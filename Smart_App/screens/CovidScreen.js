@@ -42,7 +42,7 @@ class CovidScreen extends Component {
                     {/* </View> */}
                     {/* <View style={styles.headerResult}> */}
                         <TouchableOpacity style={styles.testButtonTop} activeOpacity = {.5}>
-                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You should take a test</Text>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You should see your physician</Text>
                         </TouchableOpacity>
                     {/* </View> */}
                     {/* <View style={styles.headerMessage}> */}
