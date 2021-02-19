@@ -3,7 +3,7 @@ import PushNotification from 'react-native-push-notification'
 export const LocalNotification = () => {
     PushNotification.localNotification({
         title: 'Local Notification Title',
-        message: 'Expand me to see more',
+        message: 'Expand to see more',
         repeatType: "day"
     })
 }
@@ -12,10 +12,10 @@ export const ScheduledLocalNotification = () => {
     PushNotification.localNotificationSchedule({
         autoCancel: true,
         bigText:
-        'We recommend that you self assess yourself periodically to check your health condition',
+        'We recommend that you assess yourself periodically to evaluate your health condition',
         subText: 'Daily Notification Remainder',
-        title: 'Did you self assess yourself?',
-        message: 'Self assess yourself periodically',
+        title: 'Did you take a self-assessment?',
+        message: 'Assess yourself periodically',
         vibrate: true,
         vibration: 500,
         playSound: true,

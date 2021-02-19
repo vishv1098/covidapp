@@ -30,7 +30,7 @@ const PageLaunch = ({ headerTitle }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         <View style={styles.contentContainer}>
-          <View style={styles.topContainer}>
+          <View style={styles.middleContainer}>
             {headerTitle !== "" ?
             <Text adjustsFontSizeToFit style={styles.headerTitleText}>
               {headerTitle}
@@ -38,25 +38,25 @@ const PageLaunch = ({ headerTitle }) => {
             :
             null
             }
-          </View>
-          <View style={styles.middleContainer}>
-            <View style={{flex:1, alignContent: 'center', justifyContent: "center"}}>
+          {/* </View> */}
+          {/* <View style={styles.middleContainer}> */}
+            <View style={{alignContent: 'center', justifyContent: "center"}}>
               <Text adjustsFontSizeToFit style={styles.innerTop}>
                 This application uses machine learning models to predict the likelihood of having COVID-19 or an influenza infection based on self-reported symptoms and vital signs of an individual.
               </Text>
-            </View>
-            <View style={{flex:0.8, alignContent: 'center'}}>
+            {/* </View> */}
+            {/* <View style={{flex:0.8, alignContent: 'center'}}> */}
               <Text adjustsFontSizeToFit style={styles.innerMiddle}>
               The data collected or automatically extracted from wearable devices is only used for on-device predictions and is not stored or collected for other use.
               </Text>
-            </View>
-            <View style={{flex:1, alignContent: 'center'}}>
+            {/* </View> */}
+            {/* <View style={{flex:1, alignContent: 'center'}}> */}
               <Text adjustsFontSizeToFit style={styles.innerBottom}>
                 The data and services provided by this application are an information resource only, and are not to be used or relied on for any diagnostic or treatment purpose.
               </Text>
             </View>
-          </View>
-          <View style={styles.bottomContainer}>
+          {/* </View> */}
+          {/* <View style={styles.bottomContainer}> */}
             <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { navigation.navigate('Terms')}}>
               <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Get Started</Text>
             </TouchableOpacity>
@@ -76,11 +76,11 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: '10rem',
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.7,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
@@ -88,46 +88,57 @@ const styles = EStyleSheet.create({
   topContainer: {
     flex: 3,
     width: "100%",
+    justifyContent: 'flex-end',
+    paddingBottom: '5rem',
   },
   middleContainer: {
-    flex: 20,
+    flex: 1,
     width: "100%",
+    justifyContent: 'center',
   },
   bottomContainer: {
     flex: 3,
     width: "100%",
+    paddingTop: '5rem',
   },
   headerTitleText: {
-    fontSize: '27rem',
+    fontSize: '24rem',
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
     marginLeft: '10rem', 
-    marginRight: '10rem'
+    marginRight: '10rem',
+    marginBottom: '25rem'
   },
   innerTop: {
-    fontSize: '18rem',
-    fontWeight: '100',
+    fontSize: '17rem',
+    fontWeight: '400',
     color: '#000000',
     textAlign: 'left',
     marginLeft: '25rem',
-    marginRight: '25rem'
+    marginRight: '25rem',
+    paddingTop: '10rem',
+    paddingBottom: '5rem'
   },
   innerMiddle: {
-    fontSize: '18rem',
-    fontWeight: '100',
+    fontSize: '17rem',
+    fontWeight: '400',
     color: '#000000',
     textAlign: 'left',
     marginLeft: '25rem',
-    marginRight: '25rem'
+    marginRight: '25rem',
+    paddingTop: '5rem',
+    paddingBottom: '5rem'
   },
   innerBottom: {
-    fontSize: '18rem',
-    fontWeight: '100',
+    fontSize: '17rem',
+    fontWeight: '400',
     color: '#000000',
     textAlign: 'left',
     marginLeft: '25rem',
-    marginRight: '25rem'
+    marginRight: '25rem',
+    paddingTop: '5rem',
+    paddingBottom: '10rem'
   },
   buttonTop: {
     backgroundColor: '#009624', 
@@ -137,7 +148,8 @@ const styles = EStyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     marginLeft: '25rem', 
-    marginRight: '25rem'
+    marginRight: '25rem',
+    marginTop: '30rem'
   },
   iconStyle: {
     flex: 1.8, 
@@ -150,7 +162,7 @@ const styles = EStyleSheet.create({
     alignContent:'flex-start', 
     marginLeft: '25rem', 
     marginRight: '25rem',
-    fontSize: '21rem', 
+    fontSize: '20rem', 
     color: 'white',
   }
 })

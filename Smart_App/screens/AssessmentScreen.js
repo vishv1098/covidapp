@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Dimensions, PixelRatio, Platform } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -233,25 +233,25 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding:10,
+    padding: normalize(25),
     backgroundColor: '#ffcc80'
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.5,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffcc80',
-    padding:10
+    // padding:10
   },
   headerTitle: {
-    flex: 1,
+    flex: 0.3,
     width: "100%",
     backgroundColor: '#ffcc80',
   },
   headerTitleText: {
-    fontSize: '27rem', 
+    fontSize: '26rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -259,7 +259,7 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   headerIcon: {
-    flex: 1.4,
+    flex: 1.5,
     width: "100%",
     justifyContent: 'center',
     alignItems: 'center',
@@ -274,7 +274,7 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   infoBox: {
-    flex: 0.7,
+    flex: 0.8,
     width: "100%",
     backgroundColor: '#ffcc80',
   },
@@ -311,9 +311,10 @@ const styles = EStyleSheet.create({
     alignSelf:'stretch',
     flex:1,
     borderColor:'black',
-    borderBottomWidth:2,
-    borderLeftWidth:2,
-    borderRightWidth:2
+    borderTopWidth:1, 
+    // borderBottomWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1
     
   },
   buttonTop:{
@@ -323,7 +324,11 @@ const styles = EStyleSheet.create({
     alignItems:'center',
     flex:1,
     borderColor:'black',
-    borderWidth:2,
+    // borderWidth:2,
+    // borderBottomWidth:1,
+    borderTopWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1,
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
   },
@@ -335,9 +340,10 @@ const styles = EStyleSheet.create({
     flex:1,
     backgroundColor:'#ffcc80',
     borderColor:'black',
-    borderBottomWidth:2,
-    borderLeftWidth:2,
-    borderRightWidth:2,
+    borderBottomWidth:1,
+    borderTopWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1,
     borderBottomLeftRadius: 50, 
     borderBottomRightRadius: 50,
   },
@@ -356,7 +362,7 @@ const styles = EStyleSheet.create({
     borderRadius: 10, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginLeft: '30rem', 
+    marginLeft: '25rem', 
     marginRight: '30rem',  
   },
   buttonTextStyle: {

@@ -75,6 +75,17 @@ const AgeScreen = () => {
       }
     }
 
+    const nextNavigate = async() => {
+      const x = await AsyncStorage.getItem('userFullDob');
+      const z = await AsyncStorage.getItem('firstMissingWarn');
+      if (x == null && z == null) {
+        await AsyncStorage.setItem('firstMissingWarn', 'notnull');
+        setIsMissingInfoWarn(true)
+      } else {
+        navigation.navigate('race')
+      }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -85,8 +96,8 @@ const AgeScreen = () => {
                   dialogStyle={styles.disclaimerDialog}
                   onTouchOutside={() => setIsMissingInfoWarn(false)}
                   positiveButton={{
-                      title: "cancel",
-                      titleStyle: styles.disclaimerButtonStyle,
+                      title: "Cancel",
+                      titleStyle: styles.disclaimerButtonStyleBold,
                       style: styles.disclaimerButton,
                       onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('age')}
                   }}
@@ -98,7 +109,7 @@ const AgeScreen = () => {
                   }}
                   >
                   <ScrollView>
-                      <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+                      <Text style={styles.disclaimerContent}>Missing data may cause the model to predict inaccurate results. </Text>
                   </ScrollView>
                 </ConfirmDialog>
                 <View style={styles.contentContainer}>
@@ -142,7 +153,7 @@ const AgeScreen = () => {
                         <Text adjustsFontSizeToFit style={styles.content}>Your age is provided as an input to our Machine Learning models. Age is indicative of vitality and diseases affect people of different age groups in dissimilar ways.</Text>
                     </View>
                     <View style={styles.headerNavigate}>
-                        <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('race')}}>
+                        <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => nextNavigate()}>
                             <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                         </TouchableOpacity>
@@ -165,12 +176,12 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: normalize(25),
     backgroundColor: '#a5d6a7'
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.55,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
@@ -211,7 +222,7 @@ const styles = EStyleSheet.create({
     flexDirection: "column",
   },
   headerTitleText: {
-    fontSize: '27rem', 
+    fontSize: '26rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -250,8 +261,8 @@ const styles = EStyleSheet.create({
     justifyContent: 'center'
   },
   fieldStyle: {
-    height: '25rem',
-    width: '290rem',
+    height: '26rem',
+    // width: '290rem',
     fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
@@ -259,8 +270,8 @@ const styles = EStyleSheet.create({
     marginRight: '30rem',
   },
   content:{
-    marginTop: '12rem',
-    marginBottom: '5rem',
+    marginTop: '5rem',
+    marginBottom: '10rem',
     fontSize: '15rem',
     marginLeft: '30rem',
     marginRight: '30rem'
@@ -280,7 +291,7 @@ const styles = EStyleSheet.create({
     borderRadius: 10, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginLeft: '30rem', 
+    marginLeft: '25rem', 
     marginRight: '30rem',  
   },
   buttonBottom: {
@@ -308,7 +319,7 @@ const styles = EStyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: '23rem',
+    fontSize: '24rem',
     fontWeight: 'bold'
   },
   disclaimerDialog: {
@@ -323,9 +334,16 @@ const styles = EStyleSheet.create({
   },
   disclaimerButtonStyle: {
       fontSize:'16rem',
+      fontWeight:'400',
+      color:'#007aff'
+  },
+  disclaimerButtonStyleBold: {
+    fontSize:'16rem',
+    fontWeight:'bold',
+    color:'#007aff'
   },
   disclaimerButton: {
-      paddingBottom: '10rem'
+      // paddingBottom: '10rem'
   },
 })
 

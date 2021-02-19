@@ -65,6 +65,18 @@ const RaceScreen = () => {
       }
     }
 
+    const nextNavigate = async() => {
+      const x = await AsyncStorage.getItem('userRace');
+      const y = await AsyncStorage.getItem('userGender');
+      const z = await AsyncStorage.getItem('firstMissingWarn');
+      if (x == null && y == null && z === null) {
+        await AsyncStorage.setItem('firstMissingWarn', 'notnull');
+        setIsMissingInfoWarn(true)
+      } else {
+        navigation.navigate('Home')
+      }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
@@ -75,8 +87,8 @@ const RaceScreen = () => {
                   dialogStyle={styles.disclaimerDialog}
                   onTouchOutside={() => setIsMissingInfoWarn(false)}
                   positiveButton={{
-                      title: "cancel",
-                      titleStyle: styles.disclaimerButtonStyle,
+                      title: "Cancel",
+                      titleStyle: styles.disclaimerButtonStyleBold,
                       style: styles.disclaimerButton,
                       onPress: () => {setIsMissingInfoWarn(false), navigation.navigate('race')}
                   }}
@@ -88,7 +100,7 @@ const RaceScreen = () => {
                   }}
                   >
                   <ScrollView>
-                      <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+                      <Text style={styles.disclaimerContent}>Missing data may cause the model to predict inaccurate results. </Text>
                   </ScrollView>
                 </ConfirmDialog>
                 <View style={styles.contentContainer}>
@@ -109,8 +121,8 @@ const RaceScreen = () => {
                             <DropDownPicker
                                 items={[
                                     {label: 'Select your sex', value: 'x'},
-                                    {label: 'Male', value: 'male'},
-                                    {label: 'Female', value: 'female'},
+                                    {label: 'Male', value: 'Male'},
+                                    {label: 'Female', value: 'Female'},
                                 ]}
                                 defaultValue={'x'}
                                 containerStyle={styles.fieldStyle}
@@ -134,9 +146,9 @@ const RaceScreen = () => {
                               <DropDownPicker
                                   items={[
                                       {label: 'Select your race', value: 'x'},
-                                      {label: 'White', value: 'white'},
-                                      {label: 'Black/African American', value: 'black/african'},
-                                      {label: 'Others', value: 'others'},
+                                      {label: 'White', value: 'White'},
+                                      {label: 'Black or African American', value: 'Black or African American'},
+                                      {label: 'Others', value: 'Others'},
                                   ]}
                                   defaultValue={'x'}
                                   containerStyle={styles.fieldStyle}
@@ -161,8 +173,12 @@ const RaceScreen = () => {
                               disabled={false}
                               value={toggleCheckBox}
                               onValueChange={(newValue) => setToggleCheckBox(newValue)}
-                              style={{color: '#000000'}}
+                              style={{color: '#000000', borderRadius: 5, borderWidth: 1, width: 20, height: 20}}
                               onCheckColor='#000000'
+                              onAnimationType='fade'
+                              offAnimationType='fade'
+                              animationDuration={0}
+                              hideBox={true}
                             />
                           </View>
                         </View>
@@ -171,7 +187,7 @@ const RaceScreen = () => {
                         </View>
                     </View>
                     <View style={styles.headerNavigate}>
-                        <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { handleEthini(); navigation.navigate('Home')}}>
+                        <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { handleEthini(); nextNavigate(); }}>
                             <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                             <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                         </TouchableOpacity>
@@ -194,12 +210,12 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: normalize(25),
     backgroundColor: '#b39ddb'
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.55,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
@@ -226,7 +242,7 @@ const styles = EStyleSheet.create({
     flexDirection: 'row'
   },
   ethiniInner: {
-    flex: 2.5,
+    flex: 3,
     justifyContent: 'center'
   },
   headerIconStyle: {
@@ -253,7 +269,7 @@ const styles = EStyleSheet.create({
     flexDirection: "column",
   },
   headerTitleText: {
-    fontSize: '27rem', 
+    fontSize: '26rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -293,12 +309,18 @@ const styles = EStyleSheet.create({
   },
   fieldStyle: {
     height: '40rem',
-    width: '300rem',
+    // width: '300rem',
     marginLeft: '30rem',
     marginRight: '30rem',
   },
+  fieldStyleD: {
+    height: '40rem',
+    marginLeft: '30rem',
+    marginRight: '30rem',
+    zIndex: 200,
+  },
   content:{
-    marginTop: '12rem',
+    marginTop: '10rem',
     marginBottom: '5rem',
     fontSize: '15rem',
     marginLeft: '30rem',
@@ -319,7 +341,7 @@ const styles = EStyleSheet.create({
     borderRadius: 10, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginLeft: '30rem', 
+    marginLeft: '25rem', 
     marginRight: '30rem',  
   },
   buttonBottom: {
@@ -342,13 +364,13 @@ const styles = EStyleSheet.create({
   },
   dropDownTextStyle: {
     backgroundColor: '#b39ddb',
-    width: '300rem',
+    // width: '300rem',
     height: '110rem',
     borderColor: '#000000',
   },
   dropDownRaceTextStyle: {
     backgroundColor: '#b39ddb',
-    width: '300rem',
+    // width: '300rem',
     height: '150rem',
     borderColor: '#000000'
   },
@@ -357,7 +379,7 @@ const styles = EStyleSheet.create({
     fontWeight: '400'
   },
   messgBox: {
-    flex: 2.8
+    flex: 3
   },
   checkView: {
     flex: 1, 
@@ -367,7 +389,7 @@ const styles = EStyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: '23rem',
+    fontSize: '24rem',
     fontWeight: 'bold'
   },
   disclaimerDialog: {
@@ -382,9 +404,16 @@ const styles = EStyleSheet.create({
   },
   disclaimerButtonStyle: {
       fontSize:'16rem',
+      fontWeight:'400',
+      color:'#007aff'
+  },
+  disclaimerButtonStyleBold: {
+    fontSize:'16rem',
+    fontWeight:'bold',
+    color:'#007aff'
   },
   disclaimerButton: {
-      paddingBottom: '10rem'
+      // paddingBottom: '10rem'
   },
 })
 

@@ -355,7 +355,7 @@ class VitalsScreen extends Component {
       }
     }
     if(this.state.genDetails === true) {
-      if(this.state.genData === 'female') {
+      if(this.state.genData === 'Female') {
         await this.setState({
           sex: 1,
         })
@@ -366,21 +366,21 @@ class VitalsScreen extends Component {
       }
     }
     if (this.state.raceDetails === true) {
-      if (this.state.raceData === 'white') {
+      if (this.state.raceData === 'White') {
         await this.setState({
           white: 1,
           black: 0,
           others: 0,
         })
       }
-      if (this.state.raceData === 'black/african') {
+      if (this.state.raceData === 'Black or African American') {
         await this.setState({
           white: 0,
           black: 1,
           others: 0,
         })
       }
-      if (this.state.raceData === 'others') {
+      if (this.state.raceData === 'Others') {
         await this.setState({
           white: 0,
           black: 0,
@@ -411,12 +411,12 @@ class VitalsScreen extends Component {
                     {/* <Image source={require('../appIcons/heartbeat-solid.svg')} resizeMode='contain' style={styles.headerIconStyle}></Image> */}
                 </View>
                 <View style={styles.headerField}>
-                  <View>
+                  {/* <View> */}
                     <Text style={styles.tcP}>Vitals</Text>
-                  </View>
-                  <View style={styles.headerField}>
+                  {/* </View> */}
+                  {/* <View style={styles.headerField}> */}
                     <Text style={styles.tcsub}>Enter the remaining vitals if you know them.</Text>
-                  </View>
+                  {/* </View> */}
                 </View>
                 <View style={styles.headerElField}>
                     <View style={styles.innerTopHeaderHtField}>
@@ -544,18 +544,18 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: normalize(25),
     backgroundColor: '#ef9a9a'
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.55,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
-    flex: 1,
+    flex: 0.3,
     width: "100%",
   },
   headerIcon: {
@@ -570,14 +570,15 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: '10rem', 
-    marginRight: '10rem'
+    marginRight: '10rem',
+    marginTop: '5rem',
   },
   headerField: {
     flex: 0.6,
     width: "100%",
   },
   headerElField: {
-    flex: 0.8,
+    flex: 0.67,
     width: "100%",
   },
   headerMeaasge: {
@@ -585,12 +586,12 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   headerNavigate: {
-    flex: 0.8,
+    flex: 0.67,
     width: "100%",
     paddingTop: '20rem',
   },
   headerTitleText: {
-    fontSize: '27rem', 
+    fontSize: '26rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -598,16 +599,16 @@ const styles = EStyleSheet.create({
     marginRight: '10rem'
   },
   innerTopHeaderHtField: {
-    flex: 2,
+    flex: 1,
   },
   innerBottomHeaderHtField: {
-    flex: 3,
+    flex: 1.4,
     flexDirection: 'row'
   },
   innerBottomHeaderBpField: {
-    flex: 3,
+    flex: 1.4,
     flexDirection: 'row',
-    marginLeft: '30rem',
+    marginLeft: '10rem',
     justifyContent: 'flex-start',
   },
   tcP: {
@@ -615,11 +616,11 @@ const styles = EStyleSheet.create({
     marginBottom: '3rem',
     fontSize: '15rem',
     fontWeight: 'bold',
-    marginLeft: '30rem',
-    marginRight: '30rem'
+    marginLeft: '10rem',
+    marginRight: '10rem'
   },
   tcsub: {
-    marginLeft: '30rem',
+    marginLeft: '10rem',
     fontSize: '15rem',
   },
   tcL: {
@@ -644,16 +645,16 @@ const styles = EStyleSheet.create({
     flex:1,
   },
   fieldStyle: {
-    height: '40rem',
-    width: '250rem',
+    height: '38rem',
+    // width: '250rem',
     fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    marginLeft: '30rem',
-    marginRight: '30rem'
+    marginLeft: '10rem',
+    marginRight: '10rem'
   },
   fieldStyleBp: {
-    height: '40rem',
+    height: '38rem',
     width: '90rem',
     fontSize: '15rem',
     borderBottomColor: 'black',

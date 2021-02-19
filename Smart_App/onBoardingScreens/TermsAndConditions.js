@@ -84,11 +84,11 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: '25rem',
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.5,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
@@ -103,12 +103,12 @@ const styles = EStyleSheet.create({
     width: "100%",
   },
   bottomContainer: {
-    flex: 3,
+    flex: 5,
     width: "100%",
     justifyContent: 'center'
   },
   headerTitle: {
-    fontSize: '27rem',
+    fontSize: '24rem',
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  

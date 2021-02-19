@@ -138,15 +138,29 @@ class Home extends Component {
     getData = async () => {
         try {
             const value = await AsyncStorage.getItem('googlefit_accesstoken')
+            // console.log("cur:"+value);
             if(value !== null) {
-              this.setState({
-                google_accesstoken: value,
-                googleFitName: 'Disconnect from Google Fit'
-              })
+                await this.refreshData();
             }
         } catch(e) {
         }
+    }
 
+    refreshData = async () =>{
+        await GoogleSignin.clearCachedAccessToken(await AsyncStorage.getItem('googlefit_accesstoken'));
+        const currentUser = GoogleSignin.getTokens().then(async(res)=>{
+            try {
+                // console.log("Res:"+res.accessToken)
+                await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
+            } catch (e) {
+                // alert('Failed to save the data to the storage. Please Sign out of the fitness tracker and login once again')
+            }
+            g_accessToken = res.accessToken
+            this.setState({
+                google_accesstoken: g_accessToken,
+                googleFitName: 'Disconnect from Google Fit'
+            })
+        });
     }
 
     _onFitbit = async() => {
@@ -250,7 +264,7 @@ class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.contentContainer}>
                     <ConfirmDialog
                         visible={this.state.infodialogVisible}
@@ -297,7 +311,7 @@ class Home extends Component {
                         onTouchOutside={() => this.setState({missingInfoWarn: false})}
                         positiveButton={{
                             title: "Edit Profile",
-                            titleStyle: styles.disclaimerButtonStyle,
+                            titleStyle: styles.disclaimerButtonStyleBold,
                             style: styles.disclaimerButton,
                             onPress: () => {this.setState({missingInfoWarn: false}),this.props.navigation.navigate('profile')}
                         }}
@@ -309,68 +323,68 @@ class Home extends Component {
                         }}
                         >
                         <ScrollView>
-                            <Text style={styles.disclaimerContent}>Oops! There seems to be some data that you haven't provided.</Text>
-                            <Text style={styles.disclaimerContent}>Missing data may cause the model to project wrong results. </Text>
+                            <Text style={styles.disclaimerContent}>Oops! You haven't provided some data about yourself.</Text>
+                            <Text style={styles.disclaimerContent}>Missing data may cause the model to predict incorrect results. </Text>
                         </ScrollView>
                     </ConfirmDialog>
                     <View style={styles.titleBox}>
-                        <View style={styles.trackerTitle}>
-                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
-                        </View>
-                        <View style={styles.trackerContent}>
-                                <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
-                        </View>
-                    </View>
-                    <View style={styles.fitbitBox}>
+                        {/* <View style={styles.trackerTitle}> */}
+                        <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
+                        {/* </View> */}
+                        {/* <View style={styles.trackerContent}> */}
+                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
+                        {/* </View> */}
+                    {/* </View> */}
+                    {/* <View style={styles.fitbitBox}> */}
                         <TouchableOpacity style={styles.fitbitButtonTop} activeOpacity = {.5} onPress={this._onFitbit}>
                             <Image source={require('../appIcons/fitbit.png')} resizeMode='contain' style={styles.ImageIconStyle}></Image>
                             <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>{this.state.fitbitName}</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.googleFitBox}>
+                    {/* </View> */}
+                    {/* <View style={styles.googleFitBox}> */}
                         <TouchableOpacity style={styles.googlefitButtonTop} activeOpacity = {.5} onPress={this._onGooglefit}>
                             <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} resizeMode='contain' style={styles.ImageIconStyle}></Image>
                             <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>{this.state.googleFitName}</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.assessmentBox}>
-                        <View style={styles.assessInfo}>
+                    {/* </View> */}
+                    {/* <View style={styles.assessmentBox}> */}
+                        {/* <View style={styles.assessInfo}> */}
                             <View style={styles.testTitle}>
-                                <View style={styles.testName}>
+                                {/* <View style={styles.testName}> */}
                                     <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
-                                </View>
+                                {/* </View> */}
                                 <TouchableOpacity style={styles.testIcon} activeOpacity = {.5} onPress={()=>this.setState({infodialogVisible:true})}>
                                     <Icon name='information-circle-outline' size={30} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.testInfo}>
+                            {/* <View style={styles.testInfo}> */}
                                     <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
-                            </View>
-                        </View>
-                        <View style={styles.assessButton}>
+                            {/* </View> */}
+                        {/* </View> */}
+                        {/* <View style={styles.assessButton}> */}
                             <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.dataChecker() }}>
                                 <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
                             </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.profileBox}>
-                        <View style={styles.profileText}>
+                        {/* </View> */}
+                    {/* </View> */}
+                    {/* <View style={styles.profileBox}> */}
+                        {/* <View style={styles.profileText}> */}
                             <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
-                        </View>
-                        <View style={styles.profileButton}>
+                        {/* </View> */}
+                        {/* <View style={styles.profileButton}> */}
                             <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('profile')}}>
                                 <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
                             </TouchableOpacity>
-                        </View>
+                        {/* </View> */}
                     </View>
                     <View style={styles.termsAndConditionBox}>
                         <View style={styles.aboutApp}>
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={()=>this.setState({aboutAppDialogVisible:true})}>
+                            <TouchableOpacity style={styles.aboutButtonTop} activeOpacity = {.5} onPress={()=>this.setState({aboutAppDialogVisible:true})}>
                                 <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>About this App</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.termsBox}>
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={this._onFormData}>
+                            <TouchableOpacity style={styles.tcButtonTop} activeOpacity = {.5} onPress={this._onFormData}>
                                 <Text adjustsFontSizeToFit style={styles.aboutAppTextStyle}>T {"&"} C</Text>
                             </TouchableOpacity>
                         </View>
@@ -388,25 +402,25 @@ const styles = EStyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex:1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // flex:1,
         padding: 10,
         backgroundColor: 'white'
     },
     contentContainer: {
         width: "100%",
-        paddingTop: '30rem',
-        aspectRatio: 0.5,
-        flexDirection: "column",
-        justifyContent: 'center',
-        alignItems: 'center',
+        // paddingTop: '30rem',
+        aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
+        // flexDirection: "column",
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     disclaimer: {
         alignContent: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        fontSize: '23rem',
+        fontSize: '24rem',
         fontWeight: 'bold'
     },
     disclaimerDialog: {
@@ -421,9 +435,16 @@ const styles = EStyleSheet.create({
     },
     disclaimerButtonStyle: {
         fontSize:'16rem',
+        color:'#007aff',
+        fontWeight:'400'
+    },
+    disclaimerButtonStyleBold: {
+        fontSize:'16rem',
+        color:'#007aff',
+        fontWeight:'bold'
     },
     disclaimerButton: {
-        paddingBottom: '10rem'
+        // paddingBottom: '10rem'
     },
     ImageIconStyle: {
         height: '40rem',
@@ -432,35 +453,40 @@ const styles = EStyleSheet.create({
         marginLeft: '20rem'
     },
     titleBox: {
-        flex: 2.5,
+        // flex: 2.5,
         width: "100%",
         flexDirection: 'column',
     },
     assessInfo: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column'
     },
     testName: {
-        flex: 9,
+        // flex: 9,
     },
     testIcon: {
-        flex: 1.5,
+        // flex: 1.5,
+        marginTop: '3.5rem',
+        alignSelf: 'center',
     },
     assessButton: {
-        flex: 1,
+        // flex: 1,
+        marginTop: '10rem'
     },
     testTitle: {
-        flex: 2,
+        // flex: 2,
         flexDirection: 'row'
     },
     buttonTop: {
-        backgroundColor: '#158158',
+        backgroundColor: '#169169',
         height: '55rem', 
         borderRadius: 10, 
         justifyContent: 'center', 
         alignItems: 'center', 
         marginLeft: '10rem', 
-        marginRight: '10rem'
+        marginRight: '10rem',
+        marginTop: '10rem',
+        marginBottom: '10rem'
     },
     fitbitButtonTop: {
         backgroundColor: '#000000',
@@ -470,7 +496,9 @@ const styles = EStyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center', 
         marginLeft: '10rem', 
-        marginRight: '10rem'
+        marginRight: '10rem',
+        marginTop: '10rem',
+        marginBottom: '7.5rem',
     },
     googlefitButtonTop: {
         backgroundColor: '#f2f2f2',
@@ -480,7 +508,9 @@ const styles = EStyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center', 
         marginLeft: '10rem', 
-        marginRight: '10rem'
+        marginRight: '10rem',
+        marginTop: '7.5rem',
+        marginBottom: '10rem',
     },
     profileButtonTop: {
         backgroundColor: '#adadad',
@@ -488,8 +518,30 @@ const styles = EStyleSheet.create({
         borderRadius: 10, 
         justifyContent: 'center', 
         alignItems: 'center', 
+        marginTop: '10rem',
         marginLeft: '10rem', 
-        marginRight: '10rem'
+        marginRight: '10rem',
+        marginBottom: '7.5rem'
+    },
+    aboutButtonTop: {
+        backgroundColor: '#adadad',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginTop: '7.5rem',
+        marginLeft: '10rem', 
+        marginRight: '7.5rem',
+    },
+    tcButtonTop: {
+        backgroundColor: '#adadad',
+        height: '55rem', 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginTop: '7.5rem',
+        marginLeft: '7.5rem', 
+        marginRight: '10rem',
     },
     buttonTextStyle: {
         textAlign: 'center', 
@@ -516,58 +568,59 @@ const styles = EStyleSheet.create({
         color: '#000000',
     },
     testInfo: {
-        flex: 2.5,
+        // flex: 2.5,
     },
     trackerTitle: {
-        flex: 1.3,
-        justifyContent: 'center',
-        alignContent: 'center',
+        // flex: 1.3,
+        // justifyContent: 'center',
+        // alignContent: 'center',
     },
     titleNameStyle: {
-        fontSize: '21rem',
+        fontSize: '20rem',
         fontWeight: 'bold',
         marginTop: '5rem',
-        marginBottom: '3rem',
+        // marginBottom: '3rem',
         marginLeft: '10rem',
         marginRight: '10rem',
-        alignItems: 'center',
-        alignContent: 'center'
+        // alignItems: 'center',
+        // alignContent: 'center'
     },
     titleContentStyle: {
-        marginTop: '3rem',
-        marginBottom: '5rem',
         marginLeft: '10rem',
         marginRight: '10rem',
-        fontSize: '15rem',
+        marginTop: '10rem',
+        marginBottom: '5rem',
+        fontSize: '16rem',
     },
     trackerContent: {
-        flex: 3,
+        backgroundColor: 'blue'
     },
     fitbitBox: {
-        flex: 1.5,
+        // flex: 1.5,
         justifyContent: 'center',
         width: "100%",
     },
     googleFitBox: {
-        flex: 1.5,
+        // flex: 1.5,
+        justifyContent: 'center',
         width: "100%",
     },
     assessmentBox: {
-        flex: 3,
+        // flex: 3,
         width: "100%",
     },
     profileBox: {
-        flex: 2,
+        // flex: 2,
         width: "100%",
         flexDirection: 'column'
     },
     termsAndConditionBox: {
-        flex: 2,
+        // flex: 2,
         width: "100%",
         flexDirection: 'row'
     },
     profileText: {
-        flex: 1.
+        flex: 1,
     },
     aboutApp: {
         flex: 1,
@@ -582,9 +635,11 @@ const styles = EStyleSheet.create({
     },
     termsBox: {
         flex: 1,
+        // marginBottom: '30rem'
+        // paddingBottom: '10rem'
     },
     profileButton: {
-        flex: 2,
+        // flex: 2,
     },
 })
 

@@ -110,7 +110,7 @@ class App extends Component {
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerLeft: null,
                                                         headerTintColor: '#000000',
@@ -119,14 +119,14 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="profile" component={ProfileScreen} 
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerTintColor: '#000000',
                                                         headerTitleStyle: {
@@ -134,7 +134,7 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                         headerTitleContainerStyle:{
                                                         left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -144,7 +144,7 @@ class App extends Component {
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerTintColor: '#000000',
                                                         headerTitleStyle: {
@@ -152,7 +152,7 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                         headerTitleContainerStyle:{
                                                         left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -182,7 +182,7 @@ class App extends Component {
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerLeft: null,
                                                         headerTintColor: '#000000',
@@ -191,14 +191,14 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="influ" component={InfluScreen} 
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerLeft: null,
                                                         headerTintColor: '#000000',
@@ -207,14 +207,14 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                 })}/>
                                                 <Stack.Screen name="safe" component={SafeScreen} 
                                                 options={({ navigation }) => ({
                                                         title: 'COVID-19 Guardian Angel',
                                                         headerStyle: {
-                                                        backgroundColor: '#158158',
+                                                        backgroundColor: '#169169',
                                                         },
                                                         headerLeft: null,
                                                         headerTintColor: '#000000',
@@ -223,7 +223,7 @@ class App extends Component {
                                                         alignContent: 'center',
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
-                                                        fontSize: normalize(25)
+                                                        fontSize: normalize(22)
                                                         },
                                                 })}/>
                                         </Stack.Navigator>
@@ -263,7 +263,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -272,14 +272,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="profile" component={ProfileScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
@@ -287,7 +287,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -297,7 +297,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
@@ -305,7 +305,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -323,7 +323,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -332,14 +332,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="influ" component={InfluScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -348,14 +348,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="safe" component={SafeScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -364,7 +364,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                 </Stack.Navigator>
@@ -381,7 +381,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -390,14 +390,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="profile" component={ProfileScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
@@ -405,7 +405,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -415,7 +415,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerTintColor: '#000000',
                 //                                                 headerTitleStyle: {
@@ -423,7 +423,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                                 headerTitleContainerStyle:{
                 //                                                 left: TITLE_OFFSET_CENTER_ALIGN - 140,
@@ -441,7 +441,7 @@ class App extends Component {
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -450,14 +450,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="influ" component={InfluScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -466,14 +466,14 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                         <Stack.Screen name="safe" component={SafeScreen} 
                 //                                         options={({ navigation }) => ({
                 //                                                 title: 'COVID-19 Guardian Angel',
                 //                                                 headerStyle: {
-                //                                                 backgroundColor: '#158158',
+                //                                                 backgroundColor: '#169169',
                 //                                                 },
                 //                                                 headerLeft: null,
                 //                                                 headerTintColor: '#000000',
@@ -482,7 +482,7 @@ class App extends Component {
                 //                                                 alignContent: 'center',
                 //                                                 alignItems: 'center',
                 //                                                 alignSelf: 'center',
-                //                                                 fontSize: normalize(25)
+                //                                                 fontSize: normalize(22)
                 //                                                 },
                 //                                         })}/>
                 //                                 </Stack.Navigator>

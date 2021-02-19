@@ -110,15 +110,29 @@ const EditProfile= () => {
     hideDatePicker();
   };
 
+  const handleracebox = async (inputText) => {
+    if (inputText.value === 'x') {
+    } else {
+      await AsyncStorage.setItem('userRace', inputText.value);
+    }
+  }
+
+  const handlegenbox = async (inputText) => {
+      if (inputText.value === 'x') {
+      } else {
+          await AsyncStorage.setItem('userGender', inputText.value);
+      }
+  }
+
   setData = async () => {
     if(isDate!==''){
       await AsyncStorage.setItem('userFullDob', isDate);
-      await AsyncStorage.setItem('userDOB', dob + " ");
+      await AsyncStorage.setItem('userDOB', dob.toString());
     }
     if(height!=="")
-        await AsyncStorage.setItem('userHeight', height + " ");
+        await AsyncStorage.setItem('userHeight', height);
     if(weight!=="")
-        await AsyncStorage.setItem('userWeight', weight + " ");
+        await AsyncStorage.setItem('userWeight', weight);
     if(gender!=='x')
         await AsyncStorage.setItem('userGender', gender);
     if(race!=='x')
@@ -126,7 +140,7 @@ const EditProfile= () => {
     if(toggleCheckBox) {
       await AsyncStorage.setItem('userEthini', 'Hispanic or Latino')
     } else {
-        await AsyncStorage.setItem('userEthini', 'Not - Hispanic / Latino')
+      await AsyncStorage.setItem('userEthini', 'Not Hispanic or Latino')
     }
   }
 
@@ -140,10 +154,10 @@ const EditProfile= () => {
                       Edit Profile
                   </Text>
               </View>
-              <View style={styles.headerHtField}>
-                  <View style={styles.innerTopHeaderHtField}>
+              {/* <View style={styles.headerHtField}> */}
+                  {/* <View style={styles.innerTopHeaderHtField}> */}
                     <Text adjustsFontSizeToFit style={styles.tcP}>Height</Text>
-                  </View>
+                  {/* </View> */}
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
                         <TextInput
@@ -159,11 +173,11 @@ const EditProfile= () => {
                       <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
                     </View>
                   </View>
-              </View>
-              <View style={styles.headerWtField}>
-                  <View style={styles.innerTopHeaderHtField}>
+              {/* </View> */}
+              {/* <View style={styles.headerWtField}> */}
+                  {/* <View style={styles.innerTopHeaderHtField}> */}
                     <Text adjustsFontSizeToFit style={styles.tcP}>Weight</Text>
-                  </View>
+                  {/* </View> */}
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
                         <TextInput
@@ -179,14 +193,14 @@ const EditProfile= () => {
                       <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
                     </View>
                   </View>
-              </View>
-              <View style={styles.headerHtField}>
-                      <View style={styles.innerTopHeaderHtField}>
+              {/* </View> */}
+              {/* <View style={styles.headerHtField}> */}
+                      {/* <View style={styles.innerTopHeaderHtField}> */}
                         <Text adjustsFontSizeToFit style={styles.tcP}>Date of Birth</Text>
-                      </View>
+                      {/* </View> */}
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
-                          <TouchableOpacity style={[styles.fieldStyle,{borderBottomWidth:1,borderBottomColor:'black'}]} activeOpacity = {.5} onPress={ showDatePicker }>
+                          <TouchableOpacity style={[styles.fieldStyleD,{borderBottomWidth:1,borderBottomColor:'black'}]} activeOpacity = {.5} onPress={ showDatePicker }>
                             <Text adjustsFontSizeToFit style={styles.dateFont}>{(isDate === '')?isEdDate:isDate}</Text>
                           </TouchableOpacity>
                           <DateTimePickerModal
@@ -197,18 +211,18 @@ const EditProfile= () => {
                           />
                         </View>
                       </View>
-                </View>
-                <View style={styles.headerHtField}>
-                      <View style={styles.innerTopHeaderHtField}>
+                {/* </View> */}
+                {/* <View style={styles.headerHtField}> */}
+                      {/* <View style={styles.innerTopHeaderHtField}> */}
                         <Text adjustsFontSizeToFit style={styles.tcP}>Sex</Text>
-                      </View>
+                      {/* </View> */}
                       <View style={styles.innerBottomHeaderHtField}>
                         <View style={styles.innerBottFieldHeaderHtField}>
                             <DropDownPicker
                                 items={[
                                     {label: 'Select your sex', value: 'x'},
-                                    {label: 'Male', value: 'male'},
-                                    {label: 'Female', value: 'female'},
+                                    {label: 'Male', value: 'Male'},
+                                    {label: 'Female', value: 'Female'},
                                 ]}
                                 defaultValue={gendered}
                                 containerStyle={styles.fieldStyleDrop}
@@ -222,19 +236,19 @@ const EditProfile= () => {
                             />
                         </View>
                       </View>
-                </View>
-                <View style={styles.headerWtField}>
-                        <View style={styles.innerTopHeaderHtField}>
+                {/* </View> */}
+                {/* <View style={styles.headerWtField}> */}
+                        {/* <View style={styles.innerTopHeaderHtField}> */}
                             <Text adjustsFontSizeToFit style={styles.tcP}>Race</Text>
-                        </View>
+                        {/* </View> */}
                         <View style={styles.innerBottomHeaderHtField}>
                             <View style={styles.innerBottFieldHeaderHtField}>
                               <DropDownPicker
                                   items={[
                                       {label: 'Select your race', value: 'x'},
-                                      {label: 'White', value: 'white'},
-                                      {label: 'Black/African American', value: 'black/african'},
-                                      {label: 'Others', value: 'others'},
+                                      {label: 'White', value: 'White'},
+                                      {label: 'Black or African American', value: 'Black or African American'},
+                                      {label: 'Others', value: 'Others'},
                                   ]}
                                   defaultValue={raceEd}
                                   containerStyle={styles.fieldStyleDrop}
@@ -248,14 +262,19 @@ const EditProfile= () => {
                                 />
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.headerMeaasge}>
+                    {/* </View> */}
+                    {/* <View style={styles.headerMeaasge}> */}
                         <View style={styles.ethiniOuterBox}>
                           <View style={styles.ethiniInner}>
                             <Text adjustsFontSizeToFit style={styles.ethiniStyle}>Are you Hispanic or Latino?</Text>
                           </View>
                           <View style={styles.checkView}>
                             <CheckBox
+                              style={{color: '#000000', borderRadius: 5, borderWidth: 1, width: 20, height: 20}}
+                              onAnimationType='fade'
+                              offAnimationType='fade'
+                              animationDuration={0}
+                              hideBox={true}
                               disabled={false}
                               value={toggleCheckBox}
                               onValueChange={(newValue) => setToggleCheckBox(newValue)}
@@ -264,17 +283,17 @@ const EditProfile= () => {
                             />
                           </View>
                         </View>
-                    </View>
-                <View style={styles.headerNavigate}>
+                    {/* </View> */}
+                {/* <View style={styles.headerNavigate}> */}
                     <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.setData(),navigation.navigate('profile')}}>
                     <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Done</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.headerNavigate}>
+                {/* </View> */}
+                {/* <View style={styles.headerNavigate}> */}
                     <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBot} onPress={ async() => { navigation.navigate('profile')}}>
                     <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Cancel</Text>
                     </TouchableOpacity>
-                </View>
+                {/* </View> */}
           </View>
           </ScrollView>
       </View>
@@ -296,46 +315,48 @@ const styles = EStyleSheet.create({
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.55,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   headerTitle: {
-    flex: 0.3,
+    // flex: 0.3,
     width: "100%",
+    alignContent: "center"
   },
   headerHtField: {
-    flex: 0.8,
+    // flex: 0.8,
     width: "100%",
   },
   headerWtField: {
-    flex: 0.8,
+    // flex: 0.8,
     width: "100%",
   },
   headerNavigate: {
-    flex: 0.8,
+    // flex: 0.8,
     width: "100%",
   },
   headerTitleText: {
-    fontSize: '27rem', 
+    fontSize: '20rem', 
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
     marginLeft: '10rem', 
-    marginRight: '10rem'
+    marginRight: '10rem',
+    marginTop: '5rem'
   },
   innerTopHeaderHtField: {
-    flex: 2,
+    // flex: 2,
     justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
-    flex: 3,
+    // flex: 3,
     flexDirection: 'row'
   },
   tcP: {
-    marginTop: '5rem',
-    marginBottom: '3rem',
+    marginTop: '15rem',
+    marginBottom: '5rem',
     fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '30rem',
@@ -345,16 +366,24 @@ const styles = EStyleSheet.create({
     fontSize: '15rem',
   },
   innerBottFieldHeaderHtField: {
-    flex:16,
+    flex:18,
     justifyContent: 'center'
   },
   innerBottUnitHeaderHtField: {
-    flex:4,
+    flex:3,
     justifyContent: 'center'
   },
   fieldStyle: {
-    height: '40rem',
-    width: '250rem',
+    height: '38rem',
+    // width: '250rem',
+    fontSize: '15rem',
+    justifyContent:'center',
+    marginLeft: '30rem',
+    marginRight: '10rem'
+  },
+  fieldStyleD: {
+    height: '32rem',
+    // width: '250rem',
     fontSize: '15rem',
     justifyContent:'center',
     marginLeft: '30rem',
@@ -362,10 +391,11 @@ const styles = EStyleSheet.create({
   },
   fieldStyleDrop: {
     height: '40rem',
-    width: '250rem',
+    // width: '250rem',
     justifyContent:'center',
     marginLeft: '30rem',
-    marginRight: '30rem'
+    marginRight: '30rem',
+    marginTop: '5rem',
   },
   content:{
     marginTop: '12rem',
@@ -382,7 +412,7 @@ const styles = EStyleSheet.create({
     color: '#000000'
   },
   buttonTop: {
-    backgroundColor: '#158158',
+    backgroundColor: '#169169',
     flexDirection: 'row', 
     height: '53rem', 
     borderRadius: 10, 
@@ -399,20 +429,21 @@ const styles = EStyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     marginLeft: '30rem', 
-    marginRight: '30rem',  
+    marginRight: '30rem', 
+    marginTop: '15rem'  
   },
   dateFont: {
     fontSize:'15rem',
   },
   dropDownTextStyle: {
     backgroundColor: 'white',
-    width: '250rem',
+    // width: '250rem',
     height: '110rem',
     borderColor: '#000000',
   },
   dropDownRaceTextStyle: {
     backgroundColor: 'white',
-    width: '250rem',
+    // width: '250rem',
     height: '150rem',
     borderColor: '#000000'
   },
@@ -426,7 +457,8 @@ const styles = EStyleSheet.create({
     fontSize: '15rem'
   },
   ethiniOuterBox: {
-    flex: 1, 
+    marginTop: '15rem',
+    marginBottom: '15rem',
     flexDirection: 'row'
   },
   ethiniInner: {

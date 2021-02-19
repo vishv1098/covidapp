@@ -52,42 +52,44 @@ class ProfileScreen extends Component {
     getData = async () => {
         if(await AsyncStorage.getItem('userHeight')===null) {
             var inches = '';
-            var feet = '   N/A';
+            var feet = 'Unknown';
+            var height = 'Unknown'
         } else {
             var height = await AsyncStorage.getItem('userHeight');
             var realFeet = ((height*0.393700) / 12);
             var feet = Math.floor(realFeet);
             var inches = ' ft, '+Math.round((realFeet - feet) * 12)+' in';
+            height = height + 'cm';
         }
         if(await AsyncStorage.getItem('userWeight')===null) {
-            var weight_val = '   N/A'
+            var weight_val = 'Unknown'
         } else {
             var weight_val = await AsyncStorage.getItem('userWeight')+' kg';
         }
         if(await AsyncStorage.getItem('userFullDob')){
             var dob_val = await AsyncStorage.getItem('userFullDob'); 
         } else {
-            var dob_val = '   N/A';
+            var dob_val = 'Unknown';
         }
         if(await AsyncStorage.getItem('userGender')) {
             var gender = await AsyncStorage.getItem('userGender');
         } else {
-            var gender = '   N/A';
+            var gender = 'Unknown';
         }
         if(await AsyncStorage.getItem('userRace')) {
             var race_val = await AsyncStorage.getItem('userRace');
         } else {
-            var race_val = '   N/A';
+            var race_val = 'Unknown';
         }
         var ethini_val = await AsyncStorage.getItem('userEthini');
         if (ethini_val === 'Hispanic or Latino') {
-            console.log("Yes")
-            ethini_val = " Yes"
+            // console.log("Yes")
+            ethini_val = "Yes"
         } else {
-            ethini_val = " No"
+            ethini_val = "No"
         }
         this.setState({
-            height: feet +" "+ inches,
+            height: height,
             weight: weight_val ,
             dob: dob_val,
             gen: gender,
@@ -160,7 +162,7 @@ const styles = EStyleSheet.create({
     contentContainer: {
         width: "100%",
         paddingTop: '30rem',
-        aspectRatio: 0.5,
+        aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
         flexDirection: "column",
         justifyContent: 'center',
         alignItems: 'center',
@@ -194,7 +196,7 @@ const styles = EStyleSheet.create({
         marginRight: '10rem'
     },
     headerTitleText: {
-        fontSize: '18rem', 
+        fontSize: '20rem', 
         fontWeight: 'bold', 
         color: '#000000', 
         textAlign: 'center',  
@@ -202,7 +204,7 @@ const styles = EStyleSheet.create({
         marginRight: '10rem'
     },
     headerContentText: {
-        flex: 1,
+        flex: 1.2,
         fontSize: '18rem', 
         color: '#000000',
         marginLeft: '30rem',
@@ -258,7 +260,7 @@ const styles = EStyleSheet.create({
         alignContent:'flex-start', 
         marginLeft: '25rem', 
         marginRight: '25rem',
-        fontSize: '20rem', 
+        fontSize: '18rem', 
         color: '#000000',
     },
 })

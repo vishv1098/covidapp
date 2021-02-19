@@ -47,7 +47,7 @@ class AddModal extends Component {
                 onClosed={() => {
                 }}
             >
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Text adjustsFontSizeToFit style={styles.headerTitle}>Terms and Conditions</Text>
                     <Text adjustsFontSizeToFit style={styles.tcP}>No Advice</Text>
                     <Text adjustsFontSizeToFit style={styles.tcL}>This app, “COVID-19 Guardian Angel”, provides only information, not medical or treatment advice and may not be treated as such by the user. As such, this App may not be relied upon for the purposes of medical diagnosis or as a recommendation for medical care or treatment. The information on this App is not a substitute for professional medical advice, diagnosis or treatment. All content, including text, graphics, images and information, contained on or available through this App is for general information purposes only.</Text>
@@ -85,7 +85,7 @@ const styles = EStyleSheet.create({
   },
   contentContainer: {
     width: "100%",
-    aspectRatio: 0.5,
+    aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
@@ -105,7 +105,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center'
   },
   headerTitle: {
-    fontSize: '27rem',
+    fontSize: '24rem',
     fontWeight: 'bold', 
     color: '#000000', 
     textAlign: 'center',  
@@ -120,7 +120,7 @@ const styles = EStyleSheet.create({
     borderRadius: 30,
     shadowRadius: 10,
     width: SCREEN_WIDTH - 40,
-    height: SCREEN_HEIGHT - 150
+    height: SCREEN_HEIGHT - 65
   },
   tcP: {
     marginTop: '10rem',
@@ -128,13 +128,17 @@ const styles = EStyleSheet.create({
     fontSize: '15rem',
     fontWeight: 'bold',
     marginLeft: '15rem',
-    marginRight: '15rem'
+    marginRight: '15rem',
+    paddingLeft: '10rem',
+    paddingRight: '10rem',
   },
   tcL:{
     marginLeft: '15rem',
     marginTop: '1rem',
     marginBottom: '10rem',
     marginRight: '15rem',
+    paddingLeft: '10rem',
+    paddingRight: '10rem',
     fontSize: '15rem'
   },
   tcPend: {
@@ -179,13 +183,14 @@ const styles = EStyleSheet.create({
     color: 'white'
   },
   buttonClickType: {
-    fontSize: '18rem', 
-    color: 'blue'
+    fontSize: '16rem', 
+    color: '#007aff',
+    fontWeight: '400',
   },
   containerText: {
-    padding: '8rem', 
-    marginTop: '50rem',
-    marginBottom: '80rem',
+    padding: '10rem', 
+    // marginTop: '10rem',
+    marginBottom: '10rem',
     marginLeft: '70rem',
     marginRight: '70rem',
     height: '40rem',
