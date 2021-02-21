@@ -519,11 +519,11 @@ class VitalsScreen extends Component {
                               ]}
                               defaultValue={this.state.tmp_unit}
                               containerStyle={styles.unitStyle}
-                              style={{backgroundColor: '#ef9a9a'}}
+                              style={{backgroundColor: '#ef9a9a',borderColor:'black'}}
                               itemStyle={{
                                   justifyContent: 'flex-start'
                               }}
-                              dropDownStyle={{backgroundColor: '#ef9a9a', width: 65}}
+                              dropDownStyle={{backgroundColor: '#ef9a9a', width: 65,borderColor:'black'}}
                               onChangeItem={item => this.handleUnitbox(item)}
                           />
                       </View>

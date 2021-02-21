@@ -171,11 +171,11 @@ const EditProfile= () => {
                               ]}
                               defaultValue={isUnitHt}
                               containerStyle={styles.unitStyle}
-                              style={{backgroundColor: 'white'}}
+                              style={{backgroundColor: 'white',borderColor:'black'}}
                               itemStyle={{
                                   justifyContent: 'flex-start'
                               }}
-                              dropDownStyle={{backgroundColor: 'white', width: 65}}
+                              dropDownStyle={{backgroundColor: 'white', width: 65,borderColor:'black'}}
                               onChangeItem={item => setisUnitHt(item.value)}
                           />
                     </View>
@@ -205,11 +205,11 @@ const EditProfile= () => {
                             ]}
                             defaultValue={isUnitWt}
                             containerStyle={styles.unitStyle}
-                            style={{backgroundColor: 'white'}}
+                            style={{backgroundColor: 'white',borderColor:'black'}}
                             itemStyle={{
                                 justifyContent: 'flex-start'
                             }}
-                            dropDownStyle={{backgroundColor: 'white', width: 65}}
+                            dropDownStyle={{backgroundColor: 'white', width: 65,borderColor:'black'}}
                             onChangeItem={item => setisUnitWt(item.value)}
                         />
                     </View>

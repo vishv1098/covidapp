@@ -119,11 +119,11 @@ const BmiScreen = () => {
                             ]}
                             defaultValue={isUnitHt}
                             containerStyle={styles.unitStyle}
-                            style={{backgroundColor: '#81d4fa'}}
+                            style={{backgroundColor: '#81d4fa',borderColor:'black'}}
                             itemStyle={{
                                 justifyContent: 'flex-start'
                             }}
-                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65}}
+                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65,borderColor:'black'}}
                             onChangeItem={item => setisUnitHt(item.value)}
                         />
                     </View>
@@ -155,11 +155,11 @@ const BmiScreen = () => {
                             ]}
                             defaultValue={isUnitWt}
                             containerStyle={styles.unitStyle}
-                            style={{backgroundColor: '#81d4fa'}}
+                            style={{backgroundColor: '#81d4fa',borderColor:'black'}}
                             itemStyle={{
                                 justifyContent: 'flex-start'
                             }}
-                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65}}
+                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65,borderColor:'black'}}
                             onChangeItem={item => setisUnitWt(item.value)}
                         />
                     </View>
