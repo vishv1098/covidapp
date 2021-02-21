@@ -134,7 +134,7 @@ const EditProfile= () => {
         await AsyncStorage.setItem('userEthini', 'Not - Hispanic / Latino')
     }
     await AsyncStorage.setItem('weightUnit', isUnitWt);//new
-    await AsyncStorage.setItem('heightUnit', isUnitHt);//new
+    await AsyncStorage.setItem('heightUnit', isUnitHt);//news
   }
 
   return (
