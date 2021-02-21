@@ -9,6 +9,12 @@ export const LocalNotification = () => {
 }
 
 export const ScheduledLocalNotification = () => {
+    var now  = new Date();
+    now.setDate(now.getDate())
+    now.setHours(9);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
     PushNotification.localNotificationSchedule({
         autoCancel: true,
         bigText:
@@ -19,9 +25,9 @@ export const ScheduledLocalNotification = () => {
         vibrate: true,
         vibration: 500,
         playSound: true,
+        date: now,
         soundName: 'default',
-        date: new Date(Date.now() + 15 * 1000), // in 60 secs
         repeatType: "day",
-        repeatTime: "32400000"
+        
     })
 }

@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 
 const {
@@ -71,6 +72,7 @@ class VitalsScreen extends Component {
       ageDetails: false,
       fitbitStartDate: '',
       fitbitEndDate: '',
+      tmp_unit:'c',//new
     }
   }
 
@@ -94,6 +96,7 @@ class VitalsScreen extends Component {
     try {
       var google_token_fetch = await AsyncStorage.getItem('googlefit_accesstoken')
       var fitbit_token_fetch = await AsyncStorage.getItem('fitbit_accesstoken')
+      console.log("new:"+google_token_fetch);
       var gender = await AsyncStorage.getItem('userGender');
       if (gender !== null) {
         await this.setState({
@@ -253,18 +256,28 @@ class VitalsScreen extends Component {
     }
   }
 
-  handleTempbox = async (inputText) => {
+  handleTempbox = async (inputText) => { //new
     if (inputText === '') {
       await this.setState({
         b_tmp: -1,
       })
     } else {
-      await this.setState({
-        b_tmp: parseFloat(inputText),
-      })
+        await this.setState({
+          b_tmp: parseFloat(inputText),
+        })
     }
   }
-
+  handleUnitbox = (inputText) => {//new
+    if (inputText.value === 'f') {
+        this.setState({
+            tmp_unit:'f', 
+        })
+    }else{
+      this.setState({
+        tmp_unit:'c'  
+    })
+    }
+}
   handleDBPbox = async (inputText) => {
     if (inputText === '') {
       await this.setState({
@@ -393,6 +406,12 @@ class VitalsScreen extends Component {
         age: parseInt(this.state.ageData),
       })
     }
+    if(this.state.tmp_unit ==='f'){
+      await this.setState({
+        b_tmp: parseInt(this.state.b_tmp - 32)* 5/9,
+      })
+    }
+    
     await this.getCovidTest();
   }
 
@@ -489,6 +508,23 @@ class VitalsScreen extends Component {
                             placeholderTextColor="#000000" 
                             keyboardType={'numeric'}
                             numeric
+                          />
+                      </View>
+                      {/* new */}
+                      <View style={styles.innerBottUnitHeaderHtField}>
+                        <DropDownPicker
+                              items={[
+                                  {label: '°C', value: 'c'},
+                                  {label: '°F', value: 'f'},
+                              ]}
+                              defaultValue={this.state.tmp_unit}
+                              containerStyle={styles.unitStyle}
+                              style={{backgroundColor: '#ef9a9a'}}
+                              itemStyle={{
+                                  justifyContent: 'flex-start'
+                              }}
+                              dropDownStyle={{backgroundColor: '#ef9a9a', width: 65}}
+                              onChangeItem={item => this.handleUnitbox(item)}
                           />
                       </View>
                     </View>
@@ -687,4 +723,8 @@ const styles = EStyleSheet.create({
     flex: 1.7,
     backgroundColor: '#ba6b6c',
   },
+  unitStyle:{ //new
+    height: 35, 
+    width: 65
+  }
 })

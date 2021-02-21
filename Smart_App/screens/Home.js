@@ -138,15 +138,29 @@ class Home extends Component {
     getData = async () => {
         try {
             const value = await AsyncStorage.getItem('googlefit_accesstoken')
+            console.log("cur:"+value);
             if(value !== null) {
-              this.setState({
-                google_accesstoken: value,
-                googleFitName: 'Disconnect from Google Fit'
-              })
+                await this.refreshData();
             }
         } catch(e) {
         }
 
+    }
+    refreshData = async () =>{
+        await GoogleSignin.clearCachedAccessToken(await AsyncStorage.getItem('googlefit_accesstoken'));
+        const currentUser = GoogleSignin.getTokens().then(async(res)=>{
+            try {
+                console.log("Res:"+res.accessToken)
+                await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
+            } catch (e) {
+                alert('Failed to save the data to the storage. Please Sign out of the fitness tracker and login once again')
+            }
+            g_accessToken = res.accessToken
+            this.setState({
+                google_accesstoken: g_accessToken,
+                googleFitName: 'Disconnect from Google Fit'
+            })
+        });
     }
 
     _onFitbit = async() => {

@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ConfirmDialog } from 'react-native-simple-dialogs';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -30,7 +30,8 @@ const BmiScreen = () => {
   const navigation = useNavigation();
 
   const [isMissingInfoWarn, setIsMissingInfoWarn] = useState(false)
-
+  const [isUnitWt, setisUnitWt] = useState('kg'); //new
+  const [isUnitHt, setisUnitHt] = useState('cm'); //new
   const handleWtbox = async (inputText) => {
     if (inputText === '') {
     } else {
@@ -44,7 +45,11 @@ const BmiScreen = () => {
       await AsyncStorage.setItem('userHeight', inputText);
     }
   }
-
+  
+  const handleUnits= async ()=>{//new
+    await AsyncStorage.setItem('weightUnit', isUnitWt);
+    await AsyncStorage.setItem('heightUnit', isUnitHt);
+  }
   const validate = async() => {
     const z = await AsyncStorage.getItem('firstSkip');
     if (z === null) {
@@ -105,8 +110,22 @@ const BmiScreen = () => {
                           numeric
                         />
                     </View>
+                    {/* new */}
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
+                    <DropDownPicker 
+                            items={[
+                                {label: 'cm', value: 'cm'},
+                                {label: 'ft', value: 'ft'},
+                            ]}
+                            defaultValue={isUnitHt}
+                            containerStyle={styles.unitStyle}
+                            style={{backgroundColor: '#81d4fa'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65}}
+                            onChangeItem={item => setisUnitHt(item.value)}
+                        />
                     </View>
                   </View>
               </View>
@@ -124,9 +143,25 @@ const BmiScreen = () => {
                           keyboardType={'numeric'}
                           numeric
                         />
+                        
+
                     </View>
+                    {/*new*/}
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
+                    <DropDownPicker 
+                            items={[
+                                {label: 'kg', value: 'kg'},
+                                {label: 'lb', value: 'lb'},
+                            ]}
+                            defaultValue={isUnitWt}
+                            containerStyle={styles.unitStyle}
+                            style={{backgroundColor: '#81d4fa'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={{backgroundColor: '#81d4fa', width: 65}}
+                            onChangeItem={item => setisUnitWt(item.value)}
+                        />
                     </View>
                   </View>
               </View>
@@ -134,7 +169,7 @@ const BmiScreen = () => {
                 <Text adjustsFontSizeToFit style={styles.content}>Your height and weight are used to compute your Body Mass Index (BMI), which is provided as an input to our Machine Learning models.</Text>
               </View>
               <View style={styles.headerNavigate}>
-                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('age')}}>
+                <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { navigation.navigate('age'), handleUnits()}}>
                   <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Next</Text>
                   <Icon name='chevron-forward-outline' size={22} color="#000000" style={styles.iconStyle} />
                 </TouchableOpacity>
@@ -314,5 +349,9 @@ const styles = EStyleSheet.create({
   disclaimerButton: {
       paddingBottom: '10rem'
   },
+  unitStyle:{ //new
+    height: 35, 
+    width: 65
+  }
 })
 

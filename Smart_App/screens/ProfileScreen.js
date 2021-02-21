@@ -54,15 +54,29 @@ class ProfileScreen extends Component {
             var inches = '';
             var feet = '   N/A';
         } else {
-            var height = await AsyncStorage.getItem('userHeight');
-            var realFeet = ((height*0.393700) / 12);
-            var feet = Math.floor(realFeet);
-            var inches = ' ft, '+Math.round((realFeet - feet) * 12)+' in';
+            //new
+            if((await AsyncStorage.getItem('heightUnit')).toString() === 'ft'){
+                var height = await AsyncStorage.getItem('userHeight');
+                var feet = Math.floor(height);
+                var inches = ' ft, '+Math.round((height - feet) * 12)+' in';
+                console.log(feet)
+                console.log(inches)
+                height = feet +" "+ inches;
+            }
+            else{
+                console.log("elseentered")
+                var height = await AsyncStorage.getItem('userHeight');
+                height = height+' cm';
+            }
+            
         }
         if(await AsyncStorage.getItem('userWeight')===null) {
             var weight_val = '   N/A'
+            
         } else {
-            var weight_val = await AsyncStorage.getItem('userWeight')+' kg';
+            // new
+            var weight_unit = (await AsyncStorage.getItem('weightUnit')).toString();
+            var weight_val = await AsyncStorage.getItem('userWeight')+' '+weight_unit;
         }
         if(await AsyncStorage.getItem('userFullDob')){
             var dob_val = await AsyncStorage.getItem('userFullDob'); 
@@ -87,7 +101,7 @@ class ProfileScreen extends Component {
             ethini_val = " No"
         }
         this.setState({
-            height: feet +" "+ inches,
+            height: height, //new
             weight: weight_val ,
             dob: dob_val,
             gen: gender,

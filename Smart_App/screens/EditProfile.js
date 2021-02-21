@@ -8,6 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from '@react-native-community/checkbox';
 import { useState,useEffect } from 'react';
 
+
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -54,6 +55,8 @@ const EditProfile= () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [isUnitWt, setisUnitWt] = useState('');//new
+  const [isUnitHt, setisUnitHt] = useState('')//new
 
   useEffect(() => {
      gtData();
@@ -91,6 +94,8 @@ const EditProfile= () => {
     } else {
       setToggleCheckBox(false)
     }
+    setisUnitWt(await AsyncStorage.getItem('weightUnit')); //new
+    setisUnitHt(await AsyncStorage.getItem('heightUnit'));//new
   }
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -128,6 +133,8 @@ const EditProfile= () => {
     } else {
         await AsyncStorage.setItem('userEthini', 'Not - Hispanic / Latino')
     }
+    await AsyncStorage.setItem('weightUnit', isUnitWt);//new
+    await AsyncStorage.setItem('heightUnit', isUnitHt);//new
   }
 
   return (
@@ -155,8 +162,22 @@ const EditProfile= () => {
                           numeric
                         />
                     </View>
+                    {/* new */}
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
+                      <DropDownPicker 
+                              items={[
+                                  {label: 'cm', value: 'cm'},
+                                  {label: 'ft', value: 'ft'},
+                              ]}
+                              defaultValue={isUnitHt}
+                              containerStyle={styles.unitStyle}
+                              style={{backgroundColor: 'white'}}
+                              itemStyle={{
+                                  justifyContent: 'flex-start'
+                              }}
+                              dropDownStyle={{backgroundColor: 'white', width: 65}}
+                              onChangeItem={item => setisUnitHt(item.value)}
+                          />
                     </View>
                   </View>
               </View>
@@ -175,8 +196,22 @@ const EditProfile= () => {
                           numeric
                         />
                     </View>
+                    {/* new */}
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
+                      <DropDownPicker 
+                            items={[
+                                {label: 'kg', value: 'kg'},
+                                {label: 'lb', value: 'lb'},
+                            ]}
+                            defaultValue={isUnitWt}
+                            containerStyle={styles.unitStyle}
+                            style={{backgroundColor: 'white'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={{backgroundColor: 'white', width: 65}}
+                            onChangeItem={item => setisUnitWt(item.value)}
+                        />
                     </View>
                   </View>
               </View>
@@ -440,5 +475,9 @@ const styles = EStyleSheet.create({
   checkView: {
     flex: 1, 
     justifyContent:'center'
+  },
+  unitStyle:{ //new
+    height: 35, 
+    width: 65
   }
 })

@@ -311,9 +311,9 @@ const styles = EStyleSheet.create({
     alignSelf:'stretch',
     flex:1,
     borderColor:'black',
-    borderBottomWidth:2,
-    borderLeftWidth:2,
-    borderRightWidth:2
+    borderBottomWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1
     
   },
   buttonTop:{
@@ -323,9 +323,9 @@ const styles = EStyleSheet.create({
     alignItems:'center',
     flex:1,
     borderColor:'black',
-    borderWidth:2,
-    borderTopLeftRadius: 50, 
-    borderTopRightRadius: 50,
+    borderWidth:1,
+    borderTopLeftRadius: 15, 
+    borderTopRightRadius: 15,
   },
   buttonBottom:{
     flexDirection:'row',
@@ -335,11 +335,11 @@ const styles = EStyleSheet.create({
     flex:1,
     backgroundColor:'#ffcc80',
     borderColor:'black',
-    borderBottomWidth:2,
-    borderLeftWidth:2,
-    borderRightWidth:2,
-    borderBottomLeftRadius: 50, 
-    borderBottomRightRadius: 50,
+    borderBottomWidth:1,
+    borderLeftWidth:1,
+    borderRightWidth:1,
+    borderBottomLeftRadius: 15, 
+    borderBottomRightRadius: 15,
   },
   buttonTxt:{
     flex: 10, 
