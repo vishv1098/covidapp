@@ -24,7 +24,7 @@ export function normalize(size) {
     }
 }
 
-class InfluScreen extends Component {
+class NoPrediction extends Component {
 
     constructor(props) {
         super(props);
@@ -35,11 +35,8 @@ class InfluScreen extends Component {
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
                     <Text adjustsFontSizeToFit style={styles.titleNameStyle}>COVID-19 Assessment Result</Text>
-                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Based on your symptoms and vitals, we think</Text>
-                    <TouchableOpacity style={styles.testButtonTop} activeOpacity = {.5}>
-                        <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You seem to be unwell</Text>
-                    </TouchableOpacity>
-                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Consult your physician at the earliest and receive their recommendation on whether you should take a COVID-19 test.</Text>
+                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>A prediction could not be provided due to the lack of necessary data, please fill in your vital details to get a prediction.</Text>
+                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Please consult your physician if you are unwell.</Text>
                     <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Home')}}>
                         <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Home</Text>
                     </TouchableOpacity>
@@ -49,7 +46,7 @@ class InfluScreen extends Component {
     }
 }
 
-export default InfluScreen
+export default NoPrediction
 
 const styles = EStyleSheet.create({
     container: {
@@ -63,6 +60,7 @@ const styles = EStyleSheet.create({
         aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     },
     headerTitle: {
+        flex: 0.3,
         width: '100%'
     },
     headerInfo: {
@@ -97,7 +95,7 @@ const styles = EStyleSheet.create({
         fontSize: '16rem',
     },
     testButtonTop: {
-        backgroundColor: '#ffcc80',
+        backgroundColor: '#a5d6a7',
         height: '55rem', 
         borderRadius: 10, 
         justifyContent: 'center', 
@@ -127,3 +125,4 @@ const styles = EStyleSheet.create({
         color: '#000000',
     },
 })
+

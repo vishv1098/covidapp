@@ -34,25 +34,15 @@ class CovidScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
-                    {/* <View style={styles.headerTitle}> */}
-                        <Text adjustsFontSizeToFit style={styles.titleNameStyle}>COVID-19 Assessment Result</Text>
-                    {/* </View> */}
-                    {/* <View style={styles.headerInfo}> */}
-                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Based on your symptoms and vitals, we think</Text>
-                    {/* </View> */}
-                    {/* <View style={styles.headerResult}> */}
-                        <TouchableOpacity style={styles.testButtonTop} activeOpacity = {.5}>
-                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You should see your physician</Text>
-                        </TouchableOpacity>
-                    {/* </View> */}
-                    {/* <View style={styles.headerMessage}> */}
-                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Consult your physician at the earliest and receive their recommendation on whether you should take a COVID-19 test.</Text>
-                    {/* </View> */}
-                    {/* <View style={styles.reset}> */}
-                        <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Home')}}>
-                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Home</Text>
-                        </TouchableOpacity>
-                    {/* </View> */}
+                    <Text adjustsFontSizeToFit style={styles.titleNameStyle}>COVID-19 Assessment Result</Text>
+                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Based on your symptoms and vitals, we think</Text>
+                    <TouchableOpacity style={styles.testButtonTop} activeOpacity = {.5}>
+                        <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>You should see your physician</Text>
+                    </TouchableOpacity>
+                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Consult your physician at the earliest and receive their recommendation on whether you should take a COVID-19 test.</Text>
+                    <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('Home')}}>
+                        <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Home</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -65,19 +55,12 @@ const styles = EStyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // flex:1,
         padding: 10,
         backgroundColor: 'white'
     },
     contentContainer: {
         width: "100%",
-        // paddingTop: '30rem',
         aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
-        // flexDirection: "column",
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     headerTitle: {
         flex: 0.3,
@@ -88,15 +71,12 @@ const styles = EStyleSheet.create({
         width: '100%'
     },
     headerResult: {
-        // flex: 0.6,
         width: '100%'
     },
     headerMessage: {
-        // flex: 0.6,
         width: '100%'
     },
     reset: {
-        // flex: 3,
         width: '100%',
         paddingTop: '20rem'
     },

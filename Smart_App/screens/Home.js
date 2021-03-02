@@ -117,7 +117,10 @@ class Home extends Component {
     }
 
     _testScheduleNotification = async() => {
-        ScheduledLocalNotification()
+        if(await AsyncStorage.getItem('firstNotif') === null){
+            ScheduledLocalNotification()
+            await AsyncStorage.setItem('firstNotif','done')
+        }   
     }
 
     getFitbitData = async () => {
@@ -138,7 +141,6 @@ class Home extends Component {
     getData = async () => {
         try {
             const value = await AsyncStorage.getItem('googlefit_accesstoken')
-            // console.log("cur:"+value);
             if(value !== null) {
                 await this.refreshData();
             }
@@ -150,10 +152,8 @@ class Home extends Component {
         await GoogleSignin.clearCachedAccessToken(await AsyncStorage.getItem('googlefit_accesstoken'));
         const currentUser = GoogleSignin.getTokens().then(async(res)=>{
             try {
-                // console.log("Res:"+res.accessToken)
                 await AsyncStorage.setItem('googlefit_accesstoken', res.accessToken)
             } catch (e) {
-                // alert('Failed to save the data to the storage. Please Sign out of the fitness tracker and login once again')
             }
             g_accessToken = res.accessToken
             this.setState({
@@ -329,54 +329,30 @@ class Home extends Component {
                         </ScrollView>
                     </ConfirmDialog>
                     <View style={styles.titleBox}>
-                        {/* <View style={styles.trackerTitle}> */}
                         <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
-                        {/* </View> */}
-                        {/* <View style={styles.trackerContent}> */}
                         <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
-                        {/* </View> */}
-                    {/* </View> */}
-                    {/* <View style={styles.fitbitBox}> */}
                         <TouchableOpacity style={styles.fitbitButtonTop} activeOpacity = {.5} onPress={this._onFitbit}>
                             <Image source={require('../appIcons/fitbit.png')} resizeMode='contain' style={styles.ImageIconStyle}></Image>
                             <Text adjustsFontSizeToFit style={styles.fitbitButtonTextStyle}>{this.state.fitbitName}</Text>
                         </TouchableOpacity>
-                    {/* </View> */}
-                    {/* <View style={styles.googleFitBox}> */}
                         <TouchableOpacity style={styles.googlefitButtonTop} activeOpacity = {.5} onPress={this._onGooglefit}>
                             <Image source={{ uri: "https://www.gstatic.com/images/branding/product/1x/gfit_512dp.png" }} resizeMode='contain' style={styles.ImageIconStyle}></Image>
                             <Text adjustsFontSizeToFit style={styles.googleFitButtonTextStyle}>{this.state.googleFitName}</Text>
                         </TouchableOpacity>
-                    {/* </View> */}
-                    {/* <View style={styles.assessmentBox}> */}
-                        {/* <View style={styles.assessInfo}> */}
-                            <View style={styles.testTitle}>
-                                {/* <View style={styles.testName}> */}
-                                    <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
-                                {/* </View> */}
-                                <TouchableOpacity style={styles.testIcon} activeOpacity = {.5} onPress={()=>this.setState({infodialogVisible:true})}>
-                                    <Icon name='information-circle-outline' size={30} />
-                                </TouchableOpacity>
-                            </View>
-                            {/* <View style={styles.testInfo}> */}
-                                    <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
-                            {/* </View> */}
-                        {/* </View> */}
-                        {/* <View style={styles.assessButton}> */}
-                            <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.dataChecker() }}>
-                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
+                        <View style={styles.testTitle}>
+                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Take a COVID-19 Assessment</Text>
+                            <TouchableOpacity style={styles.testIcon} activeOpacity = {.5} onPress={()=>this.setState({infodialogVisible:true})}>
+                                <Icon name='information-circle-outline' size={30} />
                             </TouchableOpacity>
-                        {/* </View> */}
-                    {/* </View> */}
-                    {/* <View style={styles.profileBox}> */}
-                        {/* <View style={styles.profileText}> */}
-                            <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
-                        {/* </View> */}
-                        {/* <View style={styles.profileButton}> */}
-                            <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('profile')}}>
-                                <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
-                            </TouchableOpacity>
-                        {/* </View> */}
+                        </View>
+                        <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Predict whether you should take a COVID-19 test, based on your symptoms and vitals data.</Text>
+                        <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { this.dataChecker() }}>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Start Assessment</Text>
+                        </TouchableOpacity>
+                        <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Profile and Settings</Text>
+                        <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('profile')}}>
+                            <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>View Profile</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.termsAndConditionBox}>
                         <View style={styles.aboutApp}>
@@ -403,19 +379,12 @@ const styles = EStyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // flex:1,
         padding: 10,
         backgroundColor: 'white'
     },
     contentContainer: {
         width: "100%",
-        // paddingTop: '30rem',
         aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
-        // flexDirection: "column",
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     disclaimer: {
         alignContent: 'center',
@@ -444,9 +413,6 @@ const styles = EStyleSheet.create({
         color:'#007aff',
         fontWeight:'bold'
     },
-    disclaimerButton: {
-        // paddingBottom: '10rem'
-    },
     ImageIconStyle: {
         height: '40rem',
         width: '40rem',
@@ -454,28 +420,20 @@ const styles = EStyleSheet.create({
         marginLeft: '20rem'
     },
     titleBox: {
-        // flex: 2.5,
         width: "100%",
         flexDirection: 'column',
     },
     assessInfo: {
-        // flex: 1,
         flexDirection: 'column'
     },
-    testName: {
-        // flex: 9,
-    },
     testIcon: {
-        // flex: 1.5,
         marginTop: '3.5rem',
         alignSelf: 'center',
     },
     assessButton: {
-        // flex: 1,
         marginTop: '10rem'
     },
     testTitle: {
-        // flex: 2,
         flexDirection: 'row'
     },
     buttonTop: {
@@ -568,23 +526,12 @@ const styles = EStyleSheet.create({
         fontSize: '18rem', 
         color: '#000000',
     },
-    testInfo: {
-        // flex: 2.5,
-    },
-    trackerTitle: {
-        // flex: 1.3,
-        // justifyContent: 'center',
-        // alignContent: 'center',
-    },
     titleNameStyle: {
         fontSize: '20rem',
         fontWeight: 'bold',
         marginTop: '5rem',
-        // marginBottom: '3rem',
         marginLeft: '10rem',
         marginRight: '10rem',
-        // alignItems: 'center',
-        // alignContent: 'center'
     },
     titleContentStyle: {
         marginLeft: '10rem',
@@ -597,26 +544,21 @@ const styles = EStyleSheet.create({
         backgroundColor: 'blue'
     },
     fitbitBox: {
-        // flex: 1.5,
         justifyContent: 'center',
         width: "100%",
     },
     googleFitBox: {
-        // flex: 1.5,
         justifyContent: 'center',
         width: "100%",
     },
     assessmentBox: {
-        // flex: 3,
         width: "100%",
     },
     profileBox: {
-        // flex: 2,
         width: "100%",
         flexDirection: 'column'
     },
     termsAndConditionBox: {
-        // flex: 2,
         width: "100%",
         flexDirection: 'row'
     },
@@ -636,11 +578,6 @@ const styles = EStyleSheet.create({
     },
     termsBox: {
         flex: 1,
-        // marginBottom: '30rem'
-        // paddingBottom: '10rem'
-    },
-    profileButton: {
-        // flex: 2,
     },
 })
 

@@ -309,7 +309,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyle: {
     height: '40rem',
-    // width: '300rem',
     marginLeft: '30rem',
     marginRight: '30rem',
   },
@@ -364,13 +363,11 @@ const styles = EStyleSheet.create({
   },
   dropDownTextStyle: {
     backgroundColor: '#b39ddb',
-    // width: '300rem',
     height: '110rem',
     borderColor: '#000000',
   },
   dropDownRaceTextStyle: {
     backgroundColor: '#b39ddb',
-    // width: '300rem',
     height: '150rem',
     borderColor: '#000000'
   },
@@ -411,9 +408,6 @@ const styles = EStyleSheet.create({
     fontSize:'16rem',
     fontWeight:'bold',
     color:'#007aff'
-  },
-  disclaimerButton: {
-      // paddingBottom: '10rem'
   },
 })
 

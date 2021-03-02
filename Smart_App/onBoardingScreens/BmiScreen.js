@@ -28,8 +28,9 @@ export function normalize(size) {
 const BmiScreen = () => {
 
   const navigation = useNavigation();
-
-  const [isMissingInfoWarn, setIsMissingInfoWarn] = useState(false)
+  const [isMissingInfoWarn, setIsMissingInfoWarn] = useState(false);
+  const [isUnitWt, setisUnitWt] = useState('kg'); 
+  const [isUnitHt, setisUnitHt] = useState('cm'); 
 
   const handleWtbox = async (inputText) => {
     if (inputText === '') {
@@ -56,6 +57,8 @@ const BmiScreen = () => {
   }
 
   const nextNavigate = async() => {
+    await AsyncStorage.setItem('weightUnit', isUnitWt); 
+    await AsyncStorage.setItem('heightUnit', isUnitHt); 
     const x = await AsyncStorage.getItem('userHeight');
     const y = await AsyncStorage.getItem('userWeight');
     const z = await AsyncStorage.getItem('firstMissingWarn');
@@ -111,14 +114,27 @@ const BmiScreen = () => {
                         <TextInput
                           style={styles.fieldStyle}
                           onChangeText = { (text) => handleHtbox(text) }
-                          placeholder = {'Enter your height in centimeters'}
+                          placeholder = {'Enter your height'}
                           placeholderTextColor="#000000" 
                           keyboardType={'numeric'}
                           numeric
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
+                      <DropDownPicker 
+                          items={[
+                              {label: 'cm', value: 'cm'},
+                              {label: 'ft', value: 'ft'},
+                          ]}
+                          defaultValue={isUnitHt}
+                          containerStyle={styles.unitStyle}
+                          style={{backgroundColor: '#81d4fa',borderColor:'black'}}
+                          itemStyle={{
+                              justifyContent: 'flex-start'
+                          }}
+                          dropDownStyle={{backgroundColor: '#81d4fa', width: 65,borderColor:'black'}}
+                          onChangeItem={item => setisUnitHt(item.value)}
+                      />
                     </View>
                   </View>
               </View>
@@ -131,14 +147,27 @@ const BmiScreen = () => {
                         <TextInput
                           style={styles.fieldStyle}
                           onChangeText = { (text) => handleWtbox(text) }
-                          placeholder = {'Enter your weight in kilograms'}
+                          placeholder = {'Enter your weight'}
                           placeholderTextColor="#000000" 
                           keyboardType={'numeric'}
                           numeric
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
+                      <DropDownPicker 
+                          items={[
+                              {label: 'kg', value: 'kg'},
+                              {label: 'lb', value: 'lb'},
+                          ]}
+                          defaultValue={isUnitWt}
+                          containerStyle={styles.unitStyle}
+                          style={{backgroundColor: '#81d4fa',borderColor:'black'}}
+                          itemStyle={{
+                              justifyContent: 'flex-start'
+                          }}
+                          dropDownStyle={{backgroundColor: '#81d4fa', width: 65,borderColor:'black'}}
+                          onChangeItem={item => setisUnitWt(item.value)}
+                      />
                     </View>
                   </View>
               </View>
@@ -253,7 +282,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyle: {
     height: '38rem',
-    // width: '250rem',
     fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
@@ -330,8 +358,9 @@ const styles = EStyleSheet.create({
     fontWeight:'bold',
     color:'#007aff'
   },
-  disclaimerButton: {
-      // paddingBottom: '10rem'
-  },
+  unitStyle:{ 
+    height: 35, 
+    width: 65
+  }
 })
 

@@ -9,7 +9,7 @@ var screenHeight = Math.round(Dimensions.get('window').height);
 const {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-  } = Dimensions.get('window');
+} = Dimensions.get('window');
   
 const scale = SCREEN_WIDTH / 380;
 
@@ -48,23 +48,27 @@ class ProfileScreen extends Component {
     componentWillUnmount() {
         this._unsubscribe();
     }
-
+       
     getData = async () => {
         if(await AsyncStorage.getItem('userHeight')===null) {
             var inches = '';
             var feet = 'Unknown';
-            var height = 'Unknown'
         } else {
-            var height = await AsyncStorage.getItem('userHeight');
-            var realFeet = ((height*0.393700) / 12);
-            var feet = Math.floor(realFeet);
-            var inches = ' ft, '+Math.round((realFeet - feet) * 12)+' in';
-            height = height + 'cm';
+            if ((await AsyncStorage.getItem('heightUnit')).toString() === 'ft') {
+                var height = await AsyncStorage.getItem('userHeight');
+                var feet = Math.floor(height);
+                var inches = ' ft, '+Math.round((height - feet) * 12)+' in';
+                height = feet +" "+ inches;
+            } else {
+                var height = await AsyncStorage.getItem('userHeight');
+                height = height+' cm';
+            }  
         }
         if(await AsyncStorage.getItem('userWeight')===null) {
-            var weight_val = 'Unknown'
+            var weight_val = 'Unknown'  
         } else {
-            var weight_val = await AsyncStorage.getItem('userWeight')+' kg';
+            var weight_unit = (await AsyncStorage.getItem('weightUnit')).toString();
+            var weight_val = await AsyncStorage.getItem('userWeight')+' '+weight_unit;
         }
         if(await AsyncStorage.getItem('userFullDob')){
             var dob_val = await AsyncStorage.getItem('userFullDob'); 
@@ -83,13 +87,12 @@ class ProfileScreen extends Component {
         }
         var ethini_val = await AsyncStorage.getItem('userEthini');
         if (ethini_val === 'Hispanic or Latino') {
-            // console.log("Yes")
-            ethini_val = "Yes"
+            ethini_val = " Yes"
         } else {
-            ethini_val = "No"
+            ethini_val = " No"
         }
         this.setState({
-            height: height,
+            height: height, 
             weight: weight_val ,
             dob: dob_val,
             gen: gender,

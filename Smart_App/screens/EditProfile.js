@@ -28,14 +28,14 @@ export function normalize(size) {
 }
 
 export function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
 }
 
 const EditProfile= () => {
@@ -54,6 +54,8 @@ const EditProfile= () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDate, setIsDate] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [isUnitWt, setisUnitWt] = useState('');
+  const [isUnitHt, setisUnitHt] = useState('');
 
   useEffect(() => {
      gtData();
@@ -91,7 +93,10 @@ const EditProfile= () => {
     } else {
       setToggleCheckBox(false)
     }
+    setisUnitWt(await AsyncStorage.getItem('weightUnit'));
+    setisUnitHt(await AsyncStorage.getItem('heightUnit'));
   }
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -109,20 +114,6 @@ const EditProfile= () => {
     setIsDate(res)
     hideDatePicker();
   };
-
-  const handleracebox = async (inputText) => {
-    if (inputText.value === 'x') {
-    } else {
-      await AsyncStorage.setItem('userRace', inputText.value);
-    }
-  }
-
-  const handlegenbox = async (inputText) => {
-      if (inputText.value === 'x') {
-      } else {
-          await AsyncStorage.setItem('userGender', inputText.value);
-      }
-  }
 
   setData = async () => {
     if(isDate!==''){
@@ -142,6 +133,8 @@ const EditProfile= () => {
     } else {
       await AsyncStorage.setItem('userEthini', 'Not Hispanic or Latino')
     }
+    await AsyncStorage.setItem('weightUnit', isUnitWt);
+    await AsyncStorage.setItem('heightUnit', isUnitHt);
   }
 
   return (
@@ -154,10 +147,7 @@ const EditProfile= () => {
                       Edit Profile
                   </Text>
               </View>
-              {/* <View style={styles.headerHtField}> */}
-                  {/* <View style={styles.innerTopHeaderHtField}> */}
-                    <Text adjustsFontSizeToFit style={styles.tcP}>Height</Text>
-                  {/* </View> */}
+                  <Text adjustsFontSizeToFit style={styles.tcP}>Height</Text>
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
                         <TextInput
@@ -170,14 +160,23 @@ const EditProfile= () => {
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>cm</Text>
+                      <DropDownPicker 
+                          items={[
+                              {label: 'cm', value: 'cm'},
+                              {label: 'ft', value: 'ft'},
+                          ]}
+                          defaultValue={isUnitHt}
+                          containerStyle={styles.unitStyle}
+                          style={{backgroundColor: 'white',borderColor:'black'}}
+                          itemStyle={{
+                              justifyContent: 'flex-start'
+                          }}
+                          dropDownStyle={{backgroundColor: 'white', width: 65,borderColor:'black'}}
+                          onChangeItem={item => setisUnitHt(item.value)}
+                      />
                     </View>
                   </View>
-              {/* </View> */}
-              {/* <View style={styles.headerWtField}> */}
-                  {/* <View style={styles.innerTopHeaderHtField}> */}
-                    <Text adjustsFontSizeToFit style={styles.tcP}>Weight</Text>
-                  {/* </View> */}
+                  <Text adjustsFontSizeToFit style={styles.tcP}>Weight</Text>
                   <View style={styles.innerBottomHeaderHtField}>
                     <View style={styles.innerBottFieldHeaderHtField}>
                         <TextInput
@@ -190,112 +189,106 @@ const EditProfile= () => {
                         />
                     </View>
                     <View style={styles.innerBottUnitHeaderHtField}>
-                      <Text adjustsFontSizeToFit style={styles.tcL}>kg</Text>
+                      <DropDownPicker 
+                          items={[
+                              {label: 'kg', value: 'kg'},
+                              {label: 'lb', value: 'lb'},
+                          ]}
+                          defaultValue={isUnitWt}
+                          containerStyle={styles.unitStyle}
+                          style={{backgroundColor: 'white',borderColor:'black'}}
+                          itemStyle={{
+                              justifyContent: 'flex-start'
+                          }}
+                          dropDownStyle={{backgroundColor: 'white', width: 65,borderColor:'black'}}
+                          onChangeItem={item => setisUnitWt(item.value)}
+                      />
                     </View>
                   </View>
-              {/* </View> */}
-              {/* <View style={styles.headerHtField}> */}
-                      {/* <View style={styles.innerTopHeaderHtField}> */}
-                        <Text adjustsFontSizeToFit style={styles.tcP}>Date of Birth</Text>
-                      {/* </View> */}
-                      <View style={styles.innerBottomHeaderHtField}>
-                        <View style={styles.innerBottFieldHeaderHtField}>
-                          <TouchableOpacity style={[styles.fieldStyleD,{borderBottomWidth:1,borderBottomColor:'black'}]} activeOpacity = {.5} onPress={ showDatePicker }>
-                            <Text adjustsFontSizeToFit style={styles.dateFont}>{(isDate === '')?isEdDate:isDate}</Text>
-                          </TouchableOpacity>
-                          <DateTimePickerModal
-                            isVisible={isDatePickerVisible}
-                            mode="date"
-                            onConfirm={handleConfirm}
-                            onCancel={hideDatePicker}
+                  <Text adjustsFontSizeToFit style={styles.tcP}>Date of Birth</Text>
+                  <View style={styles.innerBottomHeaderHtField}>
+                    <View style={styles.innerBottFieldHeaderHtField}>
+                      <TouchableOpacity style={[styles.fieldStyleD,{borderBottomWidth:1,borderBottomColor:'black'}]} activeOpacity = {.5} onPress={ showDatePicker }>
+                        <Text adjustsFontSizeToFit style={styles.dateFont}>{(isDate === '')?isEdDate:isDate}</Text>
+                      </TouchableOpacity>
+                      <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                      />
+                    </View>
+                  </View>
+                  <Text adjustsFontSizeToFit style={styles.tcP}>Sex</Text>
+                  <View style={styles.innerBottomHeaderHtField}>
+                    <View style={styles.innerBottFieldHeaderHtField}>
+                        <DropDownPicker
+                            items={[
+                                {label: 'Select your sex', value: 'x'},
+                                {label: 'Male', value: 'Male'},
+                                {label: 'Female', value: 'Female'},
+                            ]}
+                            defaultValue={gendered}
+                            containerStyle={styles.fieldStyleDrop}
+                            style={{borderWidth:1, borderColor: '#000000'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={styles.dropDownTextStyle}
+                            onChangeItem={item => genSet(item.value)}
+                            labelStyle={styles.labelStyleData}
+                        />
+                    </View>
+                  </View>
+                  <Text adjustsFontSizeToFit style={styles.tcP}>Race</Text>
+                  <View style={styles.innerBottomHeaderHtField}>
+                      <View style={styles.innerBottFieldHeaderHtField}>
+                        <DropDownPicker
+                            items={[
+                                {label: 'Select your race', value: 'x'},
+                                {label: 'White', value: 'White'},
+                                {label: 'Black or African American', value: 'Black or African American'},
+                                {label: 'Others', value: 'Others'},
+                            ]}
+                            defaultValue={raceEd}
+                            containerStyle={styles.fieldStyleDrop}
+                            style={{ borderWidth:1, borderColor: '#000000'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={styles.dropDownRaceTextStyle}
+                            onChangeItem={item => raceSet(item.value)}
+                            labelStyle={styles.labelStyleData}
                           />
-                        </View>
                       </View>
-                {/* </View> */}
-                {/* <View style={styles.headerHtField}> */}
-                      {/* <View style={styles.innerTopHeaderHtField}> */}
-                        <Text adjustsFontSizeToFit style={styles.tcP}>Sex</Text>
-                      {/* </View> */}
-                      <View style={styles.innerBottomHeaderHtField}>
-                        <View style={styles.innerBottFieldHeaderHtField}>
-                            <DropDownPicker
-                                items={[
-                                    {label: 'Select your sex', value: 'x'},
-                                    {label: 'Male', value: 'Male'},
-                                    {label: 'Female', value: 'Female'},
-                                ]}
-                                defaultValue={gendered}
-                                containerStyle={styles.fieldStyleDrop}
-                                style={{borderWidth:1, borderColor: '#000000'}}
-                                itemStyle={{
-                                    justifyContent: 'flex-start'
-                                }}
-                                dropDownStyle={styles.dropDownTextStyle}
-                                onChangeItem={item => genSet(item.value)}
-                                labelStyle={styles.labelStyleData}
-                            />
-                        </View>
-                      </View>
-                {/* </View> */}
-                {/* <View style={styles.headerWtField}> */}
-                        {/* <View style={styles.innerTopHeaderHtField}> */}
-                            <Text adjustsFontSizeToFit style={styles.tcP}>Race</Text>
-                        {/* </View> */}
-                        <View style={styles.innerBottomHeaderHtField}>
-                            <View style={styles.innerBottFieldHeaderHtField}>
-                              <DropDownPicker
-                                  items={[
-                                      {label: 'Select your race', value: 'x'},
-                                      {label: 'White', value: 'White'},
-                                      {label: 'Black or African American', value: 'Black or African American'},
-                                      {label: 'Others', value: 'Others'},
-                                  ]}
-                                  defaultValue={raceEd}
-                                  containerStyle={styles.fieldStyleDrop}
-                                  style={{ borderWidth:1, borderColor: '#000000'}}
-                                  itemStyle={{
-                                      justifyContent: 'flex-start'
-                                  }}
-                                  dropDownStyle={styles.dropDownRaceTextStyle}
-                                  onChangeItem={item => raceSet(item.value)}
-                                  labelStyle={styles.labelStyleData}
-                                />
-                            </View>
-                        </View>
-                    {/* </View> */}
-                    {/* <View style={styles.headerMeaasge}> */}
-                        <View style={styles.ethiniOuterBox}>
-                          <View style={styles.ethiniInner}>
-                            <Text adjustsFontSizeToFit style={styles.ethiniStyle}>Are you Hispanic or Latino?</Text>
-                          </View>
-                          <View style={styles.checkView}>
-                            <CheckBox
-                              style={{color: '#000000', borderRadius: 5, borderWidth: 1, width: 20, height: 20}}
-                              onAnimationType='fade'
-                              offAnimationType='fade'
-                              animationDuration={0}
-                              hideBox={true}
-                              disabled={false}
-                              value={toggleCheckBox}
-                              onValueChange={(newValue) => setToggleCheckBox(newValue)}
-                              style={{color: '#000000'}}
-                              onCheckColor='#000000'
-                            />
-                          </View>
-                        </View>
-                    {/* </View> */}
-                {/* <View style={styles.headerNavigate}> */}
-                    <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.setData(),navigation.navigate('profile')}}>
-                    <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Done</Text>
-                    </TouchableOpacity>
-                {/* </View> */}
-                {/* <View style={styles.headerNavigate}> */}
-                    <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBot} onPress={ async() => { navigation.navigate('profile')}}>
-                    <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Cancel</Text>
-                    </TouchableOpacity>
-                {/* </View> */}
+                  </View>
+                  <View style={styles.ethiniOuterBox}>
+                    <View style={styles.ethiniInner}>
+                      <Text adjustsFontSizeToFit style={styles.ethiniStyle}>Are you Hispanic or Latino?</Text>
+                    </View>
+                    <View style={styles.checkView}>
+                      <CheckBox
+                        style={{color: '#000000', borderRadius: 5, borderWidth: 1, width: 20, height: 20}}
+                        onAnimationType='fade'
+                        offAnimationType='fade'
+                        animationDuration={0}
+                        hideBox={true}
+                        disabled={false}
+                        value={toggleCheckBox}
+                        onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                        style={{color: '#000000'}}
+                        onCheckColor='#000000'
+                      />
+                    </View>
+                  </View>
+                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonTop} onPress={ async() => { this.setData(),navigation.navigate('profile')}}>
+                  <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Done</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity  activeOpacity = {.5} style={styles.buttonBot} onPress={ async() => { navigation.navigate('profile')}}>
+                  <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Cancel</Text>
+                  </TouchableOpacity>
           </View>
-          </ScrollView>
+        </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -317,24 +310,18 @@ const styles = EStyleSheet.create({
     width: "100%",
     aspectRatio: SCREEN_WIDTH/SCREEN_HEIGHT,
     flexDirection: "column",
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   headerTitle: {
-    // flex: 0.3,
     width: "100%",
     alignContent: "center"
   },
   headerHtField: {
-    // flex: 0.8,
     width: "100%",
   },
   headerWtField: {
-    // flex: 0.8,
     width: "100%",
   },
   headerNavigate: {
-    // flex: 0.8,
     width: "100%",
   },
   headerTitleText: {
@@ -347,11 +334,9 @@ const styles = EStyleSheet.create({
     marginTop: '5rem'
   },
   innerTopHeaderHtField: {
-    // flex: 2,
     justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
-    // flex: 3,
     flexDirection: 'row'
   },
   tcP: {
@@ -375,7 +360,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyle: {
     height: '38rem',
-    // width: '250rem',
     fontSize: '15rem',
     justifyContent:'center',
     marginLeft: '30rem',
@@ -383,7 +367,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyleD: {
     height: '32rem',
-    // width: '250rem',
     fontSize: '15rem',
     justifyContent:'center',
     marginLeft: '30rem',
@@ -391,7 +374,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyleDrop: {
     height: '40rem',
-    // width: '250rem',
     justifyContent:'center',
     marginLeft: '30rem',
     marginRight: '30rem',
@@ -437,13 +419,11 @@ const styles = EStyleSheet.create({
   },
   dropDownTextStyle: {
     backgroundColor: 'white',
-    // width: '250rem',
     height: '110rem',
     borderColor: '#000000',
   },
   dropDownRaceTextStyle: {
     backgroundColor: 'white',
-    // width: '250rem',
     height: '150rem',
     borderColor: '#000000'
   },
@@ -472,5 +452,9 @@ const styles = EStyleSheet.create({
   checkView: {
     flex: 1, 
     justifyContent:'center'
+  },
+  unitStyle:{ 
+    height: 35, 
+    width: 65
   }
 })

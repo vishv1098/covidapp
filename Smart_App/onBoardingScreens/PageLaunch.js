@@ -38,25 +38,17 @@ const PageLaunch = ({ headerTitle }) => {
             :
             null
             }
-          {/* </View> */}
-          {/* <View style={styles.middleContainer}> */}
             <View style={{alignContent: 'center', justifyContent: "center"}}>
               <Text adjustsFontSizeToFit style={styles.innerTop}>
                 This application uses machine learning models to predict the likelihood of having COVID-19 or an influenza infection based on self-reported symptoms and vital signs of an individual.
               </Text>
-            {/* </View> */}
-            {/* <View style={{flex:0.8, alignContent: 'center'}}> */}
               <Text adjustsFontSizeToFit style={styles.innerMiddle}>
               The data collected or automatically extracted from wearable devices is only used for on-device predictions and is not stored or collected for other use.
               </Text>
-            {/* </View> */}
-            {/* <View style={{flex:1, alignContent: 'center'}}> */}
               <Text adjustsFontSizeToFit style={styles.innerBottom}>
                 The data and services provided by this application are an information resource only, and are not to be used or relied on for any diagnostic or treatment purpose.
               </Text>
             </View>
-          {/* </View> */}
-          {/* <View style={styles.bottomContainer}> */}
             <TouchableOpacity style={styles.buttonTop} activeOpacity = {.5} onPress={ async() => { navigation.navigate('Terms')}}>
               <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Get Started</Text>
             </TouchableOpacity>

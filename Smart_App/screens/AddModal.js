@@ -188,8 +188,7 @@ const styles = EStyleSheet.create({
     fontWeight: '400',
   },
   containerText: {
-    padding: '10rem', 
-    // marginTop: '10rem',
+    padding: '10rem',
     marginBottom: '10rem',
     marginLeft: '70rem',
     marginRight: '70rem',

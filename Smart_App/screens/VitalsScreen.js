@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -71,6 +71,7 @@ class VitalsScreen extends Component {
       ageDetails: false,
       fitbitStartDate: '',
       fitbitEndDate: '',
+      tmp_unit: 'c',
     }
   }
 
@@ -134,7 +135,6 @@ class VitalsScreen extends Component {
       }
     } catch(e) {
     }
-    // await this.dataSources();
     await this.heartRateData();
     await this.fitbitData();
   }
@@ -201,6 +201,30 @@ class VitalsScreen extends Component {
           hrplaceholder: parseInt(res)+'',
         })
     })
+  }
+
+  handleTempbox = async (inputText) => {
+    if (inputText === '') {
+      await this.setState({
+        b_tmp: -1,
+      })
+    } else {
+        await this.setState({
+          b_tmp: parseFloat(inputText),
+        })
+    }
+  }
+
+  handleUnitbox = (inputText) => {
+    if (inputText.value === 'f') {
+        this.setState({
+            tmp_unit:'f', 
+        })
+    }else{
+      this.setState({
+        tmp_unit:'c'  
+    })
+    }
   }
 
   fitbitData = async() => {
@@ -321,7 +345,10 @@ class VitalsScreen extends Component {
   getCovidTest = async () => {
     const covidscore = await this.getCovidPrediction();
     const influscore = await this.getInfluenzaPrediction();
-    if (covidscore < 0.5 && influscore < 0.5 ) {
+    if(this.state.oxy == -1 && this.state.res_r == -1 && this.state.b_tmp == -1 && this.state.sbp == -1
+      && this.state.dbp == -1 && this.state.hr == -1){
+        this.props.navigation.navigate('nopredict')
+    } else if (covidscore < 0.5 && influscore < 0.5 ) {
       this.props.navigation.navigate('safe')
     } else if (covidscore < 0.5 && influscore > 0.5 ) {
       this.props.navigation.navigate('influ')
@@ -408,15 +435,10 @@ class VitalsScreen extends Component {
                 </View>
                 <View style={styles.headerIcon}>
                     <Icon name='heartbeat' size={normalize(130)} color="black" style={styles.headerIconStyle}/>
-                    {/* <Image source={require('../appIcons/heartbeat-solid.svg')} resizeMode='contain' style={styles.headerIconStyle}></Image> */}
                 </View>
                 <View style={styles.headerField}>
-                  {/* <View> */}
                     <Text style={styles.tcP}>Vitals</Text>
-                  {/* </View> */}
-                  {/* <View style={styles.headerField}> */}
                     <Text style={styles.tcsub}>Enter the remaining vitals if you know them.</Text>
-                  {/* </View> */}
                 </View>
                 <View style={styles.headerElField}>
                     <View style={styles.innerTopHeaderHtField}>
@@ -492,7 +514,20 @@ class VitalsScreen extends Component {
                           />
                       </View>
                       <View style={styles.innerBottUnitHeaderHtField}>
-                        <Text style={styles.tcL}>{'\u00b0'}C</Text>
+                        <DropDownPicker
+                            items={[
+                                {label: '°C', value: 'c'},
+                                {label: '°F', value: 'f'},
+                            ]}
+                            defaultValue={this.state.tmp_unit}
+                            containerStyle={styles.unitStyle}
+                            style={{backgroundColor: '#ef9a9a',borderColor:'black'}}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={{backgroundColor: '#ef9a9a', width: 65,borderColor:'black'}}
+                            onChangeItem={item => this.handleUnitbox(item)}
+                        />
                       </View>
                     </View>
                 </View>
@@ -649,7 +684,6 @@ const styles = EStyleSheet.create({
   },
   fieldStyle: {
     height: '38rem',
-    // width: '250rem',
     fontSize: '15rem',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
@@ -691,4 +725,8 @@ const styles = EStyleSheet.create({
     flex: 1.7,
     backgroundColor: '#ba6b6c',
   },
+  unitStyle: { 
+    height: 35, 
+    width: 65
+  }
 })

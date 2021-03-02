@@ -243,7 +243,6 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffcc80',
-    // padding:10
   },
   headerTitle: {
     flex: 0.3,
@@ -311,8 +310,7 @@ const styles = EStyleSheet.create({
     alignSelf:'stretch',
     flex:1,
     borderColor:'black',
-    borderTopWidth:1, 
-    // borderBottomWidth:1,
+    borderTopWidth:1,
     borderLeftWidth:1,
     borderRightWidth:1
     
@@ -324,8 +322,6 @@ const styles = EStyleSheet.create({
     alignItems:'center',
     flex:1,
     borderColor:'black',
-    // borderWidth:2,
-    // borderBottomWidth:1,
     borderTopWidth:1,
     borderLeftWidth:1,
     borderRightWidth:1,
