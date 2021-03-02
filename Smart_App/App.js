@@ -19,7 +19,7 @@ import InfluScreen from './screens/InfluScreen'
 import SafeScreen from './screens/SafeScreen';
 import EditProfile from './screens/EditProfile';
 import NoPrediction from './screens/NoPrediction';
-
+import History from './screens/History';
 const DEVICE_WIDTH = Dimensions.get('screen').width;
 const LOGOTYPE_WIDTH = 80;
 const TITLE_OFFSET_CENTER_ALIGN = DEVICE_WIDTH / 2 - LOGOTYPE_WIDTH / 2;
@@ -228,6 +228,24 @@ class App extends Component {
                                                         alignItems: 'center',
                                                         alignSelf: 'center',
                                                         fontSize: normalize(22)
+                                                        },
+                                                })}/>
+                                                <Stack.Screen name="hist" component={History} 
+                                                options={({ navigation }) => ({
+                                                        title: 'COVID-19 Guardian Angel',
+                                                        headerStyle: {
+                                                        backgroundColor: '#158158',
+                                                        },
+                                                        headerTintColor: '#000000',
+                                                        headerTitleStyle: {
+                                                        fontWeight: 'bold',
+                                                        alignContent: 'center',
+                                                        alignItems: 'center',
+                                                        alignSelf: 'center',
+                                                        fontSize: normalize(25)
+                                                        },
+                                                        headerTitleContainerStyle:{
+                                                        left: TITLE_OFFSET_CENTER_ALIGN - 140,
                                                         },
                                                 })}/>
                                         </Stack.Navigator>

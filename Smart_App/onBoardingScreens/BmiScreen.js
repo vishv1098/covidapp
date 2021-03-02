@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ConfirmDialog } from 'react-native-simple-dialogs';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import axios from 'axios';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -342,28 +342,47 @@ class VitalsScreen extends Component {
     return da[0]
   }
 
-  getCovidTest = async () => {
+  getCovidTest = async () => {//new
     const covidscore = await this.getCovidPrediction();
     const influscore = await this.getInfluenzaPrediction();
     if(this.state.oxy == -1 && this.state.res_r == -1 && this.state.b_tmp == -1 && this.state.sbp == -1
       && this.state.dbp == -1 && this.state.hr == -1){
         this.props.navigation.navigate('nopredict')
     } else if (covidscore < 0.5 && influscore < 0.5 ) {
+      await this.setHistory('Healthy')
       this.props.navigation.navigate('safe')
     } else if (covidscore < 0.5 && influscore > 0.5 ) {
+      await this.setHistory('Unwell')
       this.props.navigation.navigate('influ')
     } else if (covidscore > 0.5 && influscore < 0.5 ) {
+      await this.setHistory('Visit physician')
       this.props.navigation.navigate('covid')
     } else {
       const covidinfluscore = await this.getCovidInfluPrediction();
       if (covidinfluscore < 0.5) {
+        await this.setHistory('Unwell')
         this.props.navigation.navigate('influ')
       } else {
+        await this.setHistory('Visit physician')
         this.props.navigation.navigate('covid')
       }
     }
   }
-
+  setHistory = async (res)=>{ // new
+    var history = [] ;
+    var date = new Date()
+    var x = date.toDateString().split(' ')
+    var sdate = x[1]+' '+x[2]+', '+x[3]; 
+    if(await AsyncStorage.getItem('history') === null){
+      history.push({key:'1',date:sdate, result:res});
+    }else{
+      history = await AsyncStorage.getItem('history');
+      history = JSON.parse(history);
+      var id = parseInt(history[history.length-1].key)+1;
+      history.push({key:id.toString(),date:sdate, result:res});
+    }
+    await AsyncStorage.setItem('history',JSON.stringify(history).toString());
+  }
   updateData = async () => {
     if(this.state.hreditable === false) {
       await this.setState({
