@@ -37,6 +37,7 @@
     "react-native-button": "^3.0.1",
     "react-native-chart-kit": "^6.6.1",
     "react-native-dialog": "^6.1.2",
+    "react-native-disable-battery-optimizations-android": "^1.0.7",
     "react-native-dropdown-picker": "^3.6.8",
     "react-native-extended-stylesheet": "^0.12.0",
     "react-native-fs": "^2.16.6",

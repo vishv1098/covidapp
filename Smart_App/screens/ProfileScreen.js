@@ -51,18 +51,10 @@ class ProfileScreen extends Component {
        
     getData = async () => {
         if(await AsyncStorage.getItem('userHeight')===null) {
-            var inches = '';
-            var feet = 'Unknown';
+            var height = 'Unknown'
         } else {
-            if ((await AsyncStorage.getItem('heightUnit')).toString() === 'ft') {
-                var height = await AsyncStorage.getItem('userHeight');
-                var feet = Math.floor(height);
-                var inches = ' ft, '+Math.round((height - feet) * 12)+' in';
-                height = feet +" "+ inches;
-            } else {
-                var height = await AsyncStorage.getItem('userHeight');
-                height = height+' cm';
-            }  
+            var height_unit = (await AsyncStorage.getItem('heightUnit')).toString();
+            var height = await AsyncStorage.getItem('userHeight')+' '+height_unit;
         }
         if(await AsyncStorage.getItem('userWeight')===null) {
             var weight_val = 'Unknown'  

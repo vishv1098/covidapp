@@ -29,8 +29,8 @@ class CovidScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {//new
-            date:'',
-            result:'No History',
+            date:'No History',
+            result:'',
         }
         this.prevHistory();//new
     }
@@ -75,9 +75,9 @@ class CovidScreen extends Component {
                         <Text style={styles.headerContentText}>{this.state.date}</Text>
                         <Text style={styles.headerContentResultText}>{this.state.result}</Text>
                     </View>
-                    <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('hist')}}>
+                    {/* <TouchableOpacity style={styles.profileButtonTop} activeOpacity = {.5} onPress={ async() => { this.props.navigation.navigate('hist')}}>
                         <Text adjustsFontSizeToFit style={styles.buttonTextStyle}>Assessment history</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
         );

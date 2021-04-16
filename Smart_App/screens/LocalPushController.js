@@ -1,5 +1,4 @@
 import PushNotification from 'react-native-push-notification'
-
 export const LocalNotification = () => {
     PushNotification.localNotification({
         title: 'Local Notification Title',
@@ -11,8 +10,8 @@ export const LocalNotification = () => {
 export const ScheduledLocalNotification = () => {
     var now = new Date();
     now.setDate(now.getDate())
-    now.setHours(9);
-    now.setMinutes(0);
+    now.setHours(18);
+    now.setMinutes(20);
     now.setSeconds(0);
     now.setMilliseconds(0);
     PushNotification.localNotificationSchedule({

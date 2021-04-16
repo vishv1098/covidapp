@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard, Dimensions, Platform, PixelRatio } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,8 @@ import * as tf from '@tensorflow/tfjs';
 import  { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { ConfirmDialog } from 'react-native-simple-dialogs';
+
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
@@ -42,6 +44,7 @@ class VitalsScreen extends Component {
   constructor(props) {
     super(props);
     this.getData();
+    
     this.state = {
       oxy: -1,
       dbp: -1,
@@ -72,12 +75,13 @@ class VitalsScreen extends Component {
       fitbitStartDate: '',
       fitbitEndDate: '',
       tmp_unit: 'c',
+      dataOldWarn:false
     }
   }
 
   async componentDidMount() {
     var ourDate = new Date();
-    var pastDate = ourDate.getDate() - 7;
+    var pastDate = ourDate.getDate() - 20;
     ourDate.setDate(pastDate);
     var n = ourDate.getTime()
     var x = ourDate.toISOString().split('T')
@@ -135,8 +139,14 @@ class VitalsScreen extends Component {
       }
     } catch(e) {
     }
-    await this.heartRateData();
-    await this.fitbitData();
+
+    //new
+    if (google_token_fetch !== null) {
+      await this.heartRateData();
+    }
+    if (fitbit_token_fetch !== null) {
+      await this.fitbitData();
+    }
   }
 
   dataSources = async() => {
@@ -193,13 +203,33 @@ class VitalsScreen extends Component {
             'Authorization': 'Bearer ' + this.state.google_token
         }
     }).then(async (resp) => {
+        console.log(this.state.google_token);
         var array = resp.data["point"]
+        console.log("Array:"+array);
         var x = array[array.length - 1]
         var res = x.value[0].fpVal
-        await this.setState({
-          hreditable: false,
-          hrplaceholder: parseInt(res)+'',
-        })
+        //new
+        var milli_last = Math.round(x.endTimeNanos/1000000) 
+        var now = new Date();
+        now.setDate(now.getDate())
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        var milli_compare  = now.getTime();
+        console.log(milli_last+' '+milli_compare)
+        if(milli_last < milli_compare){
+          await this.setState({
+            hreditable: false,
+            hrplaceholder: parseInt(res)+'',
+          })
+         }else{
+          await this.setState({
+            dataOldWarn
+: true,
+          })
+        }
+
     })
   }
 
@@ -228,14 +258,16 @@ class VitalsScreen extends Component {
   }
 
   fitbitData = async() => {
-    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/'+this.state.fitbitStartDate+'/'+this.state.fitbitEndDate+'/1min.json',{
+    console.log('entered fit')
+    await axios.get('https://api.fitbit.com/1/user/-/activities/heart/date/2021-01-01/2021-04-08/1min.json',{
       headers:{
         Authorization: 'Bearer ' + this.state.fitbit_token
       }
     }).then((resp) => {
       var testRead = resp
-      console.log(testRead.data["activities-heart"][0]["dateTime"])
-      console.log(JSON.stringify(testRead.data["activities-heart"][0]["value"]))
+      console.log('entered then')
+      console.log(testRead.data["activities-heart"][testRead.data["activities-heart"].length-1]["dateTime"])
+      console.log(JSON.stringify(testRead.data["activities-heart"][testRead.data["activities-heart"].length-1]["value"]["heartRateZones"][0]["max"]))
     }).catch((error) => {
       //
     })
@@ -439,6 +471,12 @@ class VitalsScreen extends Component {
         age: parseInt(this.state.ageData),
       })
     }
+    if(this.state.tmp_unit ==='f'){ 
+      await this.setState(
+          { 
+            b_tmp: parseInt(this.state.b_tmp - 32)* 5/9, 
+          })
+        }
     await this.getCovidTest();
   }
 
@@ -585,6 +623,25 @@ class VitalsScreen extends Component {
                     <Text style={styles.buttonTextStyle}>View Result</Text>
                   </TouchableOpacity>
                 </View>
+                {/* new */}
+                <ConfirmDialog
+                    visible={this.state.dataOldWarn
+}
+                    title="Old Data"
+                    titleStyle={styles.disclaimer}
+                    dialogStyle={styles.disclaimerDialog}
+                    onTouchOutside={() => this.setState({dataOldWarn: false})}
+                    positiveButton={{
+                        title: "OK",
+                        titleStyle: styles.disclaimerButtonStyle,
+                        style: styles.disclaimerButton,
+                        onPress: () => this.setState({dataOldWarn: false})
+                    }}
+                    >
+                    <ScrollView>
+                        <Text style={styles.disclaimerContent}>Your data seems to be too old for an accurate diagnosis.</Text>
+                    </ScrollView>
+                </ConfirmDialog>
             </View>
         </View>
       </TouchableWithoutFeedback>
@@ -747,5 +804,28 @@ const styles = EStyleSheet.create({
   unitStyle: { 
     height: 35, 
     width: 65
-  }
+  },
+  // new
+  disclaimer: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    fontSize: '24rem',
+    fontWeight: 'bold'
+},
+disclaimerDialog: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+},
+disclaimerContent: {
+    fontSize: '16rem',
+    paddingBottom: '10rem',
+},
+disclaimerButtonStyle: {
+    fontSize:'16rem',
+    color:'#007aff',
+    fontWeight:'400'
+},
 })

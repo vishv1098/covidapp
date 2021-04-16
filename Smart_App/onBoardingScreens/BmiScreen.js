@@ -273,7 +273,7 @@ const styles = EStyleSheet.create({
     fontSize: '15rem',
   },
   innerBottFieldHeaderHtField: {
-    flex:18,
+    flex:10,
     justifyContent: 'center'
   },
   innerBottUnitHeaderHtField: {

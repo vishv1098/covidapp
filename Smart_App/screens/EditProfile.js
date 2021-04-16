@@ -63,12 +63,12 @@ const EditProfile= () => {
   
   const gtData = async () =>{
     if(await AsyncStorage.getItem('userHeight')===null){
-      htEdSet('Enter your height in centimeters');
+      htEdSet('Enter your height');
     }else{
       htEdSet(await AsyncStorage.getItem('userHeight'));
     }
     if(await AsyncStorage.getItem('userWeight')===null){
-      wtEdSet('Enter your weight in kilograms');
+      wtEdSet('Enter your weight');
     }else{
       wtEdSet(await AsyncStorage.getItem('userWeight'));
     }
@@ -303,7 +303,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex:1,
-    padding: 10,
+    padding: 5,//new
     backgroundColor:'white'
   },
   contentContainer: {
@@ -337,6 +337,7 @@ const styles = EStyleSheet.create({
     justifyContent:'flex-end'
   },
   innerBottomHeaderHtField: {
+    flex: 3,
     flexDirection: 'row'
   },
   tcP: {
@@ -351,7 +352,7 @@ const styles = EStyleSheet.create({
     fontSize: '15rem',
   },
   innerBottFieldHeaderHtField: {
-    flex:18,
+    flex:10,//new
     justifyContent: 'center'
   },
   innerBottUnitHeaderHtField: {

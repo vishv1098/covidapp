@@ -11,7 +11,7 @@ import config from '../configFiles/config'
 import googleConfig from '../configFiles/googleConfig'
 import { ConfirmDialog } from 'react-native-simple-dialogs';
 import AddModal from './AddModal';
-
+import RNDisableBatteryOptimizationsAndroid from 'react-native-disable-battery-optimizations-android'; // new
 var screenWidth = Dimensions.get('screen').width;
 var screenHeight = Math.round(Dimensions.get('window').height);
 
@@ -103,8 +103,11 @@ class Home extends Component {
             aboutAppDialogVisible: false,
             termsandcondition: false,
             missingInfoWarn: false,
+            battery:false,
         }
         this._onFormData = this._onFormData.bind(this);
+        
+        
     }
 
     async componentDidMount() {
@@ -118,6 +121,9 @@ class Home extends Component {
 
     _testScheduleNotification = async() => {
         if(await AsyncStorage.getItem('firstNotif') === null){
+            // this.setState({
+            //     battery:true,
+            // })
             ScheduledLocalNotification()
             await AsyncStorage.setItem('firstNotif','done')
         }   
@@ -128,6 +134,7 @@ class Home extends Component {
           const refreshtoken = await AsyncStorage.getItem('fitbit_refreshtoken')
           await refresh_Fitbit(refreshtoken)
           const value = await AsyncStorage.getItem('fitbit_accesstoken')
+          console.log(value)
           if(value !== null) {
             this.setState({
               fitbit_accesstoken: value,
@@ -328,6 +335,30 @@ class Home extends Component {
                             <Text style={styles.disclaimerContent}>Missing data may cause the model to predict incorrect results. </Text>
                         </ScrollView>
                     </ConfirmDialog>
+                    {/* <ConfirmDialog
+                        visible={this.state.battery}
+                        title="Battery Optimization"
+                        titleStyle={styles.disclaimer}
+                        dialogStyle={styles.disclaimerDialog}
+                        onTouchOutside={() => this.setState({battery: false})}
+                        positiveButton={{
+                            title: "Accept",
+                            titleStyle: styles.disclaimerButtonStyleBold,
+                            style: styles.disclaimerButton,
+                            onPress: () => {this.setState({battery: false}), }
+                        }}
+                        negativeButton={{
+                            title: "Deny",
+                            titleStyle: styles.disclaimerButtonStyle,
+                            style: styles.disclaimerButton,
+                            onPress: () =>{this.setState({battery: false})} 
+                        }}
+                        >
+                        <ScrollView>
+                            <Text style={styles.disclaimerContent}>Your may need to turn off battery optimization to receive notifications.</Text>
+                            <Text style={styles.disclaimerContent}>Please choose the guardian angel application and disable battery optimization if you decide to turn off optimization.</Text>
+                        </ScrollView>
+                    </ConfirmDialog> */}
                     <View style={styles.titleBox}>
                         <Text adjustsFontSizeToFit style={styles.titleNameStyle}>Connect your Fitness Tracker</Text>
                         <Text adjustsFontSizeToFit style={styles.titleContentStyle}>Our Machine Learning models use your vital signs to make predictions about your health. Connect to your Fitbit® tracker or Google Fit in order to use your vitals data in this App.</Text>
